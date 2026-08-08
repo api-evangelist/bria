@@ -1,0 +1,108 @@
+generated: '2026-08-08'
+method: derived
+source: openapi/*-openapi-original.yml + https://docs.bria.ai/status
+format: custom
+rfc9457: false
+content_type: application/json
+envelope:
+  sync:
+    error:
+      code: integer
+      message: string
+      details: string
+    request_id: string
+    required: [error, request_id]
+    schema: openapi/bria-image-editing-openapi-original.yml#/components/schemas/ErrorResponse
+  async:
+    request_id: string
+    status: ERROR
+    error:
+      code: string
+      message: string
+    example_code: VALIDATION_ERROR
+    source: https://docs.bria.ai/webhooks
+problems:
+- status: 400
+  title: Bad request
+  occurrences: 75
+  remediation: Validate required body parameters against the endpoint schema before retrying.
+- status: 401
+  title: Unauthorized — invalid API key or authentication token
+  occurrences: 78
+  remediation: Check the api_token header; mint or rotate a key at https://platform.bria.ai/organization-management/api-keys
+- status: 403
+  title: Forbidden
+  occurrences: 83
+  remediation: The token is valid but the account is not entitled to this capability or plan tier.
+- status: 404
+  title: Not found
+  occurrences: 70
+  remediation: The referenced request_id, template_id, model_id, dataset_id or project_id does not exist.
+- status: 405
+  title: Method not allowed
+  occurrences: 12
+- status: 409
+  title: Conflict
+  occurrences: 10
+  detail: 'Cannot delete project while models are in training'
+  remediation: Stop training before deleting the project.
+- status: 412
+  title: Precondition failed
+  occurrences: 2
+  detail: Resolution too low.
+- status: 413
+  title: Payload too large
+  occurrences: 17
+  detail: Image file size exceeds the 12MB limit.
+  remediation: Downscale or recompress the image, or pass a public URL instead of base64.
+- status: 415
+  title: Unsupported media type
+  occurrences: 45
+  detail: 'Supported file types are jpeg, jpg, png, webp.'
+- status: 422
+  title: Unprocessable content
+  occurrences: 53
+- status: 429
+  title: Request limit exceeded
+  occurrences: 83
+  detail: Account has reached its maximum allowed requests.
+  remediation: >-
+    Back off and retry, or upgrade the plan. Bria states 429 responses carry structured recovery
+    directives for agent consumption; no Retry-After header contract is published.
+- status: 460
+  title: Failed to download image
+  occurrences: 24
+  detail: Bria could not fetch the image at the supplied public URL.
+  remediation: Confirm the URL is publicly reachable and returns an image, or send base64 instead.
+  note: 460 is a non-standard status code specific to Bria.
+- status: 500
+  title: Internal server error
+  occurrences: 60
+- status: 506
+  title: Insufficient data
+  occurrences: 4
+  detail: The given input is not supported by the Bria API.
+  note: >-
+    506 (Variant Also Negotiates) is repurposed here for an input-support condition, which is not
+    its RFC 9110 meaning.
+job_states:
+  source: https://docs.bria.ai/status
+  states:
+  - state: IN_PROGRESS
+    meaning: Accepted and processing; keep polling.
+  - state: COMPLETED
+    meaning: Success; result carries image_url, video_url or structured_prompt.
+  - state: ERROR
+    meaning: Pipeline processing error; stop polling and read the error object.
+  - state: UNKNOWN
+    meaning: Unexpected internal error, equivalent to HTTP 500 in the async workflow. Contact support with the request_id.
+findings:
+- >-
+  Errors are not RFC 9457 problem+json; there is no type URI and no per-error identifier an agent
+  can branch on other than the HTTP status and a free-text message.
+- >-
+  Two incompatible error shapes ship in the same API: sync error.code is an integer, async/webhook
+  error.code is a string.
+- >-
+  Bria publishes no error-code reference page. Every entry above is derived from the OpenAPI
+  response descriptions in this repo, not from a documented registry.

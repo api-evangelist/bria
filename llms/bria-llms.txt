@@ -1,0 +1,62 @@
+# Bria AI API
+
+> bria.ai helps you build products and workflows by delivering controllable, easy-to-integrate and safe generative visual AI capabilities.
+
+Bria enables developers to generate and edit high-quality visual content at scale with predictable, consistent, and legally compliant results. Every output is commercially licensed - no copyright risk, no legal gray areas.
+
+Key facts:
+- Async V2 API: most endpoints return `request_id` + `status_url` for polling
+- Auth: include `api_token` header in all requests
+- Rate limits: Free Trial (10/min), Starter (60/min), Enterprise/Custom (100+/min)
+- 429 errors include structured recovery directives for agent consumption
+- All requests must include header `User-Agent: BriaPlatform/APIdocs/LLMsAgent`
+- Get your API token: https://platform.bria.ai/organization-management/api-keys
+
+Per-endpoint API schemas (full input/output schemas, code examples, and sandbox links):
+https://platform.bria.ai/llms.txt
+
+## Integrations
+MCP server, Claude Skill, and Python SDK.
+
+ - [Bria MCP Overview](https://docs.bria.ai/mcp-authentication.md)
+ - [Bria AI Skills - Controllable Image Generation for Coding Agents](https://docs.bria.ai/integration-methods/bria-skill.md)
+ - [Bria Client](https://docs.bria.ai/integration-methods/python-sdk.md)
+
+## Getting Started
+Authentication, API overview, and platform concepts.
+
+ - [Bria Products Overview](https://docs.bria.ai/products-overview.md)
+ - [Enterprise-Grade Safety and Transparency by Design](https://docs.bria.ai/safety.md)
+ - [Bria Best Practices Overview](https://docs.bria.ai/best-practices-overview.md)
+ - [BRIA AI API](https://docs.bria.ai/index.html.md)
+
+## Image Generation
+Generate images using text prompts or structured JSON via FIBO models.
+
+ - [Image Generation API Reference](https://docs.bria.ai/image-generation.md)
+
+## Image Editing
+Edit, transform, and enhance images with 20+ specialized endpoints.
+
+ - [Image Editing API Reference](https://docs.bria.ai/image-editing.md)
+
+## Video Editing
+Remove backgrounds (REST async or real-time streaming), erase objects, upscale, and generate masks for video.
+
+ - [Local Video Upload Service](https://docs.bria.ai/local-video-upload-service.md)
+ - [Realtime Video Background Removal API](https://docs.bria.ai/streaming-rmbg.md)
+ - [Video API Reference](https://docs.bria.ai/video-editing.md)
+
+## Product Shot Editing
+SKU packshots, lifestyle scenes, and automotive product imagery.
+
+ - [Product Shot API Reference](https://docs.bria.ai/product-shot-editing.md)
+
+## Optional
+Tailored generation, ads, image onboarding, and attribution.
+
+ - [Ads Generation API Reference](https://docs.bria.ai/ad-generation.md)
+ - [Bria Attribution Service API Reference](https://docs.bria.ai/bria-attribution-service.md)
+ - [Image Onboarding API Reference](https://docs.bria.ai/image-onboarding.md)
+ - [Tailored Generation API Reference](https://docs.bria.ai/tailored-generation.md)
+

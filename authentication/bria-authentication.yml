@@ -1,0 +1,94 @@
+generated: '2026-08-08'
+method: searched
+source: openapi/*-openapi-original.yml + https://docs.bria.ai/mcp-authentication
+docs: https://docs.bria.ai/mcp-authentication
+console: https://platform.bria.ai/organization-management/api-keys
+summary:
+  types:
+  - apiKey
+  - http
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - authorizationCode
+  - refresh_token
+  - device_code
+  primary: >-
+    A static, long-lived API token sent in the api_token request header. It is a required header
+    parameter on 97 of 104 published operations but is declared as a plain header parameter, not as
+    an OpenAPI securityScheme, so a generator reading only components.securitySchemes will not
+    emit auth for those operations.
+schemes:
+- name: api_token
+  type: apiKey
+  in: header
+  parameter: api_token
+  required: true
+  declared_as: header parameter
+  operations: 97
+  sources:
+  - openapi/bria-image-generation-openapi-original.yml
+  - openapi/bria-image-editing-openapi-original.yml
+  - openapi/bria-video-editing-openapi-original.yml
+  - openapi/bria-product-shot-editing-openapi-original.yml
+  - openapi/bria-tailored-generation-openapi-original.yml
+  - openapi/bria-ad-generation-openapi-original.yml
+  - openapi/bria-image-onboarding-openapi-original.yml
+  - openapi/bria-status-openapi-original.yml
+  - openapi/bria-ai-search-deperecated-openapi-original.yml
+  note: >-
+    Issued and rotated from the Bria console; separate keys can be minted for production, staging,
+    MCP and ComfyUI use. Tokens are long-lived and Bria states no rotation logic is required.
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  sources:
+  - openapi/bria-attribution-service-openapi-original.yml
+  note: The Attribution Service is the only spec that declares a real securityScheme.
+- name: OAuth2
+  type: oauth2
+  discovery: https://engine.prod.bria-api.com/.well-known/oauth-authorization-server
+  metadata_spec: RFC 8414
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://engine.prod.bria-api.com/v2/auth/authorize
+    tokenUrl: https://engine.prod.bria-api.com/v2/auth/token
+    pkce: S256
+  - flow: deviceCode
+    deviceAuthorizationUrl: https://engine.prod.bria-api.com/v2/auth/device/authorize
+  dynamic_client_registration: https://engine.prod.bria-api.com/v2/auth/register
+  registration_spec: RFC 7591
+  token_endpoint_auth_methods:
+  - client_secret_post
+  - none
+  sources:
+  - well-known/bria-engine-oauth-authorization-server.json
+  note: >-
+    Discovered by probe, not declared in any OpenAPI. Used for the OAuth-based bearer token that
+    the MCP server accepts in its authorization_token parameter.
+mcp:
+  url: https://mcp.prod.bria-api.com/mcp
+  methods:
+  - api_token header (static API key)
+  - OAuth 2.0 bearer token (authorization_token)
+  anonymous_tools_list: 401
+  anonymous_response: 'either API key or Bearer token is required'
+  authorization_server: https://mcp.prod.bria-api.com/.well-known/oauth-authorization-server
+gaps:
+- >-
+  api_token is not modelled as an OpenAPI securityScheme in nine of the ten specs, so
+  securitySchemes-defined and securitySchemes-applied contract checks fail even though every
+  operation is in fact authenticated.
+- >-
+  No /.well-known/oauth-protected-resource (RFC 9728) on the MCP host, so an MCP client cannot
+  discover the authorization server from the resource.
+x-evidence:
+  fetched: '2026-08-08'
+  probes:
+  - url: https://engine.prod.bria-api.com/.well-known/oauth-authorization-server
+    http_status: 200
+  - url: https://mcp.prod.bria-api.com/.well-known/oauth-authorization-server
+    http_status: 200
+  - url: https://mcp.prod.bria-api.com/mcp
+    http_status: 401

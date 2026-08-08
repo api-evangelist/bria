@@ -1,0 +1,64 @@
+generated: '2026-08-08'
+method: searched
+source: https://docs.bria.ai/api_v2_live, https://status.bria.ai/, https://docs.bria.ai/ai-search-deperecated
+versioning:
+  scheme: uri-path
+  current: v2
+  legacy: v1
+  docs: https://docs.bria.ai/api_v2_live
+  note: >-
+    v2 changed the async default (sync now defaults to false), removed num_results, unified
+    image_url/image_file into image, and split content_moderation into three independent controls.
+deprecation:
+  policy_url: https://docs.bria.ai/api_v2_live
+  sunset_header: false
+  deprecation_header: false
+  published_dates:
+  - surface: Image Editing v1
+    end_of_support: '2025-11-15'
+    status: ended
+  - surface: Image Generation v1
+    end_of_support: null
+    status: 'timeline stated as to be shared separately; not published'
+  - surface: Tailored Generation v1
+    end_of_support: null
+    status: 'timeline stated as to be shared separately; not published'
+  - surface: Product Shot Editing v1
+    end_of_support: null
+    status: 'timeline stated as to be shared separately; not published'
+  migration_table: https://docs.bria.ai/api_v2_live
+  note: >-
+    Bria publishes a v1-to-v2 endpoint migration table and a parameter-rename table, which is a
+    real deprecation communication. It does not emit RFC 8594 Sunset or Deprecation response
+    headers, so the deprecation is documented for humans but not signalled on the wire.
+deprecated_surfaces:
+- surface: AI Search
+  spec: openapi/bria-ai-search-deperecated-openapi-original.yml
+  operations: [get-caption, search, search-similar-images]
+  evidence: >-
+    Bria labels the section "ai-search-deperecated" in its own documentation routing and sitemap.
+  note: >-
+    No operation in any Bria spec carries `deprecated: true`. The deprecation is expressed only
+    in the URL slug, so a machine reading the OpenAPI cannot detect it.
+deprecated_operations: []
+status_page: https://status.bria.ai/
+status_page_title: BRIA AI Status
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA or uptime target was found.
+changelog:
+  url: null
+  note: >-
+    No dated changelog was found. platform.bria.ai returns an identical 16,978-byte SPA shell for
+    every path including /changelog and a nonsense control path, so its 200 is not evidence, and
+    Bria's own platform llms.txt index does not list a changelog route.
+x-evidence:
+  fetched: '2026-08-08'
+  probes:
+  - url: https://status.bria.ai/
+    http_status: 200
+  - url: https://docs.bria.ai/api_v2_live.md
+    http_status: 200
+  - url: https://docs.bria.ai/changelog.md
+    http_status: 404

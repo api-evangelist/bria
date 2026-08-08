@@ -1,0 +1,118 @@
+# Bria AI Platform
+
+> Enterprise-grade visual AI API building blocks. Bria provides safe, controllable and transperent visual AI capabilities. All endpoints are trained on 100% licensed data - commercially licensed, commercially safe, and indemnified.
+
+This file indexes the Bria platform web application and visual AI API building blocks. Application links open product UI; API links open per-endpoint `llms.txt` files with schemas, examples, and the interactive sandbox. API entries are generated from the same registry as the API Building Blocks UI.
+
+For platform overview, authentication, and agent integration, see the documentation hub: <https://docs.bria.ai/llms.txt>
+
+## Platform application
+
+### Discover & build
+
+- [Platform home](https://platform.bria.ai): Entry point to Bria’s visual AI platform—start here to explore products, sign in, and navigate the app.
+- [API Building Blocks](https://platform.bria.ai/api-building-blocks): Browse 40+ licensed visual AI capabilities with live sandboxes—the same catalog indexed under API building blocks below.
+- [Dashboard](https://platform.bria.ai/dashboard): Your workspace for favorites, recent work, and shortcuts into building blocks, agents, and org tools.
+- [Skills & MCP](https://platform.bria.ai/skills-and-mcp): Wire Bria into Claude, Cursor, VS Code, and other agents via Bria Skill or the MCP server—commercially safe visual AI in minutes.
+- [Playground hub](https://platform.bria.ai/playground-hub): Jump into guided playgrounds and experiments beyond a single API card—ideal for trying flows end to end.
+- [Apps](https://platform.bria.ai/apps): Solution-style experiences and packaged workflows built on Bria APIs—faster than assembling blocks yourself.
+- [Labs](https://platform.bria.ai/labs): Early previews and experimental surfaces—see what’s next before it lands in the main catalog.
+- [Automotive](https://platform.bria.ai/automotive): Vehicle-centric product imagery—segmentation, reflections, harmonization, and showroom-ready shots for automotive retail.
+- [Integrations](https://platform.bria.ai/integrations): Connect Bria to creative tools, marketplaces, and partner stacks—use visual AI where your team already works.
+- [Open source](https://platform.bria.ai/open-source): Model cards and repos for Bria’s open weights—trained on licensed data; commercial deployment pairs with attribution and indemnification options.
+
+### Plans & usage
+
+- [Pricing](https://platform.bria.ai/pricing): Compare plans, trials, and upgrade paths—move from free exploration to Pay-as-you-go or Enterprise arrangements.
+- [Billing setup](https://platform.bria.ai/billing): Add a payment method if your organization is on a free plan to upgrade to Pay-as-you-go, or check your existing plan if you are already on Pay-as-you-go.
+- [Usage & billing](https://platform.bria.ai/consumption-and-billing): Organization-wide hub for consumption, credits, and invoices—admins monitor spend and balances in one place.
+- [Usage](https://platform.bria.ai/consumption-and-billing/usage): Drill into API consumption by period, endpoint, and auth method—export CSV for finance or capacity planning.
+- [Credits](https://platform.bria.ai/consumption-and-billing/credits): View credit balances, grants, and top-ups tied to your plan—see what’s available before the next billing cycle.
+- [Billing details](https://platform.bria.ai/consumption-and-billing/billing): Payment methods, invoices, and billing profile—keep procurement and accounts payable aligned with Bria.
+
+### Organization & access
+
+- [User profile](https://platform.bria.ai/user-profile): Personal account settings—identity, preferences, and how you show up inside your organizations.
+- [Organization management](https://platform.bria.ai/organization-management): Admin home for your workspace—org identity, plan badges, and tabs for keys, people, and compliance artifacts.
+- [API keys](https://platform.bria.ai/api-keys): Create and rotate production, staging, MCP, and Comfy keys—authenticate every call to Bria’s APIs.
+- [Users](https://platform.bria.ai/organization-management/users): Invite teammates, assign roles, and control who can spend credits or change org-wide settings.
+- [Sub-organizations](https://platform.bria.ai/organization-management/sub-organizations): Structure child orgs for agencies, business units, or customers—separate usage while staying under one parent.
+- [IP projects](https://platform.bria.ai/organization-management/IP-projects): Licensed-IP workflows and project registry when your agreement includes IP-backed generation and controls.
+- [Attribution reports](https://platform.bria.ai/organization-management/attribution-reports): Compliance reporting for licensed and open-model usage—evidence for legal and brand safety reviews.
+
+## Third-party integrations
+
+Connect Bria's capabilities directly into your apps, automated workflows, and favorite creative tools. Full listing: [Integrations](https://platform.bria.ai/integrations).
+
+### Creative Software Plugins
+
+- [Figma Plugin](https://www.figma.com/community/plugin/1541740878931198133/ai-image-generation-editing-bria-ai): Generate and edit images directly within your Figma design canvas.
+- [Adobe Photoshop](https://exchange.adobe.com/apps/cc/92224702/bria-ai-plugin-for-photoshop): Professional AI generation and editing tools inside Photoshop.
+- [ComfyUI Nodes](https://github.com/Bria-AI/ComfyUI-BRIA-API): Integrate Bria's API endpoints into node-based ComfyUI workflows.
+- [Houdini](https://github.com/Bria-AI/Houdini-tools): Bring procedural generation capabilities into your 3D pipeline.
+- [Nuke VFX](https://github.com/Bria-AI/Nuke-tools): Compositing workflow integrations for VFX pipelines.
+- [OBS Plugin](https://github.com/Bria-AI/obs-backgroundremoval): Remove your video background in real-time using our OBS studio plug-in.
+- [Request an Integration](https://platform.bria.ai/integrations): Don't see your tool? Let us know what we should build next.
+
+## Image Editing - By text
+
+- [Fibo Image Edit](https://platform.bria.ai/image-editing/fibo-image-edit/llms.txt): Edit image using text, mask or structured prompt
+- [Add Object by Text](https://platform.bria.ai/image-editing/add-object-by-text/llms.txt): Insert new objects into an image using text
+- [Erase Object by Text](https://platform.bria.ai/image-editing/erase-object-by-text/llms.txt): Erase objects from an image using text
+- [Replace Object by Text](https://platform.bria.ai/image-editing/replace-object-by-text/llms.txt): Replace objects in an image using text
+- [Image Blending](https://platform.bria.ai/image-editing/image-blending/llms.txt): Merge objects, apply textures, or rearrange items within an image using natural language.
+- [Rewrite](https://platform.bria.ai/image-editing/rewrite/llms.txt): Modifies or replaces text elements within an image.
+- [Restyle Image](https://platform.bria.ai/image-editing/restyle-image/llms.txt): Transform the artistic style of an image.
+
+## Image Editing - By mask
+
+- [Image Eraser](https://platform.bria.ai/image-editing/eraser/llms.txt): Remove elements from an image using a mask.
+- [Generative Fill](https://platform.bria.ai/image-editing/generative-fill/llms.txt): Add, replace or ,modify elements of an image using a mask
+
+## Image Editing - Style
+
+- [Reseason Image](https://platform.bria.ai/image-editing/image-reseason/llms.txt): Transforms scene weather and seasons while preserving structure.
+- [Sketch to Image](https://platform.bria.ai/image-editing/sketch-to-image/llms.txt): Renders rough sketches into photorealistic images.
+- [Relight Image](https://platform.bria.ai/image-editing/relight-image/llms.txt): Modify the lighting setup (direction and atmosphere) of an image.
+- [Restore Old Images](https://platform.bria.ai/image-editing/restore-old-images/llms.txt): Renews old photos by removing noise, scratches, and blur.
+- [Colorize](https://platform.bria.ai/image-editing/colorize/llms.txt): Add vivid colors to B&W photos or convert color to B&W.
+
+## Image Editing - Post-Processing
+
+- [Expand](https://platform.bria.ai/image-editing/expand/llms.txt): Generatively transform image dimensions.
+- [Enhance Image](https://platform.bria.ai/image-editing/enhance-image/llms.txt): Upscale image while improving image details.
+- [Increase Resolution Image](https://platform.bria.ai/image-editing/increase-resolution/llms.txt): Upscale image resolution up to 8K
+
+## Image Editing - Background operations
+
+- [Image Remove Background](https://platform.bria.ai/image-editing/remove-background/llms.txt): Remove the background of an image
+- [Image Replace Background](https://platform.bria.ai/image-editing/replace-background/llms.txt): Replace image background using prompt or reference image
+
+## Video Editing - Object handling
+
+- [Video Eraser](https://platform.bria.ai/video-editing/eraser-video/llms.txt): Remove elements from a video using a mask.
+
+## Video Editing - Post-Processing
+
+- [Video Increase Resolution](https://platform.bria.ai/video-editing/increase-resolution/llms.txt): Upscale video resolution up to 8K
+
+## Video Editing - Background operations
+
+- [Video Remove Background](https://platform.bria.ai/video-editing/remove-background/llms.txt): Remove the background of a video
+- [Real Time Video Remove Background](https://platform.bria.ai/video-editing/video-streaming-remove-background/sandbox): Use streaming to remove the background of a video
+- [Video Green Screen](https://platform.bria.ai/video-editing/green-screen/llms.txt): Replace the background of a video with a green screen
+- [Video Replace Background](https://platform.bria.ai/video-editing/replace-background/llms.txt): Replace the background of a video with an image or video
+
+## Image Generation - Text-to-Image
+
+- [Fibo Image Generate](https://platform.bria.ai/image-generation/fibo-generate/llms.txt): Generate and refine images using text or structured prompt
+- [Fibo Lite Generate](https://platform.bria.ai/image-generation/fibo-lite-generate/llms.txt): Low-latency generation using the lightweight model.
+
+## Product Shot Editing - SKU
+
+- [Product Cutout](https://platform.bria.ai/product-shot-editing/product-cutout/llms.txt): Cutout a product from an image.
+- [Product Packshot](https://platform.bria.ai/product-shot-editing/product-packshot/llms.txt): Create a precise cutout of a product from any given image.
+- [Product Shadow](https://platform.bria.ai/product-shot-editing/product-shadow/llms.txt): add consistent and customizable shadow to a product cutout
+- [Lifestyle Product Shot by Text](https://platform.bria.ai/product-shot-editing/product-lifestyle-shot-by-text/llms.txt): Create product shots by describing the background
+- [Lifestyle Product Shot by Image](https://platform.bria.ai/product-shot-editing/product-lifestyle-shot-by-image/llms.txt): Create product shots by uploading the background image
+- [Product Embedding](https://platform.bria.ai/product-shot-editing/product-embedding/llms.txt): Integrate products into a scene at precise coordinates.

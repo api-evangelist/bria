@@ -1,0 +1,4999 @@
+openapi: 3.0.0
+info:
+  title: Tailored Generation API Reference
+  version: ''
+  description: >
+    Tailored Generation provides capabilities to generate visuals (photos,
+    illustrations, vectors) 
+
+    that preserve and faithfully reproduce specific IP elements or guidelines,
+    ensuring consistency 
+
+    across all generated outputs.
+
+
+    The Tailored Generation APIs allow you to manage and train tailored models
+    that maintain the 
+
+    integrity of your visual IP. You can train models through our Console or
+    implement training 
+
+    directly via API.
+
+
+    **Fully Automated Training Mode**
+
+    Bria supports users in training high-quality finetuned models without the
+    guesswork. Based on the selected IP type & dataset, Bria automatically
+    selects the right training parameters. 
+
+    This means that the user only needs to spend time curating their dataset.
+
+
+    **Advanced Customization and Access:** Bria offers 2 types of advanced
+    training customization: Expert training mode and source-code & weights.
+      - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets.
+      - **Source-code & Weights** is for developers seeking deeper customization and access to Bria's source-available GenAI models via [Hugging Face](https://huggingface.co/briaai).  
+
+    All methods allow full control over fine-tuning, pipeline creation, and
+    integration into proprietary workflows—empowering AI teams to develop and
+    optimize their own generative AI solutions.
+
+
+    The Tailored Generation Training API provides a set of endpoints to manage
+    the entire lifecycle 
+
+    of a tailored generation project:
+
+
+    1. **Project Management**: Create and manage projects that define IP
+    characteristics:
+      - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or 
+        retrieve existing projects that belong to your organization.
+      - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character, 
+        stylized_scene) and medium.
+      - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete 
+        specific projects.
+
+    2. **Dataset Management**: Organize and refine datasets within your
+    projects:
+      - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or 
+        retrieve existing ones.
+      - **Generate a Visual Schema**
+        - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images.
+      - **Refine Structured Data**
+        - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions.
+        - *Example:* You can send your generated schema with the instruction "Character's name is Lucy" to improve the training metadata programmatically.
+      - **Upload and Manage Images**: 
+        - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually.
+        - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced).
+      - **Clone Datasets**: Create variations of existing datasets using the clone functionality.
+
+    3. **Model Management**: Train and optimize tailored models based on your
+    datasets:
+      - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list 
+        existing ones.
+      - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria's recipes) and Expert mode (for training parameter tweaking).
+      - **Monitor and Control**: Manage the model lifecycle, including training start/stop, 
+        status monitoring, and version control over the training parameters.
+
+    4. **Generation Capabilities**:
+      - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation.
+      - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation.
+      - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images.
+
+    ### **Training Process**
+
+
+    To train a tailored model:
+
+
+    1. **Create a Project**: Use the `/projects` endpoint to define your IP type
+    and medium.
+
+    2. **Create a Dataset**: Use the `/datasets` endpoint to create a dataset
+    within your project.
+
+    3. **Define Visual Identity**:
+       - **Step A (Generate):** Call `/tailored-gen/generate_visual_schema`, sampling 5-10 images from your input set.
+       - **Step B (Refine - Optional):** Call `/tailored-gen/refine_structured_prompt` with the generated schema and instructions to tweak the definitions (e.g., "Remove references to blue background").
+       - **Step C (Apply):** Update the dataset with the final schema using `/datasets/{dataset_id}`.
+    4. **Upload Images**: Upload images using the
+    `/datasets/{dataset_id}/images` or `/datasets/{dataset_id}/images/bulk`
+    endpoints 
+      (minimum resolution: 1024x1024px). note: if you upload images before updating the visual schema, use the Regenerate All Captions endpoint to caption the images.
+    5. **Prepare Dataset**: Review auto-generated captions (you can also use
+    `refine_structured_prompt` to fix specific image captions) and update the
+    dataset status to 'completed'.
+
+    6. **Create Model**: Use the `/models` endpoint to create a model, which
+    requires a training mode.
+
+    7. **Start Training**: Initiate training via the
+    `/models/{id}/start_training` endpoint. 
+      Training typically takes 4-6 hours.
+    8. **Monitor Progress**: Check the training status using the `/models/{id}`
+    endpoint until 
+      training is 'Completed'.
+    9. **Generate Images**: 
+      - Use `v2/image/generate/tailored` for text-to-image generation.
+tags:
+  - name: Project
+    description: Manage your projects
+  - name: Dataset
+    description: Manage training datasets
+  - name: Model
+    description: Manage and train models
+  - name: Image Generation
+    description: Generate images using tailored models
+  - name: Video Generation
+    description: Image-to-Video capabilities
+x-tagGroups:
+  - name: Training Endpoints
+    tags:
+      - Project
+      - Dataset
+      - Model
+  - name: Generation Endpoints
+    tags:
+      - Image Generation
+      - Video Generation
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+servers:
+  - url: https://engine.prod.bria-api.com/v2/
+paths:
+  /image/generate/tailored:
+    post:
+      summary: Generate Image - Tailored Model
+      tags:
+        - Image Generation
+      servers:
+        - url: https://engine.prod.bria-api.com/v2
+      description: >
+        **Description**
+
+
+        Generates a new image using a tailored model.
+
+
+        This endpoint translates your input (`prompt` and/or
+        `structured_prompt`) into a structured JSON prompt using the
+        state-of-the-art **Gemini 2.5 Flash** VLM bridge. It internally uses the
+        model's visual schema (backbone) to ensure the generated image matches
+        your trained visual identity.
+
+
+        The response includes both the final `image_url` and the
+        `structured_prompt` (JSON).
+
+
+        **Input Combination Rules**
+
+        The request body must include **one** of the following mutually
+        exclusive combinations:
+
+        * `prompt`: Generates a new image from text.
+
+        * `structured_prompt`: Recreates a previous image exactly (requires
+        seed).
+
+        * `structured_prompt` + `prompt`: Refines a previous image using new
+        text instructions.
+      operationId: image-generate-tailored
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tailored_model_id
+              properties:
+                tailored_model_id:
+                  type: string
+                  description: The ID of the tailored model.
+                tailored_model_influence:
+                  type: number
+                  format: float
+                  description: >-
+                    Controls the strength of the tailored model's influence (0.0
+                    - 1.5).
+                  default: 1
+                  minimum: 0
+                  maximum: 1.5
+                prompt:
+                  type: string
+                  description: Text-based instruction for generation or refinement.
+                structured_prompt:
+                  type: string
+                  description: >-
+                    A string containing the structured prompt in JSON format for
+                    precise recreation/refinement.
+                negative_prompt:
+                  type: string
+                  description: Concepts to exclude from the generated image.
+                guidance_scale:
+                  type: integer
+                  description: Adherence to the prompt (3-5).
+                  default: 5
+                  minimum: 3
+                  maximum: 5
+                aspect_ratio:
+                  type: string
+                  default: '1:1'
+                  enum:
+                    - '1:1'
+                    - '2:3'
+                    - '3:2'
+                    - '3:4'
+                    - '4:3'
+                    - '4:5'
+                    - '5:4'
+                    - '9:16'
+                    - '16:9'
+                steps_num:
+                  type: integer
+                  default: 50
+                  minimum: 20
+                  maximum: 50
+                seed:
+                  type: integer
+                  description: Seed for deterministic generation.
+                sync:
+                  type: boolean
+                  default: false
+                  description: >-
+                    If false, returns a 202 and status URL. If true, returns 200
+                    with result.
+                prompt_content_moderation:
+                  type: boolean
+                  default: true
+                visual_output_content_moderation:
+                  type: boolean
+                  default: true
+            examples:
+              New Generation:
+                value:
+                  tailored_model_id: model_123
+                  prompt: A product photo in the brand's visual style
+      responses:
+        '200':
+          description: Successful operation (Synchronous).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  image_url:
+                    type: string
+                  structured_prompt:
+                    type: string
+        '202':
+          description: Accepted (Asynchronous).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_url:
+                    type: string
+        '400':
+          description: Bad request. Invalid parameters.
+        '403':
+          description: Forbidden. Model does not belong to organization.
+        '422':
+          description: Unprocessable Entity (Moderation failure).
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal Server Error.
+  /structured_prompt/generate/tailored:
+    post:
+      summary: Generate Structured Prompt - Tailored Model
+      tags:
+        - Image Generation
+      servers:
+        - url: https://engine.prod.bria-api.com/v2
+      description: >
+        **Description**
+
+
+        Creates a new detailed, machine-readable structured prompt in JSON
+        format or refines an existing one using text inputs and a tailored
+        model's visual schema (backbone).
+
+
+        This endpoint uses the state-of-the-art **Gemini 2.5 Flash** VLM bridge.
+        The tailored model's visual schema is provided as input to Gemini along
+        with the user prompt to generate the structured prompt.
+
+
+        **It returns ONLY the JSON string and does not generate an image.**
+
+
+        **Use Cases:**
+
+        * **Control & Auditability:** Inspect or programmatically edit the JSON
+        *before* generating an image.
+
+        * **Consistency:** Generate one `structured_prompt` and pass it to
+        `/image/generate/tailored` multiple times.
+
+        * **Hybrid Deployment:** Use Bria's VLM bridge via API while hosting the
+        FIBO image model on a private cloud.
+
+
+        **Input Combination Rules**
+
+        The request body must use exactly one of the following combinations:
+
+        * **Text Only**: `prompt`
+
+        * **Structured Prompt and Text**: `structured_prompt` and `prompt`
+        (Refinement)
+      operationId: structured-prompt-generate-tailored
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tailored_model_id
+              properties:
+                tailored_model_id:
+                  type: string
+                  description: The ID of the tailored model.
+                prompt:
+                  type: string
+                  description: Text-based instruction.
+                structured_prompt:
+                  type: string
+                  description: JSON string from a previous response for refinement.
+                seed:
+                  type: integer
+                  description: Seed for deterministic generation.
+                sync:
+                  type: boolean
+                  default: false
+                  description: If false, returns 202. If true, returns 200.
+                prompt_content_moderation:
+                  type: boolean
+                  default: true
+            examples:
+              Text Only:
+                value:
+                  tailored_model_id: model_123
+                  prompt: A product photo in the brand's visual style
+              Refinement:
+                value:
+                  tailored_model_id: model_123
+                  structured_prompt: '{"main_subject": ...}'
+                  prompt: add dramatic lighting
+      responses:
+        '200':
+          description: Successful operation (Synchronous).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  structured_prompt:
+                    type: string
+                    description: The generated structured prompt JSON string.
+        '202':
+          description: Accepted (Asynchronous).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  status_url:
+                    type: string
+        '400':
+          description: Bad request. Invalid parameters.
+        '403':
+          description: Forbidden. Model does not belong to organization.
+        '422':
+          description: Unprocessable Entity (Moderation failure).
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal Server Error.
+  /video/generate/tailored/image-to-video:
+    post:
+      summary: Generate Video from Tailored Image (Beta)
+      description: >
+        (Beta)
+
+        Initiates an asynchronous job to generate a 5-second MP4 video file
+        animating a source image created by a tailored model.
+
+
+        **Asynchronous Requests and the Status Service** Bria API endpoints
+        process requests asynchronously by default. When you make an
+        asynchronous request, the API immediately returns a `request_id` and a
+        `status_url` instead of the final result. Use the Status Service to
+        track the request's progress until it reaches a completed state.  
+
+
+        See the full guide at [Status Service
+        Documentation](https://docs.bria.ai/status) for complete details and
+        usage examples.
+
+
+        On successful initiation, this endpoint returns a 202 Accepted response.
+        Poll the `status_url` or use the Status Service with the `request_id` to
+        check for job completion.
+
+        Once 'Completed', the status response will contain the URL to the
+        generated MP4 video.
+      tags:
+        - Video Generation
+      servers:
+        - url: https://engine.prod.bria-api.com/v2
+      operationId: generate-video-from-tailored-image
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: Your API token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tailored_model_id:
+                  type: string
+                  description: The ID of the tailored model that generated the input image.
+                image:
+                  type: string
+                  description: >-
+                    Publicly accessible URL or base64 string of the source
+                    image.
+                seed:
+                  type: integer
+                  description: Optional seed for reproducible results.
+              required:
+                - tailored_model_id
+                - image
+            example:
+              tailored_model_id: your_tailored_model_id
+              image: https://example.com/image.png
+              seed: 42
+      responses:
+        '202':
+          description: >-
+            Accepted. The video generation job was successfully initiated. You
+            can track the progress and retrieve the final result using the
+            Status Service. For more details, refer to the [Status
+            Service](https://docs.bria.ai/status) section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                    description: The unique identifier for this asynchronous request.
+                  status_url:
+                    type: string
+                    format: uri
+                    description: The URL to poll for the status of the generation job.
+        '400':
+          description: Bad Request. Invalid request body.
+        '401':
+          description: Unauthorized. The api_token is missing or invalid.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not Found. The specified tailored_model_id does not exist.
+        '415':
+          description: Unsupported Media Type.
+        '422':
+          description: Unprocessable Entity. Invalid image data.
+        '429':
+          description: Too Many Requests. Rate limit exceeded.
+        '500':
+          description: Internal Server Error.
+  /tailored-gen/projects:
+    post:
+      summary: Create Project
+      tags:
+        - Project
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Create a new project within the organization.
+
+
+        The following IP types are supported:
+
+
+        **Defined Character**
+
+        A specific character that maintains consistent identity and unique
+        traits while being reproduced in different poses, situations, and
+        actions.
+
+
+        Medium: Photography
+
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/photogrpahy_dog.png"
+        alt="Example of defined character in different poses, photography
+        medium" />
+
+
+        Medium: Illustration
+
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/defined_character.png"
+        alt="Example of defined character in different poses, illustrative
+        medium" />
+
+
+        **Stylized Scene**
+
+        Complete environments or scenes created with a consistent visual style,
+        look, and feel.
+
+
+        Medium: Photography
+
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/photogrpahy_scene.png"
+        alt="Example of stylized scene, photography medium" />
+
+
+        Medium: Illustration
+
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/stylized_scene.png"
+        alt="Example of stylized scene, illustrative medium" />
+
+
+        **Multi-Object Set**
+
+        A collection of different objects sharing a common style, design
+        language, or color scheme. Objects are typically isolated on solid
+        backgrounds.
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/multi_object_set.png"
+        alt="Example of multi-object set" />
+
+
+        **Object Variants**
+
+        Multiple variations of the same object type, maintaining consistent
+        style and structure while showing different interpretations. Objects are
+        typically isolated on solid backgrounds.
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/object_variants.png"
+        alt="Example of object variants" />
+
+
+        **Icons**
+
+        A collection of cohesive, small-scale illustrations or symbols designed
+        to represent concepts, actions, or objects in interfaces and
+        applications.
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/icons.png"
+        alt="Example of icon set" />
+
+
+        **Character Variants**
+
+        Multiple characters sharing the same fundamental structure, style, and
+        color palette, allowing creation of new characters that fit within the
+        established design system.
+
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/character_variants.png"
+        alt="Example of character variants" />
+      operationId: create-project
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_name:
+                  type: string
+                  description: Name of the project (required)
+                project_description:
+                  type: string
+                  description: Description of the project (optional)
+                ip_name:
+                  type: string
+                  description: >-
+                    Required only for defined_character IP type. The name of the
+                    character (1-3 words, e.g., "Lora", "Captain Smith").
+                ip_description:
+                  type: string
+                  description: >-
+                    Required only for defined_character and object_variants IP
+                    types. A short phrase (up to 6 words) describing the most
+                    crucial distinguishing features (e.g., "a female character
+                    with purple hair").
+                ip_medium:
+                  type: string
+                  enum:
+                    - photography
+                    - illustration
+                  description: Medium of the IP (required)
+                ip_type:
+                  type: string
+                  enum:
+                    - multi_object_set
+                    - object_variants
+                    - icons
+                    - defined_character
+                    - character_variants
+                    - stylized_scene
+                    - other
+                  description: >
+                    Type of the IP (required):
+
+                    * defined_character: A specific predefined character or
+                    person that can be reproduced consistently.
+
+                    * stylized_scene: A complete scene or environment with a
+                    cohesive style.
+
+                    * other: For IP types that don't fit into any of the types.
+
+
+                    The types below are currently available only when ip_medium
+                    = illustration:
+
+                    * object_variants: Variations of the same object type with
+                    consistent style.
+
+                    * multi_object_set: Multiple distinct objects sharing a
+                    mutual style.
+
+                    * icons: A collection of small, visually distinct
+                    illustrations or symbols.
+
+                    * character_variants: Multiple characters sharing the same
+                    structure, style, and color palette.
+            example:
+              project_name: Branded Character
+              ip_name: Adventure Series Characters
+              ip_description: A set of adventure game characters with unique personalities
+              ip_medium: illustration
+              ip_type: defined_character
+      responses:
+        '201':
+          description: Project successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the project
+                  project_name:
+                    type: string
+                    description: Name of the project
+                  project_description:
+                    type: string
+                    description: Description of the project
+                  ip_name:
+                    type: string
+                    description: Name of the IP
+                  ip_description:
+                    type: string
+                    description: Description of the IP
+                  ip_medium:
+                    type: string
+                    description: Medium of the IP
+                  ip_type:
+                    type: string
+                    description: Type of the IP
+                  training_version:
+                    type: string
+                    nullable: true
+                    description: >-
+                      The training version family this project is locked to
+                      (e.g., 'fibo', 'max', or null if unlocked).
+                  status:
+                    type: string
+                    enum:
+                      - active
+                    description: Status of the project
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the project was created
+              example:
+                id: 123
+                project_name: Branded Character
+                project_description: ''
+                ip_name: Lora
+                ip_description: A female character with purple hair
+                ip_medium: illustration
+                ip_type: defined_character
+                status: active
+                created_at: '2024-05-26T12:00:00Z'
+        '400':
+          description: Bad request - validation error
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '500':
+          description: Internal server error
+    get:
+      summary: Get Projects
+      tags:
+        - Project
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Retrieve all projects within the organization. If there are no projects,
+        returns an empty array.
+      operationId: get-projects
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully retrieved projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    project_name:
+                      type: string
+                    project_description:
+                      type: string
+                    ip_name:
+                      type: string
+                    ip_description:
+                      type: string
+                    ip_medium:
+                      type: string
+                      enum:
+                        - photography
+                        - illustration
+                    ip_type:
+                      type: string
+                      enum:
+                        - multi_object_set
+                        - object_variants
+                        - icons
+                        - defined_character
+                        - character_variants
+                        - stylized_scene
+                        - other
+                    status:
+                      type: string
+                      enum:
+                        - active
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              example:
+                - id: 123
+                  project_name: Branded Character
+                  project_description: ''
+                  ip_name: Lora
+                  ip_description: A female character with purple hair
+                  ip_medium: illustration
+                  ip_type: defined_character
+                  status: active
+                  created_at: '2024-05-26T12:00:00Z'
+                  updated_at: '2024-05-26T14:30:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/projects/{project_id}:
+    get:
+      summary: Get Project by ID
+      tags:
+        - Project
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve full project information.
+      operationId: get-project-by-id
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully retrieved project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_name:
+                    type: string
+                  project_description:
+                    type: string
+                  ip_name:
+                    type: string
+                  ip_description:
+                    type: string
+                  ip_medium:
+                    type: string
+                    enum:
+                      - photography
+                      - illustration
+                  ip_type:
+                    type: string
+                    enum:
+                      - multi_object_set
+                      - object_variants
+                      - icons
+                      - defined_character
+                      - character_variants
+                      - stylized_scene
+                      - other
+                  status:
+                    type: string
+                    enum:
+                      - active
+                  created_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 123
+                project_name: Branded Character
+                project_description: ''
+                ip_name: Lora
+                ip_description: A female character with purple hair
+                ip_medium: illustration
+                ip_type: defined_character
+                status: active
+                created_at: '2024-05-26T12:00:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    put:
+      summary: Update Project
+      tags:
+        - Project
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Update a specific project.
+      operationId: update-project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_name:
+                  type: string
+                project_description:
+                  type: string
+                ip_name:
+                  type: string
+                ip_description:
+                  type: string
+            example:
+              ip_description: A girl with purple hair
+      responses:
+        '200':
+          description: Project successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_name:
+                    type: string
+                  project_description:
+                    type: string
+                  ip_name:
+                    type: string
+                  ip_description:
+                    type: string
+                  ip_medium:
+                    type: string
+                  ip_type:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - active
+                  created_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 123
+                project_name: Branded Character
+                project_description: ''
+                ip_name: Lora
+                ip_description: A girl with purple hair
+                ip_medium: illustration
+                ip_type: defined_character
+                status: active
+                created_at: '2024-05-26T12:00:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete Project
+      tags:
+        - Project
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Permanently delete a project and all its associated resources, including
+        all datasets, images, and models. This action cannot be undone. Training
+        models must be stopped before deletion.
+      operationId: delete-project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: Project successfully deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '409':
+          description: Cannot delete project while models are in training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/datasets:
+    post:
+      summary: Create Dataset
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Create a new dataset.
+
+
+        Datasets use JSON structured data (`visual_schema`) for training. You
+        must generate a visual schema via `/generate_visual_schema` before
+        completing the dataset.
+
+
+        **Completion Requirements:**
+
+        Minimum 5 images required to mark as completed.
+
+
+        **Upload types**:
+
+        * **Basic upload type**: Supports up to 200 images, uploading image
+        files
+
+        * **Advanced upload type**: Supports up to 5000 images, uploading a zip
+        file
+      operationId: create-dataset
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_id:
+                  type: integer
+                  description: Associated project ID (required)
+                name:
+                  type: string
+                  description: Dataset name (required)
+                upload_type:
+                  type: string
+                  description: The method used to upload images to the dataset.
+                  enum:
+                    - basic
+                    - advanced
+                  default: basic
+            example:
+              project_id: 123
+              name: dataset v1
+              upload_type: basic
+      responses:
+        '201':
+          description: Dataset successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_id:
+                    type: integer
+                  name:
+                    type: string
+                  visual_schema:
+                    type: string
+                    nullable: true
+                    description: >-
+                      A string containing the JSON structure representing the
+                      visual backbone. Must be generated via
+                      `/generate_visual_schema`.
+                  status:
+                    type: string
+                    enum:
+                      - draft
+                  captions_update_status:
+                    type: string
+                    enum:
+                      - empty
+                      - in_progress
+                      - completed
+                  upload_type:
+                    type: string
+                    enum:
+                      - basic
+                      - advanced
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 456
+                project_id: 123
+                name: dataset v1
+                visual_schema: null
+                status: draft
+                captions_update_status: empty
+                upload_type: basic
+                created_at: '2024-05-26T12:00:00Z'
+                updated_at: '2024-05-26T12:00:00Z'
+        '400':
+          description: Bad request - validation error
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    get:
+      summary: Get Datasets
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Retrieve a list of all datasets. If there are no datasets, returns an
+        empty array.
+      operationId: get-datasets
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully retrieved datasets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    project_id:
+                      type: integer
+                    name:
+                      type: string
+                    visual_schema:
+                      type: string
+                      nullable: true
+                    status:
+                      type: string
+                      enum:
+                        - draft
+                        - completed
+                    captions_update_status:
+                      type: string
+                      enum:
+                        - empty
+                        - in_progress
+                        - completed
+                    upload_type:
+                      type: string
+                      enum:
+                        - basic
+                        - advanced
+                    images_count:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/projects/{project_id}/datasets:
+    get:
+      summary: Get Datasets by Project
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve all datasets for a specific project.
+      operationId: get-datasets-by-project
+      parameters:
+        - in: path
+          name: project_id
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include_models
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: If true, include model objects using the dataset.
+        - in: query
+          name: include_models_ids
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: If true, include model IDs using the dataset.
+      responses:
+        '200':
+          description: Successfully retrieved datasets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    project_id:
+                      type: integer
+                    name:
+                      type: string
+                    visual_schema:
+                      type: string
+                      nullable: true
+                    upload_type:
+                      type: string
+                      enum:
+                        - basic
+                        - advanced
+                    images_count:
+                      type: integer
+                    status:
+                      type: string
+                      enum:
+                        - draft
+                        - completed
+                    captions_update_status:
+                      type: string
+                      enum:
+                        - empty
+                        - in_progress
+                        - completed
+                    models:
+                      type: array
+                      description: Only included when include_models=true
+                      items:
+                        type: object
+                    model_ids:
+                      type: array
+                      description: Only included when include_models_ids=true
+                      items:
+                        type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/datasets/{dataset_id}:
+    get:
+      summary: Get Dataset by ID
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve a specific dataset including its images.
+      operationId: get-dataset-by-id
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: max_images
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 200
+          description: The maximum number of images to retrieve.
+      responses:
+        '200':
+          description: Successfully retrieved dataset
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_id:
+                    type: integer
+                  name:
+                    type: string
+                  visual_schema:
+                    type: string
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - draft
+                      - completed
+                  captions_update_status:
+                    type: string
+                    enum:
+                      - empty
+                      - in_progress
+                      - completed
+                  upload_type:
+                    type: string
+                    enum:
+                      - basic
+                      - advanced
+                  images_count:
+                    type: integer
+                  images:
+                    type: array
+                    description: >-
+                      Array of images in the dataset (up to 200, controlled by
+                      max_images)
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        dataset_id:
+                          type: integer
+                        caption:
+                          type: string
+                        caption_source:
+                          type: string
+                          enum:
+                            - automatic
+                            - manual
+                          nullable: true
+                        upload_source_url:
+                          type: string
+                          nullable: true
+                        image_name:
+                          type: string
+                        image_url:
+                          type: string
+                        thumbnail_url:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 456
+                project_id: 123
+                name: dataset v1
+                visual_schema: '{"style": "...", "colors": "..."}'
+                status: completed
+                captions_update_status: completed
+                upload_type: basic
+                images_count: 2
+                images:
+                  - id: 789
+                    dataset_id: 456
+                    caption: '{"subject": "character standing", ...}'
+                    caption_source: automatic
+                    upload_source_url: null
+                    image_name: lora_standing.png
+                    image_url: https://api.example.com/files/lora_standing.png
+                    thumbnail_url: https://api.example.com/files/lora_standing_thumb.png
+                    created_at: '2024-05-26T12:30:00Z'
+                    updated_at: '2024-05-26T12:30:00Z'
+                created_at: '2024-05-26T12:00:00Z'
+                updated_at: '2024-05-26T14:30:00Z'
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    put:
+      summary: Update Dataset
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Update a dataset.
+
+
+        You can update `visual_schema` only when the dataset status is `draft`.
+          
+        **Completion Requirements:**
+
+        To set `status` to `completed`, the dataset must have at least **5
+        images**.
+      operationId: update-dataset
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                visual_schema:
+                  type: string
+                  description: >-
+                    A string containing the JSON structure from
+                    `/generate_visual_schema`. Can only be updated when status
+                    is `draft`.
+                status:
+                  type: string
+                  enum:
+                    - draft
+                    - completed
+      responses:
+        '200':
+          description: Dataset successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_id:
+                    type: integer
+                  name:
+                    type: string
+                  visual_schema:
+                    type: string
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - draft
+                      - completed
+                  captions_update_status:
+                    type: string
+                    enum:
+                      - empty
+                      - in_progress
+                      - completed
+                  upload_type:
+                    type: string
+                    enum:
+                      - basic
+                      - advanced
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad request - Validation error.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '409':
+          description: >-
+            Conflict error - Cannot update visual_schema for a completed
+            dataset, or insufficient images to complete.
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete Dataset
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Delete a specific dataset. Deletes all associated images.
+      operationId: delete-dataset
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: Dataset successfully deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '409':
+          description: Cannot delete a dataset that is used by a model in training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/datasets/{dataset_id}/clone:
+    post:
+      summary: Clone Dataset As Draft
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Create a new draft dataset based on an existing one. This is useful when
+        you would like to use the same dataset again for another training, but
+        with some modification (create a variation). The cloned dataset inherits
+        the `visual_schema` from the source dataset.
+      operationId: clone-dataset
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: New dataset name. Defaults to "Copy of [original name]"
+                description:
+                  type: string
+                  description: New dataset description.
+            example:
+              name: Copy of dataset v1 - modified version
+              description: Modified version with additional poses
+      responses:
+        '201':
+          description: Dataset successfully cloned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_id:
+                    type: integer
+                  name:
+                    type: string
+                  visual_schema:
+                    type: string
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - draft
+                  captions_update_status:
+                    type: string
+                    enum:
+                      - empty
+                      - in_progress
+                      - completed
+                  upload_type:
+                    type: string
+                    enum:
+                      - basic
+                      - advanced
+                  images_count:
+                    type: integer
+                  images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        dataset_id:
+                          type: integer
+                        caption:
+                          type: string
+                        caption_source:
+                          type: string
+                          enum:
+                            - automatic
+                        image_name:
+                          type: string
+                        image_url:
+                          type: string
+                        thumbnail_url:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/datasets/{dataset_id}/images:
+    post:
+      summary: Upload Image Files
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Upload a new image to a dataset.
+
+
+        **Image Requirements:**
+
+        - Recommended minimum resolution: 1024x1024 pixels for best quality
+          - By default, smaller images (down to 256x256) will be automatically upscaled (`increase_resolution=true`)
+          - To strictly enforce the 1024x1024 minimum, set `increase_resolution=false`
+        - Supported formats: jpg, jpeg, png, webp
+
+        - Preferably use original high-quality assets
+
+
+        **Dataset Guidelines:**
+
+        - Recommended: 5-50 images for optimal results
+
+        - Maximum supported: 200 images
+
+        - Ensure consistency in style, structure, and visual elements
+
+        - Balance diversity in content while maintaining consistency in key
+        elements
+
+
+        **For optimal training (especially for characters/objects):**
+
+        - Subject should occupy most of the image area
+
+        - Minimize unnecessary margins around the subject
+
+        - Transparent backgrounds will be converted to black
+
+        - For character datasets: include diverse poses, environments, attires,
+        and interactions
+
+
+        **Constraints:**
+
+        - Can only be used by "basic" upload type datasets. Use images/bulk for
+        advanced datasets.
+
+        - Dataset must have at least 5 images
+
+        - Dataset cannot exceed 200 images
+
+        - Cannot upload to a completed dataset
+
+
+        This API endpoint supports content moderation via an optional parameter.
+      operationId: upload-image
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Image file to upload (required if image_url not provided)
+                image_url:
+                  type: string
+                  description: URL of image to upload (required if file not provided)
+                image_name:
+                  type: string
+                  description: Custom name for the image (optional)
+                increase_resolution:
+                  type: boolean
+                  default: true
+                  description: >
+                    When enabled (default), input images smaller than 1024x1024
+                    but larger than 256x256 will be automatically upscaled.
+
+                    If false, images must be at least 1024x1024 pixels.
+                content_moderation:
+                  type: boolean
+                  default: false
+            example:
+              image_url: https://example.com/images/character_pose.jpg
+              image_name: character_standing_pose.jpg
+      responses:
+        '201':
+          description: Image successfully uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  caption:
+                    type: string
+                    nullable: true
+                    description: >-
+                      The generated caption. Null if uploaded without a visual
+                      schema.
+                  caption_source:
+                    type: string
+                    nullable: true
+                    enum:
+                      - automatic
+                      - manual
+                      - pending
+                  image_name:
+                    type: string
+                  image_url:
+                    type: string
+                  thumbnail_url:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '409':
+          description: Conflict error (completed dataset or max images reached)
+        '412':
+          description: Precondition Failed (resolution too low)
+        '415':
+          description: Unsupported Media Type.
+        '422':
+          description: Unprocessable Entity (moderation failure or invalid URL)
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    get:
+      summary: Get Images
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve all images in a specific dataset.
+      operationId: get-images
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully retrieved images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    dataset_id:
+                      type: integer
+                    caption:
+                      type: string
+                    caption_source:
+                      type: string
+                      enum:
+                        - automatic
+                        - manual
+                    image_name:
+                      type: string
+                    image_url:
+                      type: string
+                    thumbnail_url:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    put:
+      summary: Regenerate All Captions
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Regenerate captions for all images in a dataset. This is crucial after
+        updating the visual schema, to ensure full compatibility with the new
+        schema.
+
+
+        This is an asynchronous operation. Once called, poll Get Dataset by ID
+        until `captions_update_status` changes to 'completed'.
+      operationId: regenerate-all-captions
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '202':
+          description: Caption regeneration process started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_id:
+                    type: integer
+                  name:
+                    type: string
+                  visual_schema:
+                    type: string
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                      - draft
+                      - completed
+                  captions_update_status:
+                    type: string
+                    enum:
+                      - empty
+                      - in_progress
+                      - completed
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 456
+                project_id: 123
+                name: dataset v1
+                visual_schema: '{"style": "..."}'
+                status: draft
+                captions_update_status: in_progress
+                created_at: '2024-05-26T12:00:00Z'
+                updated_at: '2024-05-26T15:45:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/datasets/{dataset_id}/images/bulk-upload:
+    post:
+      summary: Advanced Image Upload
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Efficiently upload a large volume of images (up to 5000) from a ZIP file
+        to an advanced dataset.
+
+
+        **Upload without Schema:** You can initiate a bulk upload even if
+        `visual_schema` is null. Images will be uploaded but caption generation
+        will be skipped. You must call **Regenerate All Captions** after
+        defining the schema.
+
+
+        **General:**
+
+        * Asynchronous operation; status can be retrieved via
+        `{dataset_id}/bulk-upload/status`.
+
+        * Supported for 'advanced' upload type datasets only.
+
+        * If the dataset is not empty, if another bulk upload is in progress, or
+        if any previous bulk upload attempt took place, the request will fail.
+
+
+        **Image Requirements:**
+
+        * Supported formats: `jpg`, `jpeg`, `png`, `webp`.
+
+        * Minimum dimensions: 1024 x 1024 pixels.
+
+        * Total size limit: 5 GB zip file.
+      operationId: bulk-upload-images
+      parameters:
+        - in: path
+          name: dataset_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                zip_url:
+                  type: string
+                  format: uri
+                  description: The publicly accessible URL of the ZIP file to upload.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: When enabled, applies content moderation to input visuals.
+      responses:
+        '202':
+          description: Bulk upload job started successfully.
+        '400':
+          description: Bad Request.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found.
+        '413':
+          description: Payload Too Large. The ZIP file exceeds the 5GB limit.
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error.
+  /tailored-gen/datasets/{dataset_id}/images/{image_id}:
+    get:
+      summary: Get Image by ID
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve full image information.
+      operationId: get-image
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: image_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully retrieved image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  caption:
+                    type: string
+                  caption_source:
+                    type: string
+                    enum:
+                      - automatic
+                      - manual
+                  image_name:
+                    type: string
+                  image_url:
+                    type: string
+                  thumbnail_url:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Image or dataset not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    put:
+      summary: Update Image Caption
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Update the caption of a specific image. Two mutually exclusive options:
+
+
+        1. **Provide a new caption**: Use the `caption` parameter (sets
+        `caption_source` to "manual"). The caption must be a string containing a
+        **valid JSON structure**.
+
+        2. **Regenerate automatically**: Set `regenerate_caption` to true (sets
+        `caption_source` to "automatic").
+
+
+        **Constraints:**
+
+        * Cannot update captions in a completed dataset
+
+        * Cannot provide both caption and regenerate_caption
+      operationId: update-image-caption
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: image_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                caption:
+                  type: string
+                  description: >-
+                    New caption text as a string containing valid JSON
+                    structure.
+                regenerate_caption:
+                  type: boolean
+                  default: false
+                  description: When true, generates new caption automatically.
+            examples:
+              manual_caption:
+                summary: Update with manual caption
+                value:
+                  caption: >-
+                    {"subject": "character", "action": "standing", "details":
+                    "armor"}
+              regenerate_caption:
+                summary: Request automatic caption regeneration
+                value:
+                  regenerate_caption: true
+      responses:
+        '200':
+          description: Caption successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  caption:
+                    type: string
+                  caption_source:
+                    type: string
+                    enum:
+                      - automatic
+                      - manual
+                  image_name:
+                    type: string
+                  image_url:
+                    type: string
+                  thumbnail_url:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad request (both parameters provided, or invalid JSON)
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Image or dataset not found
+        '409':
+          description: Cannot update caption in a completed dataset
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete Image
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Permanently remove an image from a dataset. Cannot delete images from
+        completed datasets.
+      operationId: delete-image
+      parameters:
+        - in: path
+          name: dataset_id
+          schema:
+            type: integer
+          required: true
+        - in: path
+          name: image_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: Image successfully deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Image or dataset not found
+        '409':
+          description: Cannot delete an image from a completed dataset
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/datasets/{dataset_id}/images/bulk-upload/status:
+    get:
+      summary: Get Bulk Upload Status
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve the status and progress of a bulk image upload job.
+      operationId: get-bulk-upload-status
+      parameters:
+        - in: path
+          name: dataset_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved job status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - pending
+                      - processing
+                      - completed
+                      - failed
+                  progress_percentage:
+                    type: integer
+                  total_processed:
+                    type: integer
+                  done:
+                    type: integer
+                  failed:
+                    type: integer
+                  failed_images:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        filename:
+                          type: string
+                        error_code:
+                          type: integer
+                        error_message:
+                          type: string
+        '400':
+          description: Bad Request.
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found.
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error.
+  /tailored-gen/generate_visual_schema:
+    post:
+      summary: Generate Visual Schema
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Generates a structured JSON visual schema (backbone) based on the
+        provided sample images.
+
+
+        The visual schema represents mutual characteristics (style, IP, colors,
+        etc.) across training images and is used for:
+
+        1. Caption generation during image upload.
+
+        2. Prompt translation (user text → structured prompt) during generation.
+
+
+        **Usage:**
+
+        - Provide 5-10 representative images of your style/IP.
+
+        - The returned `visual_schema` string must be added to your dataset
+        using `PUT /tailored-gen/datasets/{dataset_id}`.
+
+
+        This endpoint supports content moderation via an optional parameter.
+      operationId: generate-visual-schema
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - images
+              properties:
+                images:
+                  type: array
+                  minItems: 5
+                  maxItems: 10
+                  items:
+                    type: string
+                  description: >-
+                    An array of 5-10 images. Supports base64-encoded strings or
+                    public URLs. Supported formats are png, jpg, jpeg, webp.
+                content_moderation:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Successfully generated visual schema.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  visual_schema:
+                    type: string
+                    description: A string containing the structured JSON visual schema.
+              example:
+                visual_schema: '{"style": "...", "colors": "..."}'
+        '400':
+          description: Bad request (invalid number of images).
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '415':
+          description: Unsupported Media Type.
+        '422':
+          description: Unprocessable Entity (moderation failure).
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error.
+  /tailored-gen/refine_structured_prompt:
+    post:
+      summary: Refine Structured Prompt
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Refines a Structured Prompt object (such as a Visual Schema or an Image
+        Caption) based on user instructions.
+
+
+        **Access Control & Validation:**
+
+        * Requires a valid `dataset_id` to verify ownership.
+
+        * The referenced dataset must be in `draft` mode.
+
+
+        **Use Cases:**
+
+        1. **Refine Visual Schema:** Input the initial schema and instructions
+        like "Make the style description more detailed".
+
+        2. **Refine Image Caption:** Input a specific image's caption and
+        instructions like "Fix the description of the hair color".
+      operationId: refine-json
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - dataset_id
+                - structured_prompt
+                - instruction
+              properties:
+                dataset_id:
+                  type: integer
+                  description: The ID of the dataset associated with this refinement.
+                structured_prompt:
+                  type: string
+                  description: >-
+                    The current structured prompt string (Visual Schema or
+                    Caption) to be refined.
+                instruction:
+                  type: string
+                  description: >-
+                    Natural language instruction describing how to modify the
+                    JSON.
+                context_images:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    Optional. List of image URLs or Base64 strings to provide
+                    visual context.
+            examples:
+              Refine Schema:
+                value:
+                  dataset_id: 456
+                  structured_prompt: '{"style": "cartoon", "colors": ["red", "blue"]}'
+                  instruction: >-
+                    Change the style to 'realistic 3D render' and remove blue
+                    from colors.
+      responses:
+        '200':
+          description: Successfully refined JSON.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  structured_prompt:
+                    type: string
+                    description: The refined Structured Prompt string.
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Dataset not found.
+        '429':
+          description: Rate limit exceeded.
+        '500':
+          description: Internal server error.
+  /tailored-gen/models:
+    post:
+      summary: Create Model
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Create a new model.
+      operationId: create-model
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the model (required)
+                dataset_id:
+                  type: integer
+                  description: ID of the dataset to use (required)
+                training_mode:
+                  type: string
+                  enum:
+                    - fully_automated
+                    - expert
+                  default: fully_automated
+                  description: >
+                    Defines the training configuration strategy.
+
+                    * `fully_automated`: Automatically configures the training
+                    recipe based on dataset size and IP medium/type.
+
+                    * `expert`: For experienced users needing control over
+                    training parameters.
+                description:
+                  type: string
+                  description: Description of the model (optional)
+            example:
+              name: Lora Character Model
+              dataset_id: 456
+              training_mode: fully_automated
+              description: A model trained on Lora character illustrations
+      responses:
+        '201':
+          description: Model successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - Created
+                  training_mode:
+                    type: string
+                    enum:
+                      - fully_automated
+                      - expert
+                  project_id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  active_model_version:
+                    type: string
+                  training_parameters:
+                    type: object
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+              example:
+                id: 12233
+                name: Test Model
+                description: Test description
+                status: Created
+                dataset_id: 13748
+                training_mode: fully_automated
+                project_id: 12429
+                created_at: '2025-08-20T06:06:05.849402'
+                updated_at: '2025-08-20T06:06:05.849404'
+                active_model_version: default
+                training_parameters: {}
+                checkpoint_steps: []
+        '400':
+          description: Bad request - validation error
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    get:
+      summary: Get Models
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Retrieve a list of models. If there are no models, an empty array is
+        returned.
+      operationId: get-models
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: include_training_parameters
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: If true, includes detailed training parameters and checkpoint steps.
+      responses:
+        '200':
+          description: Successfully retrieved models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                        - Created
+                        - InProgress
+                        - Completed
+                        - Failed
+                        - Stopping
+                        - Stopped
+                    training_mode:
+                      type: string
+                      enum:
+                        - fully_automated
+                        - expert
+                    active_model_version:
+                      type: string
+                    training_parameters:
+                      type: object
+                      properties:
+                        learning_rate:
+                          type: number
+                          format: float
+                        lr_scheduler:
+                          type: string
+                        rank:
+                          type: integer
+                        total_training_steps:
+                          type: integer
+                        checkpoint_interval:
+                          type: integer
+                        lr_warmup_steps:
+                          type: integer
+                          nullable: true
+                    checkpoint_steps:
+                      type: array
+                      items:
+                        type: string
+                    project_id:
+                      type: integer
+                    dataset_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/projects/{project_id}/models:
+    get:
+      summary: Get Models by Project
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve all models for a project.
+      operationId: get-models-by-project
+      parameters:
+        - in: path
+          name: project_id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: include_training_parameters
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully retrieved models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                        - Created
+                        - InProgress
+                        - Completed
+                        - Failed
+                        - Stopping
+                        - Stopped
+                    training_mode:
+                      type: string
+                      enum:
+                        - fully_automated
+                        - expert
+                    project_id:
+                      type: integer
+                    dataset_id:
+                      type: integer
+                    active_model_version:
+                      type: string
+                    training_parameters:
+                      type: object
+                    checkpoint_steps:
+                      type: array
+                      items:
+                        type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}:
+    get:
+      summary: Get Model by ID
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve full model information.
+      operationId: get-model
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successfully retrieved model
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - Created
+                      - InProgress
+                      - Completed
+                      - Failed
+                      - Stopping
+                      - Stopped
+                  training_mode:
+                    type: string
+                    enum:
+                      - fully_automated
+                      - expert
+                  active_model_version:
+                    type: string
+                  training_parameters:
+                    type: object
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+                  project_id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 789
+                name: Lora Character Model
+                description: A model trained on Lora character illustrations
+                status: Completed
+                training_mode: fully_automated
+                active_model_version: default
+                training_parameters: {}
+                checkpoint_steps: []
+                project_id: 123
+                dataset_id: 456
+                created_at: '2024-05-26T12:00:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    put:
+      summary: Update Model
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Update a model's name and description.
+      operationId: update-model
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+            example:
+              name: Updated Lora Character Model
+              description: An updated model
+      responses:
+        '200':
+          description: Model successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                  project_id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete Model
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Delete a specific model.
+      operationId: delete-model
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '204':
+          description: Model successfully deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '409':
+          description: Cannot delete a model that is currently in training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}/start_training:
+    post:
+      summary: Start Training
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Start model training. Training duration is typically 2-4 hours.
+
+        The associated dataset must have a status of 'completed' before training
+        can begin.
+
+
+        **Default Training Parameters:**
+
+        If parameters are not provided, defaults are automatically selected:
+
+        * `rank`: 128
+
+        * `learning_rate`: 0.0001
+
+        * `lr_scheduler`: "constant_with_warmup"
+
+        * `total_training_steps`: 750
+
+        * `checkpoint_interval`: 500
+            
+        **Constraints:**
+
+        Advanced training parameters are only supported when the model's
+        `training_mode` is set to 'expert'.
+      operationId: start-training
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lr_scheduler:
+                  type: string
+                  description: The learning rate scheduler.
+                  enum:
+                    - linear
+                    - cosine
+                    - cosine_with_restarts
+                    - polynomial
+                    - constant
+                    - constant_with_warmup
+                learning_rate:
+                  type: number
+                  format: float
+                  minimum: 0.000001
+                  maximum: 0.001
+                  description: The initial learning rate. Default is 0.0001.
+                total_training_steps:
+                  type: integer
+                  minimum: 1
+                  maximum: 5000
+                  description: Total number of training optimization steps. Default is 750.
+                rank:
+                  type: integer
+                  minimum: 4
+                  maximum: 256
+                  description: The rank (latent dimension). Default is 128.
+                checkpoint_interval:
+                  type: integer
+                  minimum: 100
+                  description: >-
+                    Interval (in steps) at which checkpoints are saved. Default
+                    is 500.
+                lr_warmup_steps:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+                  default: 100
+                  description: >-
+                    Number of warmup steps. Relevant only when `lr_scheduler` is
+                    `constant_with_warmup`.
+      responses:
+        '200':
+          description: Training successfully started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - InProgress
+                  dataset_id:
+                    type: integer
+                  training_mode:
+                    type: string
+                  project_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  active_model_version:
+                    type: string
+                  training_parameters:
+                    type: object
+                    properties:
+                      learning_rate:
+                        type: number
+                        format: float
+                      lr_scheduler:
+                        type: string
+                      rank:
+                        type: integer
+                      total_training_steps:
+                        type: integer
+                      checkpoint_interval:
+                        type: integer
+                      lr_warmup_steps:
+                        type: integer
+                        nullable: true
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+              example:
+                id: 12242
+                name: Test Model
+                description: Test description
+                status: InProgress
+                dataset_id: 13749
+                training_mode: expert
+                project_id: 12429
+                created_at: '2025-08-20T09:51:58.080018'
+                updated_at: '2025-08-20T09:51:58.080020'
+                active_model_version: default
+                training_parameters:
+                  learning_rate: 0.0001
+                  lr_scheduler: constant_with_warmup
+                  rank: 128
+                  total_training_steps: 750
+                  checkpoint_interval: 500
+                  lr_warmup_steps: 100
+                checkpoint_steps: []
+        '400':
+          description: Bad request - validation error
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '409':
+          description: Training already started/cannot be resumed
+        '412':
+          description: Dataset status must be 'completed' to start training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}/stop_training:
+    post:
+      summary: Stop Training
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Stop an ongoing model training process. Once stopped, training cannot be
+        resumed - a new model would need to be created and trained.
+      operationId: stop-training
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Training job successfully stopped
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '409':
+          description: Training already stopped/not in training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}/checkpoints:
+    get:
+      summary: List Checkpoints
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Retrieve a list of all available checkpoints for a model. Only available
+        for models trained in `expert` mode.
+      operationId: list-checkpoints
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved list of checkpoints.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkpoints:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        checkpoint_step:
+                          type: integer
+                        training_job_id:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date-time
+                  active_model_version:
+                    type: string
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+  /tailored-gen/models/{model_id}/checkpoints/{checkpoint_step}:
+    get:
+      summary: Get Specific Checkpoint
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve details for a specific model checkpoint.
+      operationId: get-checkpoint
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: checkpoint_step
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved checkpoint details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkpoint_step:
+                    type: integer
+                  training_job_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+    delete:
+      summary: Delete Checkpoint
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >-
+        Permanently delete a specific model checkpoint. Cannot delete the
+        checkpoint currently selected for inference.
+      operationId: delete-checkpoint
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: checkpoint_step
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Checkpoint successfully deleted.
+        '400':
+          description: Bad Request (cannot delete active checkpoint)
+        '404':
+          description: Not Found
+  /tailored-gen/models/{model_id}/download:
+    get:
+      summary: Download Tailored Model
+      tags:
+        - Model
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Download a trained tailored generation model after completing the
+        training process. 
+
+        The response includes a pre-signed URL for downloading the model and
+        details about the base model used.
+
+
+        To use the tailored model source code, access to the base model source
+        code is required. 
+
+        The base model source code is exclusively available through Bria's
+        **Source Code and Weights** product. 
+
+        For more information, contact us at **info@bria.ai**.
+      operationId: download-tailored-model
+      parameters:
+        - in: path
+          name: model_id
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: api_token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful retrieval of the tailored model download details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  download_url:
+                    type: string
+                    description: A pre-signed URL for downloading the tailored model.
+                  base_model_name:
+                    type: string
+                    description: The name of the base model used for training.
+                  base_model_card:
+                    type: string
+                    description: URL to the Hugging Face model card.
+              example:
+                download_url: https://download-url-for-tailored-model.com
+                base_model_name: BRIA-FIBO
+                base_model_card: https://huggingface.co/briaai/BRIA-FIBO
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+  /datasets/{dataset_id}/download:
+    get:
+      summary: Download Dataset
+      tags:
+        - Dataset
+      servers:
+        - url: https://engine.prod.bria-api.com/v1
+      description: >
+        Download an advanced dataset. Returns a pre-signed URL for downloading
+        the dataset.
+      operationId: download-dataset
+      parameters:
+        - in: path
+          name: dataset_id
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: api_token
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful retrieval of the dataset.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  download_url:
+                    type: string
+                    description: A pre-signed URL for downloading the dataset.
+                  captions_url:
+                    type: string
+                    description: >-
+                      A pre-signed URL for downloading the captions file, only
+                      returned for datasets where all captions are automatically
+                      generated.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '409':
+          description: Download is only supported for advanced dataset types.
+        '500':
+          description: Internal server error.
+/tailored-gen/models:
+  post:
+    summary: Create Model
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: Create a new model linked to a completed dataset.
+    operationId: create-model
+    parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the model (required)
+              dataset_id:
+                type: integer
+                description: ID of the dataset to use (required)
+              training_mode:
+                type: string
+                enum:
+                  - fully_automated
+                  - expert
+                default: fully_automated
+                description: >
+                  Defines the training configuration strategy.
+
+                  * `fully_automated`: Get good results without the guesswork.
+                  Automatically configures the training recipe based on dataset
+                  size and IP medium/type.
+
+                  * `expert`: Designed for experienced users needing control
+                  over training parameters and support for larger datasets.
+              description:
+                type: string
+                description: Description of the model (optional)
+          example:
+            name: Lora Character Model
+            dataset_id: 456
+            training_mode: fully_automated
+            description: A model trained on Lora character illustrations
+    responses:
+      '201':
+        description: Model successfully created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Unique identifier for the model
+                name:
+                  type: string
+                  description: Name of the model
+                description:
+                  type: string
+                  description: Description of the model
+                status:
+                  type: string
+                  description: Status of the model
+                  enum:
+                    - Created
+                training_mode:
+                  type: string
+                  description: Training configuration strategy
+                  enum:
+                    - fully_automated
+                    - expert
+                project_id:
+                  type: integer
+                  description: ID of the project this model belongs to
+                dataset_id:
+                  type: integer
+                  description: ID of the dataset used for training
+                created_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp when the model was created
+                updated_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp when the model was last updated
+                custom_metadata:
+                  type: string
+                  description: Custom metadata associated with the model
+                active_model_version:
+                  type: string
+                  description: >-
+                    The active version (checkpoint) of the model. Becomes
+                    relevant after training has completed.
+                training_parameters:
+                  type: object
+                  description: >-
+                    The training parameters used for the model. Populated via
+                    the /start_training endpoint.
+                checkpoint_steps:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    A list of checkpoints saved for the model. Populated via the
+                    /start_training endpoint.
+            example:
+              id: 12233
+              name: Test Model
+              description: Test description
+              status: Created
+              dataset_id: 13748
+              training_mode: expert
+              project_id: 12429
+              created_at: '2025-08-20T06:06:05.849402'
+              updated_at: '2025-08-20T06:06:05.849404'
+              custom_metadata: ''
+              active_model_version: default
+              training_parameters: {}
+              checkpoint_steps: []
+      '400':
+        description: Bad request - validation error
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Dataset not found
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+  get:
+    summary: Get Models
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >-
+      Retrieve a list of models. If there are no models, an empty array is
+      returned.
+    operationId: get-models
+    parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: include_training_parameters
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: >-
+          If true, includes detailed training parameters and checkpoint steps in
+          the response.
+    responses:
+      '200':
+        description: Successfully retrieved models
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the model
+                  name:
+                    type: string
+                    description: Name of the model
+                  description:
+                    type: string
+                    description: Description of the model
+                  status:
+                    type: string
+                    description: Status of the model
+                    enum:
+                      - Created
+                      - InProgress
+                      - Completed
+                      - Failed
+                      - Stopping
+                      - Stopped
+                  training_mode:
+                    type: string
+                    description: Training configuration strategy
+                    enum:
+                      - fully_automated
+                      - expert
+                  active_model_version:
+                    type: string
+                    description: The active version (checkpoint) of the model
+                  training_parameters:
+                    type: object
+                    description: The training parameters used for the model.
+                    properties:
+                      learning_rate:
+                        type: number
+                        format: float
+                      lr_scheduler:
+                        type: string
+                      rank:
+                        type: integer
+                      total_training_steps:
+                        type: integer
+                      checkpoint_interval:
+                        type: integer
+                      lr_warmup_steps:
+                        type: integer
+                        nullable: true
+                        description: >
+                          Number of warmup steps used. Value is an integer if
+                          `lr_scheduler` is `constant_with_warmup`, otherwise
+                          `null`.
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      A list of checkpoint steps for the model. Only included
+                      when `include_training_parameters=true`
+                  project_id:
+                    type: integer
+                    description: ID of the project this model belongs to
+                  dataset_id:
+                    type: integer
+                    description: ID of the dataset used for training
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the model was created
+            example:
+              - id: 789
+                name: Lora Character Model
+                description: A model trained on Lora character illustrations
+                status: Completed
+                training_mode: fully_automated
+                active_model_version: default
+                training_parameters: {}
+                checkpoint_steps: []
+                project_id: 123
+                dataset_id: 456
+                created_at: '2024-05-26T12:00:00Z'
+              - id: 790
+                name: Max Character Model
+                description: A model trained for better generation
+                status: Completed
+                training_mode: expert
+                active_model_version: '1500'
+                training_parameters:
+                  learning_rate: 0.001
+                  lr_scheduler: constant
+                  lr_warmup_steps: null
+                  rank: 128
+                  total_training_steps: 1500
+                checkpoint_steps:
+                  - '1500'
+                  - '1000'
+                  - '500'
+                project_id: 123
+                dataset_id: 457
+                created_at: '2024-05-27T09:00:00Z'
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+/tailored-gen/models/upload_model:
+  post:
+    summary: Upload Model
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >
+      Upload a pre-trained tailored model to Bria's infrastructure and run it
+      within Bria's ecosystem.
+
+
+      Model must be in .safetensors format. Maximum model size supported is 3GB.
+
+
+      You can check the model's status using the
+      [`/tailored-gen/models/{model_id}`](https://docs.bria.ai/tailored-generation/endpoints/get-model)
+      endpoint. Potential statuses are: "syncing" or "completed".
+    operationId: upload-model
+    parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: API authentication token.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              model_url:
+                type: string
+                description: URL of the tailored model file to be uploaded.
+              model_name:
+                type: string
+                description: Name of the new tailored model.
+              project_id:
+                type: integer
+                description: >-
+                  ID of the project the model should be assigned to. If omitted,
+                  a new project will be created.
+              project_parameters:
+                type: object
+                description: >-
+                  Parameters for creating a new project, required only if
+                  `project_id` is not provided.
+                properties:
+                  project_name:
+                    type: string
+                    description: Name of the project.
+                  ip_medium:
+                    type: string
+                    enum:
+                      - photography
+                      - illustration
+                    description: Medium of the IP.
+                  project_description:
+                    type: string
+                    description: Description of the project.
+                  ip_type:
+                    type: string
+                    enum:
+                      - multi_object_set
+                      - object_variants
+                      - icons
+                      - defined_character
+                      - character_variants
+                      - stylized_scene
+                      - other
+                    default: other
+                    description: Type of IP for the project.
+            required:
+              - model_url
+    responses:
+      '200':
+        description: Successful model upload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+                description:
+                  type: string
+                status:
+                  type: string
+                project_id:
+                  type: integer
+                dataset_id:
+                  type: integer
+                created_at:
+                  type: string
+                  format: date-time
+            example:
+              id: 789
+              name: Lora Character Model
+              description: A model trained on my character
+              status: Completed
+              project_id: 123
+              dataset_id: 456
+              created_at: '2024-05-26T12:00:00Z'
+      '400':
+        description: Bad request. Missing or invalid parameters.
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Not found.
+      '415':
+        description: Unsupported Media Type. Invalid file format.
+      '422':
+        description: >-
+          Unprocessable Entity. The provided URL or parameters are invalid or
+          inaccessible.
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests.
+      '500':
+        description: Internal server error.
+/tailored-gen/projects/{project_id}/models:
+  get:
+    summary: Get Models by Project
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >-
+      Retrieve all models for a project. If there are no models, an empty array
+      is returned.
+    operationId: get-models-by-project
+    parameters:
+      - in: path
+        name: project_id
+        required: true
+        schema:
+          type: integer
+        description: Project ID
+      - in: query
+        name: include_training_parameters
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: >-
+          If true, includes detailed training parameters and checkpoint steps in
+          the response.
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+    responses:
+      '200':
+        description: Successfully retrieved models
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the model
+                  name:
+                    type: string
+                    description: Name of the model
+                  description:
+                    type: string
+                    description: Description of the model
+                  status:
+                    type: string
+                    description: Status of the model
+                    enum:
+                      - Created
+                      - InProgress
+                      - Completed
+                      - Failed
+                      - Stopping
+                      - Stopped
+                  training_mode:
+                    type: string
+                    description: Training configuration strategy
+                    enum:
+                      - fully_automated
+                      - expert
+                  project_id:
+                    type: integer
+                    description: ID of the project this model belongs to
+                  dataset_id:
+                    type: integer
+                    description: ID of the dataset used for training
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the model was created
+                  updated_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the model was last updated
+                  active_model_version:
+                    type: string
+                    description: The active version (checkpoint) of the model
+                  training_parameters:
+                    type: object
+                    description: The training parameters used for the model.
+                    properties:
+                      learning_rate:
+                        type: number
+                        format: float
+                      lr_scheduler:
+                        type: string
+                      rank:
+                        type: integer
+                      total_training_steps:
+                        type: integer
+                      checkpoint_interval:
+                        type: integer
+                      lr_warmup_steps:
+                        type: integer
+                        nullable: true
+                        description: >
+                          Number of warmup steps used. Value is an integer if
+                          `lr_scheduler` is `constant_with_warmup`, otherwise
+                          `null`.
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      A list of checkpoint steps for the model. Only included
+                      when `include_training_parameters=true`
+            example:
+              - id: 12221
+                name: test_Advanced
+                description: ''
+                status: Completed
+                dataset_id: 13739
+                training_mode: expert
+                project_id: 12429
+                created_at: '2025-08-19T13:48:29.113380'
+                updated_at: '2025-08-19T15:20:10.041767'
+                active_model_version: '1500'
+                training_parameters:
+                  learning_rate: 0.001
+                  lr_scheduler: constant
+                  rank: 128
+                  total_training_steps: 1500
+                checkpoint_steps:
+                  - '1500'
+                  - '1000'
+                  - '500'
+              - id: 12233
+                name: Test Model
+                description: Test description
+                status: Created
+                dataset_id: 13748
+                training_mode: fully_automated
+                project_id: 12429
+                created_at: '2025-08-20T06:06:05.849402'
+                updated_at: '2025-08-20T06:06:05.849404'
+                active_model_version: default
+                training_parameters: {}
+                checkpoint_steps: []
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Project not found
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+/tailored-gen/models/{model_id}:
+  get:
+    summary: Get Model by ID
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >-
+      Retrieve full model information including name, description, status,
+      training mode, project ID, dataset ID, and timestamps.
+    operationId: get-model
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: Model ID
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+    responses:
+      '200':
+        description: Successfully retrieved model
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Unique identifier for the model
+                name:
+                  type: string
+                  description: Name of the model
+                description:
+                  type: string
+                  description: Description of the model
+                status:
+                  type: string
+                  description: Status of the model
+                  enum:
+                    - Created
+                    - InProgress
+                    - Completed
+                    - Failed
+                    - Stopping
+                    - Stopped
+                training_mode:
+                  type: string
+                  description: Training configuration strategy
+                  enum:
+                    - fully_automated
+                    - expert
+                active_model_version:
+                  type: string
+                  description: >-
+                    The active version (checkpoint) of the model. Becomes
+                    relevant after training has completed.
+                training_parameters:
+                  type: object
+                  description: >-
+                    The training parameters used for the model. Populated via
+                    the /start_training endpoint.
+                checkpoint_steps:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    A list of checkpoints saved for the model. Populated via the
+                    /start_training endpoint.
+                project_id:
+                  type: integer
+                  description: ID of the project this model belongs to
+                dataset_id:
+                  type: integer
+                  description: ID of the dataset used for training
+                created_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp when the model was created
+            example:
+              id: 789
+              name: Lora Character Model
+              description: A model trained on Lora character illustrations
+              status: Completed
+              training_mode: fully_automated
+              active_model_version: default
+              training_parameters: {}
+              checkpoint_steps: []
+              project_id: 123
+              dataset_id: 456
+              created_at: '2024-05-26T12:00:00Z'
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Model not found
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+  put:
+    summary: Update Model
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >-
+      Update a model's name and description. Other model attributes cannot be
+      modified after creation.
+    operationId: update-model
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: Model ID
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: New model name (optional)
+              description:
+                type: string
+                description: New model description (optional)
+          example:
+            name: Updated Lora Character Model
+            description: An updated model trained on Lora character illustrations
+    responses:
+      '200':
+        description: Model successfully updated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Unique identifier for the model
+                name:
+                  type: string
+                  description: Name of the model
+                description:
+                  type: string
+                  description: Description of the model
+                status:
+                  type: string
+                  description: Status of the model
+                  enum:
+                    - Created
+                    - InProgress
+                    - Completed
+                    - Failed
+                    - Stopping
+                    - Stopped
+                project_id:
+                  type: integer
+                  description: ID of the project this model belongs to
+                dataset_id:
+                  type: integer
+                  description: ID of the dataset used for training
+                created_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp when the model was created
+            example:
+              id: 789
+              name: Updated Lora Character Model
+              description: An updated model trained on Lora character illustrations
+              status: Completed
+              project_id: 123
+              dataset_id: 456
+              created_at: '2024-05-26T12:00:00Z'
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Model not found
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+  delete:
+    summary: Delete Model
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: Delete a specific model. Changes status to Deleted.
+    operationId: delete-model
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: Model ID
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+    responses:
+      '204':
+        description: Model successfully deleted
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Model not found
+      '409':
+        description: Cannot delete a model that is currently in training
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Error message explaining the conflict
+            example:
+              message: Cannot delete model while it is in training
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+/tailored-gen/models/{model_id}/start_training:
+  post:
+    summary: Start Training
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >
+      Start model training. Training duration is typically 2-4 hours.
+
+      The associated dataset must have a status of 'completed' before training
+      can begin.
+
+
+      If parameters are not provided, optimal default values are automatically
+      selected based on the dataset.
+
+
+      **Default Training Parameters:**
+
+      * `rank`: 128
+
+      * `learning_rate`: 0.0001
+
+      * `lr_scheduler`: "constant_with_warmup"
+
+      * `total_training_steps`: 750
+
+      * `checkpoint_interval`: 500
+
+
+      **Constraints:**
+
+      * Advanced training parameters are only supported when the model's
+      `training_mode` is set to 'expert'.
+    operationId: start-training
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: Model ID
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              lr_scheduler:
+                type: string
+                description: >-
+                  The learning rate scheduler used to adjust the learning rate
+                  throughout the training process.
+                enum:
+                  - linear
+                  - cosine
+                  - cosine_with_restarts
+                  - polynomial
+                  - constant
+                  - constant_with_warmup
+                default: constant_with_warmup
+              learning_rate:
+                type: number
+                format: float
+                minimum: 0.000001
+                maximum: 0.001
+                description: The initial learning rate. Default is 0.0001.
+              total_training_steps:
+                type: integer
+                minimum: 1
+                maximum: 5000
+                description: >-
+                  The total number of training optimization steps. Default is
+                  750.
+              rank:
+                type: integer
+                minimum: 4
+                maximum: 256
+                description: The rank (latent dimension). Default is 128.
+              checkpoint_interval:
+                type: integer
+                minimum: 100
+                description: >-
+                  The interval (in steps) at which model checkpoints are saved.
+                  Default is 500.
+              lr_warmup_steps:
+                type: integer
+                minimum: 0
+                maximum: 1000
+                default: 100
+                description: >
+                  Number of warmup steps for the learning rate scheduler.
+
+                  Relevant only when `lr_scheduler` is set to
+                  `constant_with_warmup`.
+    responses:
+      '200':
+        description: Training successfully started
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Unique identifier for the model.
+                name:
+                  type: string
+                  description: Name of the model.
+                description:
+                  type: string
+                  description: Description of the model.
+                status:
+                  type: string
+                  description: Status of the model.
+                  enum:
+                    - InProgress
+                dataset_id:
+                  type: integer
+                  description: ID of the dataset used for training.
+                training_mode:
+                  type: string
+                  description: The training mode of the model.
+                project_id:
+                  type: integer
+                  description: ID of the project this model belongs to.
+                created_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp when the model was created.
+                updated_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp when the model was last updated.
+                custom_metadata:
+                  type: string
+                  description: Custom metadata associated with the model.
+                active_model_version:
+                  type: string
+                  description: The active version of the model.
+                training_parameters:
+                  type: object
+                  description: The training parameters used for the model.
+                  properties:
+                    learning_rate:
+                      type: number
+                      format: float
+                    lr_scheduler:
+                      type: string
+                    rank:
+                      type: integer
+                    total_training_steps:
+                      type: integer
+                    checkpoint_interval:
+                      type: integer
+                    lr_warmup_steps:
+                      type: integer
+                      nullable: true
+                      description: >
+                        Number of warmup steps. Returns `null` if `lr_scheduler`
+                        is NOT `constant_with_warmup`.
+                checkpoint_steps:
+                  type: array
+                  items:
+                    type: string
+                  description: A list of checkpoint steps for the model.
+            example:
+              id: 12242
+              name: Test Model
+              description: Test description
+              status: InProgress
+              dataset_id: 13749
+              training_mode: expert
+              project_id: 12429
+              created_at: '2025-08-20T09:51:58.080018'
+              updated_at: '2025-08-20T09:51:58.080020'
+              custom_metadata: ''
+              active_model_version: default
+              training_parameters:
+                learning_rate: 0.0001
+                lr_scheduler: constant_with_warmup
+                rank: 44
+                total_training_steps: 750
+                checkpoint_interval: 500
+                lr_warmup_steps: 100
+              checkpoint_steps: []
+      '400':
+        description: Bad request - validation error
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  properties:
+                    message:
+                      type: string
+                  example:
+                    message: >-
+                      Advanced training parameters are only supported when
+                      training_mode is set to 'expert'.
+                - type: object
+                  properties:
+                    errors:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          msg:
+                            type: string
+                          field_name:
+                            type: string
+                          field_input:
+                            type: string
+                        required:
+                          - msg
+                          - field_name
+                          - field_input
+                  example:
+                    errors:
+                      - msg: Input should be less than or equal to 5000
+                        field_name: total_training_steps
+                        field_input: '1000000'
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Model not found
+      '409':
+        description: Training already started/cannot be resumed
+      '412':
+        description: Dataset status must be 'completed' to start training
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+/tailored-gen/models/{model_id}/stop_training:
+  post:
+    summary: Stop Training
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >-
+      Stop an ongoing model training process. Once stopped, training cannot be
+      resumed - a new model would need to be created and trained.
+    operationId: stop-training
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: Model ID
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+    responses:
+      '200':
+        description: Training job successfully stopped
+      '401':
+        description: Unauthorized
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Model not found
+      '409':
+        description: Training already stopped/not in training
+      '429':
+        description: >-
+          Request limit exceeded. Your account has reached its maximum allowed
+          requests. Please upgrade your plan or try again later.
+      '500':
+        description: Internal server error
+/tailored-gen/models/{model_id}/checkpoints:
+  get:
+    summary: List Checkpoints
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >
+      Retrieve a list of all available checkpoints for a model. This is only
+      available for models trained in `expert` mode.
+    operationId: list-checkpoints
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: The ID of the model to list checkpoints for.
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Successfully retrieved list of checkpoints.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                checkpoints:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      checkpoint_step:
+                        type: integer
+                        description: The training step at which the checkpoint was saved.
+                      training_job_id:
+                        type: integer
+                        description: >-
+                          The ID of the training job associated with the
+                          checkpoint.
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: Timestamp of checkpoint creation.
+                  description: A list of all available checkpoints for the model.
+                active_model_version:
+                  type: string
+                  description: >-
+                    The training step number of the checkpoint currently
+                    selected for inference.
+            example:
+              checkpoints:
+                - checkpoint_step: 100
+                  training_job_id: 12242
+                  created_at: '2025-08-20T10:04:13.827379'
+              active_model_version: '100'
+      '400':
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              type: string
+            example: The model status is not completed
+      '404':
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              type: string
+            example: Model not found
+/tailored-gen/models/{model_id}/checkpoints/{checkpoint_step}:
+  get:
+    summary: Get Specific Checkpoint
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: Retrieve details for a specific model checkpoint by its step number.
+    operationId: get-checkpoint
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: The ID of the model.
+      - in: path
+        name: checkpoint_step
+        required: true
+        schema:
+          type: integer
+        description: The training step number of the checkpoint.
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Successfully retrieved checkpoint details.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                checkpoint_step:
+                  type: integer
+                  description: The training step number of the checkpoint.
+                training_job_id:
+                  type: integer
+                  description: The ID of the training job.
+                created_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp of checkpoint creation.
+            example:
+              checkpoint_step: 100
+              training_job_id: 12242
+              created_at: '2025-08-20T10:04:13.827379'
+      '400':
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              type: string
+            example: The model status is not completed
+      '404':
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              type: string
+            example: Checkpoint not found
+  delete:
+    summary: Delete Checkpoint
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >
+      Permanently delete a specific model checkpoint. Deletion is not allowed if
+      the checkpoint is currently selected for inference.
+    operationId: delete-checkpoint
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+        description: The ID of the model.
+      - in: path
+        name: checkpoint_step
+        required: true
+        schema:
+          type: integer
+        description: The training step number of the checkpoint to delete.
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+    responses:
+      '204':
+        description: Checkpoint successfully deleted.
+      '400':
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              type: string
+            example: Cannot delete checkpoint currently selected for inference
+      '404':
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              type: string
+            example: Checkpoint not found
+/tailored-gen/models/{model_id}/download:
+  get:
+    summary: Download Tailored Model
+    tags:
+      - Model
+    servers:
+      - url: https://engine.prod.bria-api.com/v1
+    description: >
+      Download a trained tailored generation model after completing the training
+      process.
+
+      The response includes a pre-signed URL for downloading the model and
+      details about the base model used.
+
+
+      To use the tailored model source code, access to the base model source
+      code is required.
+
+      The base model source code is exclusively available through Bria's
+      **Source Code and Weights** product.
+
+      For more information or to gain access, contact us at **info@bria.ai**.
+    operationId: download-tailored-model
+    parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the tailored model.
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Successful retrieval of the tailored model download details.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                download_url:
+                  type: string
+                  description: >-
+                    A pre-signed URL allowing users to download the tailored
+                    model.
+                base_model_name:
+                  type: string
+                  description: The name of the base model used for training.
+                base_model_card:
+                  type: string
+                  description: >-
+                    URL to the Hugging Face model card of the respective base
+                    model.
+            example:
+              download_url: https://download-url-for-tailored-model.com
+              base_model_name: BRIA-FIBO
+              base_model_card: https://huggingface.co/briaai/BRIA-FIBO
+      '400':
+        description: Bad request. The request is malformed.
+      '401':
+        description: Unauthorized. Invalid or missing API token.
+      '403':
+        description: Forbidden
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              quota_exceeded:
+                value: >-
+                  Quota exceeded: Free users can make up to 1000 requests in
+                  total. Please upgrade your plan to continue using the service.
+              access_denied:
+                value: >-
+                  Access denied: Your subscription does not include access to
+                  this feature/product.
+      '404':
+        description: Not found. The requested model_id does not exist.
+      '500':
+        description: Internal server error.
+components: {}

@@ -1,0 +1,28 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Bria Image Onboarding API Reference
+  version: 1.0.0
+extends: openapi/bria-image-onboarding-openapi-original.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: bria
+    x-apievangelist-source: https://docs.bria.ai/_spec/image-onboarding.yaml
+    x-apievangelist-harvested: '2026-08-08'
+    x-apievangelist-artifacts:
+      authentication: authentication/bria-authentication.yml
+      conventions: conventions/bria-conventions.yml
+      errors: errors/bria-problem-types.yml
+      lifecycle: lifecycle/bria-lifecycle.yml
+      webhooks: asyncapi/bria-webhooks.yml
+      skills: skills/_index.yml
+- target: $.components
+  update:
+    securitySchemes:
+      BriaApiToken:
+        type: apiKey
+        in: header
+        name: api_token
+        description: Bria API token. Declared here as a securityScheme because the published spec carries
+          api_token as a plain header parameter on every operation, which auth-aware tooling does not
+          read as authentication.

@@ -1,0 +1,76 @@
+generated: '2026-08-08'
+method: derived
+source: openapi/*-openapi-original.yml, well-known/, https://bria.ai/security-and-compliance, https://docs.bria.ai/
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: Ten OpenAPI 3.0.0/3.0.3 descriptions published at https://docs.bria.ai/_spec/<name>.yaml
+- id: openapi-3.1
+  conforms: false
+  evidence: All published specs are 3.0.x. The FastAPI gateway root emits 3.1.0 but exposes only health routes.
+- id: oauth2
+  conforms: true
+  evidence: RFC 8414 authorization-server metadata served at engine and MCP hosts, authorizationCode + device_code + refresh_token grants
+- id: rfc8414-oauth-as-metadata
+  conforms: true
+  evidence: well-known/bria-engine-oauth-authorization-server.json (HTTP 200)
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: registration_endpoint advertised at https://engine.prod.bria-api.com/v2/auth/register
+- id: rfc7636-pkce
+  conforms: true
+  evidence: code_challenge_methods_supported = [S256]
+- id: rfc9728-oauth-protected-resource
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource returns 404 on both engine and MCP hosts
+- id: oidc
+  conforms: false
+  evidence: openid/profile/email scopes advertised but /.well-known/openid-configuration returns 404
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: Errors use a custom {error:{code,message,details},request_id} envelope on application/json
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: Deprecation is published as a migration table only; no Sunset or Deprecation headers
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on bria.ai, engine and MCP hosts
+- id: rfc8615-agent-card
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json return 404 on every real host
+- id: mcp
+  conforms: true
+  evidence: Hosted remote MCP server at https://mcp.prod.bria-api.com/mcp; tools/list gated at 401
+- id: asyncapi
+  conforms: false
+  evidence: Event surface is webhooks only; no AsyncAPI document published
+- id: llmstxt
+  conforms: true
+  evidence: /llms.txt published on both docs.bria.ai and platform.bria.ai, plus per-endpoint llms.txt files
+- id: agent-skills
+  conforms: true
+  evidence: Five provider-published SKILL.md files at https://github.com/Bria-AI/bria-skill
+- id: webhook-signing-hmac-sha256
+  conforms: true
+  evidence: Svix-inspired three-header signed delivery with a derived signing key
+- id: c2pa
+  conforms: true
+  evidence: 'https://bria.ai/security-and-compliance — "Enabling provenance verification for content generated on our platform"'
+- id: soc2
+  conforms: true
+  evidence: 'https://bria.ai/security-and-compliance — controls around security, availability, processing integrity, confidentiality and privacy'
+- id: iso-27001
+  conforms: true
+  evidence: 'https://bria.ai/security-and-compliance — information security management systems adhere to global best practices'
+- id: eu-ai-act
+  conforms: partial
+  evidence: 'https://bria.ai/security-and-compliance — Bria states it signed the EU voluntary AI Act pilot programme'
+- id: gdpr
+  conforms: unknown
+  evidence: Not named on the security-and-compliance page
+- id: hipaa
+  conforms: false
+- id: pci-dss
+  conforms: false
+- id: fedramp
+  conforms: false

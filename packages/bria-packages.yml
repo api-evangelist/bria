@@ -1,0 +1,72 @@
+generated: '2026-08-08'
+method: searched
+source: https://pypi.org/pypi/bria-client/json, https://registry.npmjs.org/bria-skills, https://github.com/Bria-AI
+packages:
+- language: python
+  registry: pypi
+  name: bria-client
+  version: 0.3.0
+  url: https://pypi.org/project/bria-client/
+  install: pip install bria-client
+  repository: https://github.com/Bria-AI/bria-client
+  docs: https://docs.bria.ai/integration-methods/python-sdk
+  official: true
+  description: >-
+    Official Bria.ai Python SDK. Ships BriaSyncClient and BriaAsyncClient, three request modes
+    (.run / .submit / .poll), an Image toolkit for URL and base64 inputs, and a
+    verify_webhook_signature helper.
+- language: javascript
+  registry: npm
+  name: bria-skills
+  version: 1.3.4
+  url: https://www.npmjs.com/package/bria-skills
+  install: npx skills add bria-ai/bria-skill
+  repository: https://github.com/Bria-AI/bria-skill
+  bin: bria-skills
+  official: true
+  description: >-
+    Official Bria AI skills package for coding agents. Distributes the bria-ai, vgl and
+    image-utils Agent Skills and a CLI entry point.
+- language: javascript
+  registry: github
+  name: js-api-sdk
+  url: https://github.com/Bria-AI/js-api-sdk
+  official: true
+  description: Bria JavaScript API SDK, published as a GitHub repository rather than to npm.
+  note: No npm package was found for this repository; install is from source.
+- language: python
+  registry: github
+  name: ComfyUI-BRIA-API
+  url: https://github.com/Bria-AI/ComfyUI-BRIA-API
+  official: true
+  description: Official Bria ComfyUI custom nodes wrapping the Bria API endpoints.
+- language: python
+  registry: github
+  name: Houdini-tools
+  url: https://github.com/Bria-AI/Houdini-tools
+  official: true
+  description: Bria tools for SideFX Houdini.
+- language: python
+  registry: github
+  name: Nuke-tools
+  url: https://github.com/Bria-AI/Nuke-tools
+  official: true
+  description: Bria Python integration for Foundry Nuke.
+- language: cpp
+  registry: github
+  name: obs-backgroundremoval
+  url: https://github.com/Bria-AI/obs-backgroundremoval
+  official: true
+  description: Bria real-time background removal plugin for OBS Studio.
+registries_probed:
+- registry: pypi
+  hits: [bria-client]
+  misses: [bria, briaai]
+- registry: npm
+  hits: [bria-skills]
+  misses: ['@bria-ai/sdk', 'bria-ai', '@bria/sdk']
+gaps:
+- >-
+  No first-party TypeScript/JavaScript SDK is published to npm; js-api-sdk is source-only on
+  GitHub. A TypeScript client exists inside the bria-skill repository as a reference file
+  (skills/bria-ai/references/code-examples/bria_client.ts), not as an installable package.

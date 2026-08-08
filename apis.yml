@@ -1,23 +1,301 @@
 aid: bria
 name: Bria
-description: 'Bria is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Bria is an enterprise visual generative AI platform that exposes image
+  generation, image editing, video editing, product-shot and automotive imagery, tailored
+  (fine-tuned) model training, ads generation and content attribution as production
+  REST APIs on engine.prod.bria-api.com. Its models are trained exclusively on licensed
+  data from partners such as Getty Images, Alamy and Envato, and outputs carry commercial
+  licensing and IP indemnification. The v2 API is asynchronous by default: endpoints
+  return a request_id plus a status_url for polling, with signed webhook delivery as
+  the production alternative. Bria publishes ten OpenAPI 3.0 descriptions, a hosted
+  MCP server at mcp.prod.bria-api.com, first-party Agent Skills for coding agents,
+  a Python SDK, ComfyUI/Photoshop/Figma/Nuke/Houdini/OBS integrations, and an llms.txt
+  index on both its documentation and platform hosts.'
 url: https://raw.githubusercontent.com/api-evangelist/bria/refs/heads/main/apis.yml
+image: https://cdn.sanity.io/images/zppcnj0l/production/315c9e01bd4534858413ec77d68e9130e9e86b17-1270x240.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-08'
 modified: '2026-08-08'
 tags:
-- Company
-apis: []
+- Artificial Intelligence
+- Generative AI
+- Images
+- Image Generation
+- Image Editing
+- Video
+- Machine Learning
+- Media
+- Content
+- Agents
+- MCP
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: bria:image-generation
+  name: Bria Image Generation API
+  description: Text-to-image and structured-prompt (VGL) image generation using Bria's
+    FIBO and FIBO Lite models, including generation from a structured JSON prompt and
+    generation from a structured-prompt diff.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Image Generation
+  - Generative AI
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-image-generation-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-image-generation-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+- aid: bria:image-editing
+  name: Bria Image Editing API
+  description: Twenty-three v2 image editing operations covering object add/replace/erase
+    by text, masked erase and generative fill, background remove/replace/blur, expand,
+    enhance, increase resolution, restyle, relight, reseason, colorize, restore and
+    text rewrite.
+  humanURL: https://docs.bria.ai/image-editing
+  baseURL: https://engine.prod.bria-api.com/v2/image/edit
+  tags:
+  - Image Editing
+  - Generative AI
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-image-editing-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-image-editing-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+- aid: bria:video-editing
+  name: Bria Video Editing API
+  description: Video background removal and replacement, green screen, object erase,
+    resolution increase, and mask generation by prompt, key points or foreground.
+  humanURL: https://docs.bria.ai/video-editing
+  baseURL: https://engine.prod.bria-api.com/v2/video/edit
+  tags:
+  - Video
+  - Image Editing
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-video-editing-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-video-editing-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+- aid: bria:product-shot-editing
+  name: Bria Product Shot API
+  description: Product packshot, cutout, shadow, lifestyle shot by text or image, product
+    embedding and consistent product shots, plus a dedicated automotive set for vehicle
+    segmentation, reflections, tire refinement and harmonization.
+  humanURL: https://docs.bria.ai/product-shot-editing
+  baseURL: https://engine.prod.bria-api.com/v1
+  tags:
+  - Ecommerce
+  - Images
+  - Automotive
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-product-shot-editing-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-product-shot-editing-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+- aid: bria:tailored-generation
+  name: Bria Tailored Generation API
+  description: Fine-tuning surface for training tailored models on customer datasets
+    — projects, datasets, image upload and captioning, model training lifecycle, checkpoints,
+    model download, and tailored image and image-to-video generation.
+  humanURL: https://docs.bria.ai/tailored-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Machine Learning
+  - Training
+  - Generative AI
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-tailored-generation-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-tailored-generation-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+- aid: bria:status
+  name: Bria Status Service API
+  description: Polling surface for Bria's async-by-default v2 endpoints; returns IN_PROGRESS,
+    COMPLETED, ERROR or UNKNOWN for a request_id along with the result payload.
+  humanURL: https://docs.bria.ai/status
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Jobs
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-status-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-status-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/status
+- aid: bria:ad-generation
+  name: Bria Ads Generation API
+  description: Generates ad creatives from brand and template registries, with endpoints
+    to list brands, list ad templates and retrieve a single template by id.
+  humanURL: https://docs.bria.ai/ad-generation
+  baseURL: https://engine.prod.bria-api.com/v1
+  tags:
+  - Advertising
+  - Marketing
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-ad-generation-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-ad-generation-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+- aid: bria:attribution-service
+  name: Bria Attribution Service API
+  description: Attribution of generated images and video back to the licensed training
+    content that influenced them, by image, by video, or by embedding — the machine-readable
+    side of Bria's licensing and indemnification posture.
+  humanURL: https://docs.bria.ai/bria-attribution-service
+  baseURL: https://engine.prod.bria-api.com
+  tags:
+  - Attribution
+  - Compliance
+  - Licensing
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-attribution-service-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-attribution-service-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+- aid: bria:image-onboarding
+  name: Bria Image Onboarding API
+  description: Registers customer images with Bria so they can be referenced by visual_id
+    in downstream generation and editing calls, and removes them again.
+  humanURL: https://docs.bria.ai/image-onboarding
+  baseURL: https://engine.prod.bria-api.com/v1
+  tags:
+  - Images
+  - Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-image-onboarding-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-image-onboarding-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+- aid: bria:ai-search
+  name: Bria AI Search API (deprecated)
+  description: Deprecated visual search surface — image captioning, text search and
+    similar-image search. Bria labels this section deprecated in its own documentation
+    navigation.
+  humanURL: https://docs.bria.ai/ai-search-deperecated
+  baseURL: https://engine.prod.bria-api.com/v1
+  tags:
+  - Search
+  - Deprecated
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-ai-search-deperecated-openapi-original.yml
+  - type: Overlay
+    url: overlays/bria-ai-search-deperecated-overlay.yaml
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:mcp
+  name: Bria MCP Server
+  description: Bria's hosted, remote Model Context Protocol server, exposing image generation
+    and editing to any MCP client. Authenticated with either a static api_token header
+    or an OAuth 2.0 bearer token; anonymous tools/list is refused.
+  humanURL: https://docs.bria.ai/mcp-authentication
+  baseURL: https://mcp.prod.bria-api.com/mcp
+  tags:
+  - MCP
+  - Agents
+  properties:
+  - type: MCPServer
+    url: mcp/bria-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/bria-tool-crosswalk.yml
+  - type: Documentation
+    url: https://docs.bria.ai/mcp-authentication
 common:
 - type: Website
-  url: https://www.hiive.com/securities/bria-stock
+  url: https://bria.ai/
+- type: DeveloperPortal
+  url: https://platform.bria.ai/
+- type: Documentation
+  url: https://docs.bria.ai/
+- type: APIReference
+  url: https://docs.bria.ai/image-generation/endpoints
+- type: GettingStarted
+  url: https://docs.bria.ai/products-overview
+- type: SignUp
+  url: https://platform.bria.ai/
+- type: Pricing
+  url: https://bria.ai/pricing
+- type: TermsOfService
+  url: https://bria.ai/terms-of-use
+- type: PrivacyPolicy
+  url: https://bria.ai/privacy-policy
+- type: Support
+  url: https://bria.ai/contact-us
+- type: Blog
+  url: https://bria.ai/blog
+- type: GitHubOrganization
+  url: https://github.com/Bria-AI
+- type: StatusPage
+  url: https://status.bria.ai/
+- type: Compliance
+  url: https://bria.ai/security-and-compliance
+- type: TrustCenter
+  url: security/bria-trust-center.yml
+- type: LLMsTxt
+  url: llms/bria-llms.txt
+- type: LLMsTxt
+  url: llms/bria-platform-llms.txt
+- type: Packages
+  url: packages/bria-packages.yml
+- type: SDKs
+  url: packages/bria-packages.yml
+- type: CLI
+  url: cli/bria-cli.yml
+- type: Components
+  url: components/bria-components.yml
+- type: Authentication
+  url: authentication/bria-authentication.yml
+- type: OAuthScopes
+  url: scopes/bria-scopes.yml
+- type: WellKnown
+  url: well-known/bria-well-known.yml
+- type: Conventions
+  url: conventions/bria-conventions.yml
+- type: ErrorCatalog
+  url: errors/bria-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/bria-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/bria-lifecycle.yml
+- type: Conformance
+  url: conformance/bria-conformance.yml
+- type: DataModel
+  url: data-model/bria-data-model.yml
+- type: Sandbox
+  url: sandbox/bria-sandbox.yml
+- type: Webhooks
+  url: asyncapi/bria-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/bria-agentic-access.yml
+- type: DomainSecurity
+  url: security/bria-domain-security.yml
+x-enrichment:
+  date: '2026-08-08'
+  status: enriched
+  artifacts_added: 49
+  pass: local-v1

@@ -1,0 +1,128 @@
+generated: '2026-08-08'
+method: searched
+source: https://docs.bria.ai/api_v2_live, https://docs.bria.ai/status, https://docs.bria.ai/webhooks, https://docs.bria.ai/llms.txt, openapi/*-openapi-original.yml
+authentication:
+  style: static API key in a request header
+  header: api_token
+  required_on: 97 of 103 operations
+  oauth: available for MCP bearer tokens; see authentication/bria-authentication.yml
+  see: authentication/bria-authentication.yml
+required_headers:
+- header: api_token
+  purpose: authentication
+- header: 'User-Agent: BriaPlatform/APIdocs/LLMsAgent'
+  purpose: >-
+    Bria's own llms.txt states "All requests must include header
+    User-Agent: BriaPlatform/APIdocs/LLMsAgent" — an agent-identification requirement published
+    to LLM consumers specifically.
+  source: https://docs.bria.ai/llms.txt
+async:
+  default: true
+  since: v2
+  request_flag: 'sync (boolean, default false in v2; was default true in v1)'
+  submit_response:
+    request_id: string
+    status_url: string
+  terminal_states: [COMPLETED, ERROR, UNKNOWN]
+  in_flight_state: IN_PROGRESS
+  poll_endpoint: GET https://engine.prod.bria-api.com/v2/status/{request_id}
+  poll_operation: openapi/bria-status-openapi-original.yml#get_status
+  note: >-
+    The status endpoint returns 200 regardless of job outcome; job failure is carried in the
+    body's status field, not in the HTTP status. An agent that branches on HTTP status alone
+    will read a failed job as a success.
+idempotency:
+  request_idempotency: false
+  idempotency_key_header: null
+  note: >-
+    Bria documents no request-level idempotency key. A retried POST creates a new request_id and
+    a new billable job. Idempotency is documented only on the WEBHOOK DELIVERY side.
+  webhook_delivery:
+    guarantee: at-least-once
+    dedup_key_header: Bria-Webhook-Id
+    dedup_key_value: the job's request_id
+    receiver_requirement: handler must be idempotent
+    source: https://docs.bria.ai/webhooks
+pagination:
+  style: page-number
+  scope: Tailored Generation list endpoints only
+  params:
+  - page
+  - num_results_per_page
+  note: >-
+    Only the tailored-generation dataset/model listing operations paginate. The generation and
+    editing surface is job-shaped and returns a single result per request.
+tracing:
+  request_id: true
+  field: request_id
+  present_in: [submit response, status response, webhook payload, error envelope]
+  note: >-
+    request_id is returned on every call and is the identifier Bria support asks for. It is a
+    body field, not a response header.
+versioning:
+  scheme: uri-path
+  current: v2
+  legacy: v1
+  note: >-
+    v1 and v2 run in parallel. Image Editing v1 support ended 2025-11-15. Image Generation,
+    Tailored Generation and Product Shot Editing migration timelines are stated as "shared
+    separately" and are not published.
+  see: lifecycle/bria-lifecycle.yml
+error_envelope:
+  format: custom
+  rfc9457: false
+  content_type: application/json
+  shape:
+    error:
+      code: integer
+      message: string
+      details: string
+    request_id: string
+  async_shape:
+    request_id: string
+    status: ERROR
+    error:
+      message: string
+      code: string
+  note: >-
+    Two different error shapes coexist: the synchronous ErrorResponse uses an integer error.code,
+    while the async/webhook error object uses a string code such as VALIDATION_ERROR.
+  see: errors/bria-problem-types.yml
+rate_limits:
+  signaling: not documented
+  headers: none published
+  tiers:
+  - plan: Free Trial
+    limit: 10 requests/minute
+  - plan: Starter
+    limit: 60 requests/minute
+  - plan: Enterprise/Custom
+    limit: 100+ requests/minute
+  status_code: 429
+  recovery: >-
+    Bria's llms.txt states "429 errors include structured recovery directives for agent
+    consumption" — an explicitly agent-facing backoff contract.
+  source: https://docs.bria.ai/llms.txt
+  note: No Retry-After or X-RateLimit-* header contract is published.
+input_conventions:
+  image_parameter: image
+  accepts: [public URL, base64-encoded data]
+  unified_in: v2
+  note: v1 used separate image_url and image_file parameters; v2 unified them into image.
+  max_payload: 12MB (HTTP 413 above this)
+  supported_types: [jpeg, jpg, png, webp]
+content_moderation:
+  controls:
+  - prompt_content_moderation
+  - visual_input_content_moderation
+  - visual_output_content_moderation
+  note: >-
+    Split into three independent controls in v2. This is a governance surface most visual
+    generation APIs do not expose per-request.
+  source: https://docs.bria.ai/content_moderation
+cross_links:
+  errors: errors/bria-problem-types.yml
+  lifecycle: lifecycle/bria-lifecycle.yml
+  authentication: authentication/bria-authentication.yml
+  webhooks: asyncapi/bria-webhooks.yml
+  sandbox: sandbox/bria-sandbox.yml

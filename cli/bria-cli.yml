@@ -1,0 +1,24 @@
+generated: '2026-08-08'
+method: searched
+source: https://registry.npmjs.org/bria-skills, https://docs.bria.ai/integration-methods/bria-skill
+cli:
+  name: bria-skills
+  scope: agent-skill installer
+  official: true
+  repository: https://github.com/Bria-AI/bria-skill
+install:
+- method: npx
+  command: npx skills add bria-ai/bria-skill
+- method: claude
+  command: claude mcp add bria-skills -- npx -y bria-skills
+- method: npm
+  command: npx -y bria-skills
+  bin: bria-skills
+purpose: >-
+  Installs and wires Bria's published Agent Skills into a coding agent (Claude Code, Cursor,
+  Cline, Codex and others). It is a skill-distribution CLI, not a general-purpose API CLI.
+gaps:
+- >-
+  Bria ships no general-purpose API CLI. There is no `bria` binary for calling generation,
+  editing, product-shot or tailored-generation endpoints from a shell; those are reached via the
+  Python SDK, raw HTTP, or an agent skill.

@@ -1,0 +1,49 @@
+generated: '2026-08-08'
+method: searched
+source: https://platform.bria.ai/llms.txt, https://docs.bria.ai/llms.txt
+kind: hosted interactive sandbox
+note: >-
+  Bria publishes no test-mode key prefix, no test/live key separation and no magic test values.
+  Its "sandbox" is a hosted, per-endpoint interactive console that executes real, billable calls
+  against the production engine using the caller's own key, metered against a free trial.
+consoles:
+- name: API Building Blocks
+  url: https://platform.bria.ai/api-building-blocks
+  description: Catalog of 40+ capabilities, each with a live sandbox.
+- name: Playground hub
+  url: https://platform.bria.ai/playground-hub
+  description: Guided playgrounds for end-to-end flows across multiple endpoints.
+- name: Labs
+  url: https://platform.bria.ai/labs
+  description: Early previews and experimental surfaces.
+- name: Apps
+  url: https://platform.bria.ai/apps
+  description: Packaged solution-style workflows built on Bria APIs.
+per_endpoint_sandbox:
+  pattern: https://platform.bria.ai/<product>/<endpoint>/sandbox
+  example: https://platform.bria.ai/image-generation/fibo-generate/sandbox
+  indexed_in: https://platform.bria.ai/llms.txt
+  note: >-
+    Each per-endpoint llms.txt file is documented by Bria as carrying "full input/output schemas,
+    code examples, and sandbox links" — an unusually machine-readable console surface.
+keys:
+  test_live_separation: false
+  key_kinds:
+  - production
+  - staging
+  - MCP
+  - Comfy
+  issued_at: https://platform.bria.ai/organization-management/api-keys
+  note: >-
+    Bria mints separate keys per use (production, staging, MCP, Comfy), but a staging key calls
+    the same production engine — it is an attribution boundary, not a sandbox environment.
+free_tier:
+  signup: https://platform.bria.ai/
+  rate_limit: 10 requests/minute
+  source: https://docs.bria.ai/llms.txt
+test_values: []
+test_clocks: false
+fixtures: false
+gaps:
+- No test-mode credentials, no sandbox host, no non-billable environment.
+- No published fixture images or deterministic seeds for reproducible test assertions.

@@ -1,0 +1,37 @@
+generated: '2026-08-08'
+method: searched
+probe: true
+url: https://bria.ai/security-and-compliance
+certifications:
+- SOC 2
+- ISO 27001
+- C2PA
+programs:
+- name: EU AI Act voluntary pilot programme
+  status: signed
+  commitments:
+  - human oversight
+  - transparency
+  - fairness
+  - data governance
+  - robustness and security
+related:
+- name: Licensed training catalog
+  url: https://bria.ai/licensed-training-catalog
+- name: Attribution technology
+  url: https://bria.ai/attribution-technology
+- name: Responsible AI
+  url: https://bria.ai/responsible-ai
+- name: Safety architecture
+  url: https://bria.ai/brias-safety-architecture
+- name: Copyrightability report
+  url: https://bria.ai/copyrightability-report
+evidence:
+- source: https://bria.ai/security-and-compliance
+  http_status: 200
+  keywords: [soc 2, iso 27001, c2pa, eu ai act, compliance]
+gaps:
+- No dedicated trust portal (trust.bria.ai and security.bria.ai do not resolve).
+- No security contact email, no responsible-disclosure or bug-bounty programme, no /.well-known/security.txt.
+- No penetration-testing statement and no data-residency commitment on the page.
+- Certifications are asserted on a marketing page; no report request flow or audit letter is linked.

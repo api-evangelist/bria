@@ -1,0 +1,551 @@
+openapi: 3.0.0
+info:
+  title: Ads Generation API Reference
+  version: ''
+  description: >
+    Bria's Ads Generation API enables builders to create multiple ads (scenes)
+    in various sizes and resolutions, all unified by the same branding, style,
+    and messaging. You can start exploring immediately with our public templates
+    and brands.
+
+
+    For creating your own private templates and brands, please [Contact
+    Us](https://bria.ai/contact-us).
+
+
+    **Getting Started with Public Assets**
+
+
+    You can start exploring the API immediately using our public templates and
+    brands, with no setup required.
+
+
+    * **Public Template IDs**: 
+        * **`1062`**: A template that requires a brand ID.
+        * **`1061`**: A brand-independent template (does not require a brand ID).
+    * **Public Brand IDs**: **`167`**, **`166`**, **`122`**, **`121`**,
+    **`120`**. These can be used for testing with compatible templates like
+    **`1062`**.
+
+    * **Important**: Public templates and brands can only be used with each
+    other and cannot be mixed with private assets.
+
+
+    The Ads Generation API provides a set of endpoints to manage the assets
+    needed for ads generation:
+
+
+    1. **Templates**: Pre-designed ad layouts that can be reused and customized:
+        - Access template libraries and their configurations 
+        - Each template contains multiple scenes with customizable elements
+        - Templates can be created using BRIA's Ads Editor
+
+    2. **Brands**: Define and manage brand assets:
+        - Store and retrieve brand-specific elements like logos, colors, and fonts
+        - Ensure brand consistency across all generated ads
+
+    3. **Ads Generation**: Create ads using templates and brand assets:
+        - Customize text, images, and smart image backgrounds
+        - Generate multiple ad variations at scale
+        - Configure scene-specific elements and properties
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+servers:
+  - url: https://engine.prod.bria-api.com/v1
+paths:
+  /ads/generate:
+    post:
+      summary: Generate Ads
+      tags:
+        - Endpoints
+      description: >
+        Bria's Ads Generation API enables builders to create multiple ads
+        (scenes) in various sizes and resolutions, all unified by the same
+        branding, style, and messaging. You can start exploring immediately with
+        our public templates and brands.
+
+        For creating your own private templates and brands, please [Contact
+        Us](https://bria.ai/contact-us).
+
+        **Getting Started with Public Assets**
+
+        You can start exploring the API immediately using our public templates
+        and brands, with no setup required.
+
+        * **Public Template IDs**: 
+            * **`1062`**: A template that requires a brand ID.
+            * **`1061`**: A brand-independent template (does not require a brand ID).
+        * **Public Brand IDs**: **`167`**, **`166`**, **`122`**, **`121`**,
+        **`120`**. These can be used for testing with compatible templates like
+        **`1062`**. * **Important**: Public templates and brands can only be
+        used with each other and cannot be mixed with private assets.
+
+            
+        <img
+        src="https://bria-datasets.s3.us-east-1.amazonaws.com/temp_exp_or/Campaign.jpg"
+        width="400"/>
+
+
+        **Template**  
+
+        Templates enable to repurpose and reuse well-design ads that share the
+        same style, content and branded elements.It consists of multiple ads
+        (“scenes”) and includes configurations for customizing the content at
+        scale.
+
+
+        **Smart Image Feature**  
+
+        A standout feature of BRIA's Ads Generation API is its ability to
+        seamlessly embed objects, products, and presenter images into another
+        image (a "smart image"). This AI-powered capability allows for
+        generating diverse backgrounds for the embedded image or extending the
+        background to fit the ad's design perfectly.
+
+
+        **How It Works**  
+
+        The Ads Generation API works by sending a template ID along with inputs
+        such as text, images, the main object with its background definition,
+        and a brand ID (including logos, colors, and fonts). In response, the
+        API generates a set of ad images.
+
+
+        In thie endpoint, responses are asynchronous, immediately providing URLs
+        for ads that are generated in the background. Use polling for the URLs
+        to retrieve ads once ready.
+
+
+        Templates can be easily created using BRIA’s Ads Editor. Once a template
+        is ready, it can be used to produce multiple ad versions with varying
+        messaging, branding, and images.
+
+
+        This API endpoint supports content moderation via an optional parameter
+        that can prevent generation if input images contain inappropriate
+        content, and filters out unsafe generated images - the first blocked
+        input image will fail the entire request.
+      operationId: generate-ads
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: >
+                    When enabled, applies content moderation to both input
+                    visuals and generated outputs.
+
+
+                    For input images:
+
+                    - Processing stops at the first image that fails moderation
+
+                    - Returns a 422 error with details about which parameter
+                    failed
+
+
+                    For generated ads:
+
+                    - Failed ads are replaced with zero-byte files at their
+                    placeholder URLs
+
+                    - Successful ads are stored at their original placeholder
+                    URLs
+                template_id:
+                  type: string
+                  description: >-
+                    The ID of the template to be used for generating the ads
+                    scenes.
+                brand_id:
+                  type: string
+                  description: >-
+                    The ID of the brand to be used across all generated ads. A
+                    required field, unless the template is non brand related
+                    template and in that case even if brand if is provided, it
+                    isn't used.
+                smart_image:
+                  type: object
+                  description: >
+                    Smart image object for generating an image based on the
+                    embedded image, including the main object and its background
+                    definition (`expand` or `generate_by_text`).
+                  properties:
+                    input_image_url:
+                      type: string
+                      description: >-
+                        URL of the input image that will be embedded within the
+                        smart image.
+                    scene:
+                      type: object
+                      properties:
+                        operation:
+                          type: string
+                          enum:
+                            - expand_image
+                            - lifestyle_shot_by_text
+                        input:
+                          type: string
+                          description: >-
+                            Background prompt or hex color for the image’s
+                            background. If the operation chosen is "expand" this
+                            parameter is ignored.
+                  required:
+                    - main_object_url
+                elements:
+                  type: array
+                  description: List of text/images objects
+                  items:
+                    type: object
+                    properties:
+                      layer_type:
+                        type: string
+                        description: The element type, either "text" or "image".
+                        enum:
+                          - text
+                          - image
+                      content_type:
+                        type: string
+                        description: >
+                          The heading level configuration for the text. This
+                          allows the same text to be inserted into multiple
+                          elements across scenes.
+
+                          Value should be in the format - Heading *, Body *,
+                          Image * when * can be replaced with any value between
+                          #1-#5 (for example Heading #1, Image #1 and etc.)
+                      content:
+                        type: string
+                        description: >
+                          Content of the text or image, if `content_type` is set
+                          to `text` it should be a string, and if `content_type`
+                          is `image` it should be an image URL.
+
+                          To ignore this element, set this parameter to an empty
+                          string.
+                      id:
+                        type: string
+                        description: Unique identifier for the element.
+            example:
+              template_id: '123'
+              smart_image:
+                input_image_url: https://example.com/image.jpg
+                scene:
+                  operation: lifestyle_shot_by_text
+                  input: A scenic background
+              brand_id: '456'
+              elements:
+                - layer_type: text
+                  content_type: 'Heading #1'
+                  content: Sale Now!
+      responses:
+        '200':
+          description: Successfull operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: >-
+                      A list of objects, where each object contains an image URL
+                      corresponding to a scene in the template, the scene's
+                      name, and its resolution.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: The unique ID for the generated scene.
+                        name:
+                          type: string
+                          description: >-
+                            The name of the scene from the template used to
+                            generate the image.
+                          example: scene_name
+                        url:
+                          type: string
+                          description: >-
+                            The URL to download the generated scene result as a
+                            .png image.
+                          example: IMAGE_URL
+                        resolution:
+                          type: object
+                          description: >-
+                            An object containing the width and height of the
+                            generated image. Can be an empty object if
+                            resolution is not available.
+                          properties:
+                            width:
+                              type: integer
+                            height:
+                              type: integer
+                          example:
+                            width: 1920
+                            height: 1080
+                        editor_iframe:
+                          type: string
+                          description: >
+                            A URL to open the generated ad within the Ads
+                            Editor.  This URL is designed to be embedded in an
+                            iframe (white-labeled, no Bria branding) and opens
+                            the editor focused on this specific ad scene. It
+                            maintains the context of the template and brand
+                            used. 
+                          example: URL
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: >-
+                    The request could not be completed because the visual in the
+                    '{parameter_name}' parameter did not pass content
+                    moderation.
+                invalid_url:
+                  value: >-
+                    Unprocessable Entity. The URL does not point to a valid
+                    image or is inaccessible.
+        '500':
+          description: Internal server error.
+  /ads/brands:
+    get:
+      summary: Get Brands
+      tags:
+        - Endpoints
+      description: >
+        Retrieves the list of your private brands. For initial testing, you can
+        use our public brand IDs directly in the `/ads/generate` endpoint. To
+        create your own private brands that will appear in this list, please
+        [Contact Us](https://bria.ai/contact-us).
+      operationId: get-brands
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      responses:
+        '200':
+          description: Successfully retrieved list of brands.
+          content:
+            application/json:
+              schema:
+                description: >-
+                  The list of brands, where each brand is an object containing
+                  the following properties - ID, name, description, and creation
+                  date.
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    created_at:
+                      type: string
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+  /ads/templates:
+    get:
+      summary: Get Templates
+      tags:
+        - Endpoints
+      description: >
+        Retrieves the list of your private templates. To start experimenting
+        right away, use our public template IDs (**1062**, **1061**) directly in
+        the `/ads/generate` endpoint. To create your own private templates that
+        will appear here, please [Contact Us](https://bria.ai/contact-us).
+      operationId: get-templates
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      responses:
+        '200':
+          description: Successfully retrieved list of templates.
+          content:
+            application/json:
+              schema:
+                type: array
+                description: >-
+                  The list of templates, where each template is an object
+                  containing the following properties - ID, name, description,
+                  creation date, number of scenes, and a preview.
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    created_at:
+                      type: string
+                    number_of_ads:
+                      type: integer
+                    preview:
+                      type: string
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+  /ads/templates/{template_id}:
+    get:
+      summary: Get Template info by ID
+      tags:
+        - Endpoints
+      description: >
+        Retrieve details for a specific private template by its ID.
+
+        Please note: This endpoint is for inspecting your private templates only
+        and cannot be used to retrieve details for public template IDs.
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+        - in: path
+          name: template_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the template.
+      responses:
+        '200':
+          description: Successfully retrieved template details.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: >
+                  An object containing scene definitions and their resolutions. 
+                  Keys representing scenes (e.g., "scene_1") map to arrays of
+                  their elements. The specific key "scene_resolutions" maps to
+                  an object containing resolution details for each scene.
+                properties:
+                  scene_resolutions:
+                    type: object
+                    description: >-
+                      A dictionary mapping scene keys (e.g., "scene_1") to their
+                      resolution dimensions.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        width:
+                          type: integer
+                        height:
+                          type: integer
+                additionalProperties:
+                  type: array
+                  description: >-
+                    Dynamic keys (e.g., "scene_1", "scene_2") containing the
+                    list of elements for that scene.
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The unique identifier for the element.
+                      layer_type:
+                        type: string
+                        description: The type of element.
+                        enum:
+                          - text
+                          - image
+                          - smartImage
+                          - logo
+                          - shape
+                      content_type:
+                        type: string
+                        nullable: true
+                        description: >
+                          The configurable content type. Examples: "Heading #1",
+                          "Body #1", "Image #1", "smartImage", "Logo #1", "Basic
+                          Shape #1". Can be null.
+                      content:
+                        type: string
+                        description: >-
+                          The default content of the element (text or an image
+                          URL).
+                      scene_number:
+                        type: integer
+                        description: The scene number this element belongs to.
+                example:
+                  scene_1:
+                    - id: 6n_yngnjyHm9rbVRyE69z
+                      layer_type: smartImage
+                      content_type: smartImage
+                      content: https://org-assets.bria.ai/...
+                      scene_number: 1
+                    - id: mSYZhrISh4EeYRFsvxJQG
+                      layer_type: text
+                      content_type: 'Heading #1'
+                      content: Sale
+                      scene_number: 1
+                  scene_2:
+                    - id: logo_ref_123
+                      layer_type: logo
+                      content_type: 'Logo #1'
+                      content: https://org-assets.bria.ai/logo.png
+                      scene_number: 2
+                    - id: shape_ref_456
+                      layer_type: shape
+                      content_type: 'Basic Shape #1'
+                      content: https://org-assets.bria.ai/shape.png
+                      scene_number: 2
+                  scene_resolutions:
+                    scene_1:
+                      width: 1920
+                      height: 1080
+                    scene_2:
+                      width: 1080
+                      height: 1080
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '404':
+          description: Template not found for the provided template ID.
+components: {}

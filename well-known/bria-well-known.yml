@@ -1,0 +1,115 @@
+generated: '2026-08-08'
+method: searched
+source: live probes of every Bria host in apis.yml and every OpenAPI servers[] host
+note: >-
+  platform.bria.ai is a single-page application whose catch-all returns HTTP 200 with an
+  identical 16,978-byte HTML shell for every path, including every /.well-known/* path and a
+  deliberately nonsensical control path. Those 200s are NOT documents and are recorded here as
+  soft-404 so nothing downstream credits them. Only the two engine/mcp OAuth authorization-server
+  documents below returned real machine-readable bodies.
+hosts:
+- host: https://engine.prod.bria-api.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: bria-engine-oauth-authorization-server.json
+    spec: RFC 8414
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://mcp.prod.bria-api.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: bria-mcp-oauth-authorization-server.json
+    spec: RFC 8414
+    note: >-
+      Advertises issuer and endpoints on mcp.internal.production.bria-api.com, an internal
+      hostname that does not resolve publicly, while the served MCP endpoint is
+      mcp.prod.bria-api.com. Recorded verbatim as published.
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: >-
+      RFC 9728 protected-resource metadata is absent, so an MCP client cannot discover the
+      authorization server from the resource itself.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://bria.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://docs.bria.ai
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    third_party: true
+    note: >-
+      Belongs to the Redocly documentation platform (issuer https://auth.cloud.redocly.com),
+      not to Bria. Not saved and not credited to Bria.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://platform.bria.ai
+  soft_404: true
+  control_path: /zzz-nonexistent-control-path-9f3
+  control_status: 200
+  control_bytes: 16978
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    real: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    real: false
+  - path: /.well-known/agent.json
+    status: 200
+    real: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    real: false
+  - path: /.well-known/api-catalog
+    status: 200
+    real: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    real: false
+security_txt: null
+api_catalog: null
+agent_card: null

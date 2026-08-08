@@ -1,0 +1,60 @@
+generated: '2026-08-08'
+method: searched
+status: published
+source: https://docs.bria.ai/mcp-authentication
+server:
+  name: bria
+  transport: http
+  url: https://mcp.prod.bria-api.com/mcp
+  hosted_by: Bria
+  client_compatibility: any MCP client (documented for Claude, Cursor, VS Code)
+authentication:
+  methods:
+  - kind: apiKey
+    header: api_token
+    issued_at: https://platform.bria.ai/organization-management/api-keys
+  - kind: oauth2-bearer
+    parameter: authorization_token
+    authorization_server: https://mcp.prod.bria-api.com/.well-known/oauth-authorization-server
+  long_lived_tokens: true
+  anonymous_introspection: refused
+introspection:
+  attempted: '2026-08-08'
+  method: 'POST tools/list (jsonrpc 2.0)'
+  http_status: 401
+  response: 'either API key or Bearer token is required'
+  result: gated
+  note: >-
+    The live tool list and per-tool inputSchema require an authenticated session. Bria publishes
+    no tool names in llms.txt or in the docs, so the capabilities below are the documented
+    capability set, not a verbatim tools/list. Tool NAMES are unknown and are deliberately not
+    invented here.
+capabilities:
+  source: https://docs.bria.ai/mcp-authentication
+  documented:
+  - Background removal
+  - Background generation
+  - Image expansion
+  - Increase resolution
+  - Image generation
+  - Reimagine images based on their structure
+input_formats:
+- JPG
+- public image URL
+- base64-encoded image
+constraints:
+- When the MCP client is Claude, only public image URLs are supported.
+tools: []
+tools_note: >-
+  Intentionally empty. tools/list is auth-gated and Bria does not publish tool names; an invented
+  list would be fabrication. Re-run with an authenticated token to populate.
+x-evidence:
+  fetched: '2026-08-08'
+  probes:
+  - url: https://mcp.prod.bria-api.com/mcp
+    method: POST tools/list
+    http_status: 401
+  - url: https://mcp.prod.bria-api.com/.well-known/oauth-authorization-server
+    http_status: 200
+  - url: https://docs.bria.ai/mcp-authentication.md
+    http_status: 200

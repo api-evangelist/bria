@@ -1,0 +1,3418 @@
+openapi: 3.0.0
+info:
+  title: Product Shot API Reference
+  version: ''
+  description: >
+    Below you will find the technical specifications, request schemas, and
+    response models for our endpoints. 
+     
+    Choose an endpoint from the sidebar to view code samples and run test
+    requests. 
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+servers:
+  - url: https://engine.prod.bria-api.com/v1
+paths:
+  /product/cutout:
+    post:
+      summary: Product Cutout
+      tags:
+        - Product Endpoints
+      description: >-
+        [**Try out this capability in Bria's
+        sandbox**](https://platform.bria.ai/product-shot-editing/product-cutout)
+
+
+        **Description**
+
+
+        This capability allows you to create a precise cutout of a product from
+        any given image. This feature is especially valuable for eCommerce
+        platforms and applications, serving as a fundamental building block for
+        crafting a user-friendly interface. 
+
+
+
+        This API endpoint supports content moderation via an optional parameter
+        that can prevent processing if input images contain inappropriate
+        content or if the modified output would contain inappropriate content.
+      operationId: product-cutout
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  description: >-
+                    The Stock Keeping Unit identifier for the product. This
+                    parameter is optional.
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the image containing the product to be cut out.
+                    If both image_url and file are provided, image_url will be
+                    used. Accepted formats are jpeg, jpg, png, webp. Maximum
+                    file size 12MB.
+                file:
+                  type: string
+                  description: >-
+                    The image file containing the product to be cut out, in
+                    base64 format. Used if image_url is not provided. Accepted
+                    formats are jpeg, jpg, png, webp. Maximum file size 12MB.
+                force_rmbg:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Forces background removal, even if the original image
+                    already contains an alpha channel. Useful for refining
+                    existing foreground/background separation or ignoring
+                    unnecessary alpha channels.
+                preserve_alpha:
+                  type: boolean
+                  default: true
+                  description: >
+                    Controls whether the alpha channel values from the input
+                    image are retained in the output, if the input includes an
+                    alpha channel.
+
+                    - When true: The output image maintains the original
+                    transparency of fully and partially transparent pixels.
+
+                    - When false: The transparency values from the input are not
+                    preserved, but the output may still include an alpha channel
+                    (e.g., around the cropped area).
+
+                    - Has no effect if the input image does not include an alpha
+                    channel.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: >
+                    When enabled, applies content moderation to both input
+                    visuals and modified outputs.
+
+
+                    For input images:
+
+                    - Processing stops if the image fails moderation
+
+                    - Returns a 422 error with details about which parameter
+                    failed
+
+
+                    For output images:
+
+                    - If the modified image fails moderation, returns a 422
+                    error
+            example:
+              image_url: >-
+                https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result_url:
+                    type: string
+                    description: >-
+                      The URL of the processed product cutout image. This is a
+                      temporary URL that expires after 1 hour.
+              example:
+                result_url: URL
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: >-
+            Unsupported media type. Invalid file type. Supported file types are
+            jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: >-
+                    The request could not be completed because the visual in the
+                    '{parameter_name}' parameter did not pass content
+                    moderation.
+                output_violation:
+                  value: >-
+                    The request could not be completed because the modified
+                    visual did not pass content moderation.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/packshot:
+    post:
+      summary: Product Packshot
+      tags:
+        - Product Endpoints
+      description: >-
+        [**Try out this capability in Bria's
+        sandbox**](https://platform.bria.ai/product-shot-editing/product-packshot)
+
+
+        **Description**
+
+
+        The Product Pack Shot feature is designed to create professional
+        standard pack shots. The output is a 2000x2000 px image, with the
+        product size and location according to best practices. This feature can
+        allow users to take any photo of a product and transform it into a
+        professional pack shot, placing the product on a clean, seamless
+        background, typically white but customizable to any color.
+
+
+
+        This API endpoint supports content moderation via an optional parameter
+        that can prevent processing if input images contain inappropriate
+        content or if the modified output would contain inappropriate content.
+      operationId: product-packshot
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  description: >-
+                    The Stock Keeping Unit identifier for the product. This
+                    parameter is optional.
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the product image or product cutout. If both
+                    image_url and file are provided, image_url will be used.
+                    Accepted formats are jpeg, jpg, png, webp. Maximum file size
+                    12MB.
+                file:
+                  type: string
+                  description: >-
+                    The product image or product cutout file, in base64 format.
+                    Used if image_url is not provided. Accepted formats are
+                    jpeg, jpg, png, webp. Maximum file size 12MB.
+                background_color:
+                  type: string
+                  description: >-
+                    The background hex color code for the pack shot. Optionally,
+                    use 'transparent' for a transparent background. This
+                    parameter is optional.
+                  default: '#FFFFFF'
+                force_rmbg:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Forces background removal, even if the original image
+                    already contains an alpha channel. Useful for refining
+                    existing foreground/background separation or ignoring
+                    unnecessary alpha channels.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: >
+                    When enabled, applies content moderation to both input
+                    visuals and modified outputs.
+
+
+                    For input images:
+
+                    - Processing stops if the image fails moderation
+
+                    - Returns a 422 error with details about which parameter
+                    failed
+
+
+                    For output images:
+
+                    - If the modified image fails moderation, returns a 422
+                    error
+            example:
+              image_url: >-
+                https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg
+              background_color: '#FFFFFF'
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result_url:
+                    type: string
+                    description: >-
+                      The URL of the processed product pack shot image. This is
+                      a temporary URL that expires after 1 hour.
+              example:
+                result_url: URL
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: >-
+            Unsupported media type. Invalid file type. Supported file types are
+            jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: >-
+                    The request could not be completed because the visual in the
+                    '{parameter_name}' parameter did not pass content
+                    moderation.
+                output_violation:
+                  value: >-
+                    The request could not be completed because the modified
+                    visual did not pass content moderation.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/shadow:
+    post:
+      summary: Product Shadow
+      tags:
+        - Product Endpoints
+      description: >-
+        [**Try out this capability in Bria's
+        sandbox**](https://platform.bria.ai/product-shot-editing/product-shadow)
+
+
+        **Description**
+
+
+
+        The Product Shadow API allows you to add consistent and customizable
+        shadow to a product cutout. This feature is designed to work in
+        combination with other capabilities like product cutout,  product
+        packshot and product lifestyle shots, enhancing the visual appeal of
+        e-commerce and product imagery.
+
+
+
+        If the product image isn't a product cutout, you should use the product
+        cutout API first. The product shadow API accepts a product cutout as
+        input. Once you have a product cutout with a shadow, you can use it in
+        product packshot or product lifestyle shot APIs, where needed.
+
+
+
+        This API endpoint supports content moderation via an optional parameter
+        that can prevent processing if input images contain inappropriate
+        content or if the modified output would contain inappropriate content.
+      operationId: product-shadow
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  description: >-
+                    The Stock Keeping Unit identifier for the product. This
+                    parameter is optional.
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the product image or product cutout. If both
+                    image_url and file are provided, image_url will be used.
+                    Accepted formats are jpeg, jpg, png, webp. Maximum file size
+                    12MB. The input image must have a transparent background,
+                    could be obtained by using our background removal or cutout
+                    features.
+                file:
+                  type: string
+                  description: >-
+                    The product image or product cutout file, in base64 format.
+                    Used if image_url is not provided. Accepted formats are
+                    jpeg, jpg, png, webp. Maximum file size 12MB. The input
+                    image must have a transparent background, could be obtained
+                    by using our background removal or cutout features.
+                type:
+                  type: string
+                  description: >-
+                    Specifies the type of shadow. It can be 'regular' or
+                    'float'. This parameter is optional.
+                  default: regular
+                background_color:
+                  type: string
+                  description: >-
+                    The background hex color code for the resulting image. If
+                    you would like to get a transparent background, don't
+                    include this parameter in the request. This parameter is
+                    optional.
+                shadow_color:
+                  type: string
+                  description: The shadow color hex code. This parameter is optional.
+                  default: '#000000'
+                shadow_offset:
+                  type: array
+                  description: >-
+                    Controls the position of the shadow relative to the object,
+                    in pixels. Accepts a tuple-like list `[x, y]` where x and y
+                    can be positive or negative values. This parameter is
+                    optional.
+                  items:
+                    type: integer
+                  default:
+                    - 0
+                    - 15
+                shadow_intensity:
+                  type: integer
+                  description: >-
+                    Adjusts the intensity of the shadow. This parameter is
+                    optional.
+                  minimum: 0
+                  maximum: 100
+                  default: 60
+                shadow_blur:
+                  type: integer
+                  description: >-
+                    Controls the blur level of the shadow's edges. This
+                    parameter is optional. Default for 'shadow_type'=regular is
+                    15, while for 'shadow_type'=float is 20.
+                shadow_width:
+                  type: integer
+                  description: >-
+                    (For floating shadows) Controls the width of the elliptical
+                    shadow, in pixels that could be positive and negative. As
+                    default the value is according to the width of the product.
+                    This parameter is optional.
+                shadow_height:
+                  type: integer
+                  description: >-
+                    (For floating shadows) Controls the height of the elliptical
+                    shadow, in pixels that could be positive and negative. This
+                    parameter is optional.
+                  default: 70
+                force_rmbg:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Forces background removal, even if the original image
+                    already contains an alpha channel. Useful for refining
+                    existing foreground/background separation or ignoring
+                    unnecessary alpha channels.
+                preserve_alpha:
+                  type: boolean
+                  default: true
+                  description: >
+                    Controls whether the alpha channel values from the input
+                    image are retained in the output, if the input includes an
+                    alpha channel.
+
+                    - When true: The output image maintains the original
+                    transparency of fully and partially transparent pixels.
+
+                    - When false: The transparency values from the input are not
+                    preserved, but the output may still include an alpha channel
+                    (e.g., around the cropped area).
+
+                    - Has no effect if the input image does not include an alpha
+                    channel.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: >
+                    When enabled, applies content moderation to both input
+                    visuals and modified outputs.
+
+
+                    For input images:
+
+                    - Processing stops if the image fails moderation
+
+                    - Returns a 422 error with details about which parameter
+                    failed
+
+
+                    For output images:
+
+                    - If the modified image fails moderation, returns a 422
+                    error
+            example:
+              image_url: >-
+                https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result_url:
+                    type: string
+                    description: >-
+                      The URL of the processed product pack shot image. This is
+                      a temporary URL that expires after 1 hour.
+              example:
+                result_url: URL
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: >-
+            Unsupported media type. Invalid file type. Supported file types are
+            jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: >-
+                    The request could not be completed because the visual in the
+                    '{parameter_name}' parameter did not pass content
+                    moderation.
+                output_violation:
+                  value: >-
+                    The request could not be completed because the modified
+                    visual did not pass content moderation.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/lifestyle_shot_by_text:
+    post:
+      summary: Lifestyle Product Shot by Text
+      tags:
+        - Product Endpoints
+      description: >-
+        [**Try out this capability in Bria's
+        sandbox**](https://platform.bria.ai/product-shot-editing/lifestyle-product-shot-by-text)
+
+
+        **Description**
+
+
+        Creates enriched product shots by placing them in various environments
+        using textual descriptions.
+
+
+
+        In addition, you can adjust the background of the product by replacing
+        it with a solid color. 
+
+
+        To do this, specify a hex color code (e.g., #FF5733) in the
+        `scene_description`. 
+
+
+
+        This feature is only available when generating a single result
+        (`num_results=1`).
+
+
+
+        This endpoint also allows adjusting the position of the product and the
+        size of the final product shot.
+
+
+
+        This enables the creation of new and unique variations of your original
+        product image while maintaining control over layout and format.
+
+
+
+        To control product positioning and shot dimensions, use the
+        `placement_type` parameter, which offers several control modes:
+
+
+
+
+
+        - `original`: preserves the original position and size of the product
+        from the input image.
+
+
+
+
+
+        - `automatic`: generates results with 7 recommended placements, while
+        the shot_size is defined by the 'shot_size' parameter.
+
+
+
+
+
+        - `manual_placement`: allows choosing from predefined positions using
+        `manual_placement_selection`. The shot_size is defined by the
+        'shot_size' parameter.
+
+
+
+
+
+        - `custom_coordinates`: provides full control over the product's size
+        and location using `foreground_image_size` and
+        `foreground_image_location`. The shot_size is defined by the 'shot_size'
+        parameter.
+
+
+
+
+
+        - `manual_padding`: lets you define padding in pixels around the product
+        to control both size and placement.
+
+
+
+
+
+        - `automatic_aspect_ratio`: centers the product and resizes the canvas
+        automatically to match the specified `aspect_ratio`.
+
+
+
+
+
+
+        The parameters used for positioning and sizing depend on the selected
+        `placement_type`. Refer to the documentation for each mode to understand
+        the supported fields and behaviors.
+
+
+
+        We offer 3 different background generation modes when generating by
+        text: base, high contol and fast.
+
+          - **Base** - clean, high quality backgrounds.
+          - **High_control** - Stronger prompt adherence and scene context, finer control over layout and details - **we recommend using this mode.**
+          - **Fast** - same core capabilities as base, optimal speed and quality balace.
+
+        This API endpoint supports content moderation via an optional parameter
+        that can prevent processing if input images contain inappropriate
+        content, and filters out unsafe modified images - the first blocked
+        input image will fail the entire request.
+      operationId: product-lifestyle-shot-by-text
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  description: >-
+                    The Stock Keeping Unit identifier for the product. This
+                    parameter is optional.
+                sync:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Determines the response mode. When true, responses are
+                    synchronous. With false, responses are asynchronous,
+                    immediately providing URLs for images that are generated in
+                    the background. It is recommended to use sync=false for
+                    optimal performance. When generating more than 1 result, you
+                    should use the value false. When placement_type is
+                    automatic, sync has to be false.
+                mode:
+                  type: string
+                  enum:
+                    - base
+                    - high_control
+                    - fast
+                  default: fast
+                  description: >
+                    Selects the background-generation mode.
+
+
+                    - **Base** - clean, high quality backgrounds.
+
+                    - **High_control** - stronger prompt adherence and scene
+                    context, finer control over layout and details.
+
+                    - **Fast** - same core capabilities as base, optimal speed
+                    and quality balace.
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the product shot to be placed in a lifestyle
+                    shot. If both image_url and file are provided, image_url
+                    will be used. Accepted formats are jpeg, jpg, png, webp.
+                    Maximum file size 12MB.
+                file:
+                  type: string
+                  description: >-
+                    The product shot file to be placed in a lifestyle shot, in
+                    base64 format. Used if image_url is not provided. Accepted
+                    formats are jpeg, jpg, png, webp. Maximum file size 12MB.
+                scene_description:
+                  type: string
+                  description: >
+                    Text description of the new scene or background for the
+                    provided product shot. Bria currently supports prompts in
+                    English only, excluding special characters.
+
+
+                    **Prompt length guidelines per mode:**
+
+                    - base / fast: ~50–60 words
+
+                    - high_control: ~90–110 words
+                optimize_description:
+                  type: boolean
+                  default: true
+                  description: >-
+                    When true, an additional logic takes the scene_description
+                    that was included and adjusts it to achieve optimal results.
+                    Built with Meta Llama 3.
+                num_results:
+                  type: integer
+                  default: 4
+                  description: >-
+                    The number of lifestyle product shots you would like to
+                    generate. You will get num_results x 10 results when
+                    placement_type=automatic and according to the number of
+                    required placements x num_results if
+                    placement_type=manual_placement.
+                exclude_elements:
+                  type: string
+                  description: >-
+                    Elements or features that should be excluded from the
+                    generated scene. This parameter is optional and is available
+                    only when fast=false. Bria currently supports descriptions
+                    in English only, excluding special characters.
+                placement_type:
+                  type: string
+                  default: original
+                  description: >-
+                    This parameter allows you to select the control mode for
+                    determining both the product's positioning and the final
+                    shot size.
+
+                    - "original" will preserve the original position of the
+                    product in the image. The parameters `original_quality`,
+                    `aspect_ratio`, `foreground_image_size`,
+                    `foreground_image_location`, `manual_placement_selection`,
+                    `padding_values`, and `shot_size` will be ignored when this
+                    mode is used.
+
+                    - "automatic" will generate results with 7 of the
+                    recommended product positions. The shot_size is defined by
+                    the 'shot_size' parameter.
+
+                    - "manual_placement" will allow you to select predefined
+                    positions, using the parameter "manual_placement_selection".
+                    The shot_size is defined by the 'shot_size' parameter.
+
+                    - "custom_coordinates" Provides precise control over the
+                    size and position of the image using the parameters
+                    "foreground_image_size" and "foreground_image_location".
+                    This includes positions outside the canvas, which may result
+                    in cropping. The shot_size is defined by the 'shot_size'
+                    parameter.
+
+                    - "manual_padding" will allow you to control the position
+                    and size of the image by defining the desired padding (using
+                    'padding_values') in pixels around the product.
+
+                    - "automatic_aspect_ratio" will automatically center the
+                    product within the canvas and resize the canvas to match the
+                    provided `aspect_ratio`. The parameters `original_quality`,
+                    `foreground_image_size`, `foreground_image_location`,
+                    `manual_placement_selection`, `padding_values`, and
+                    `shot_size` will be ignored when this mode is used.
+                  enum:
+                    - original
+                    - automatic
+                    - manual_placement
+                    - manual_padding
+                    - custom_coordinates
+                    - automatic_aspect_ratio
+                original_quality:
+                  type: boolean
+                  default: false
+                  description: >-
+                    This flag is only relevant when placement_type=original. If
+                    true, the output image retains the original input image's
+                    size; otherwise, the image is scaled to 1 megapixel (1MP)
+                    while preserving its aspect ratio.
+                aspect_ratio:
+                  type: string
+                  enum:
+                    - '1:1'
+                    - '2:3'
+                    - '3:2'
+                    - '3:4'
+                    - '4:3'
+                    - '4:5'
+                    - '5:4'
+                    - '9:16'
+                    - '16:9'
+                  description: >
+                    Defines the aspect ratio of the output product shot when
+                    `placement_type` is set to `automatic_aspect_ratio`.
+
+                    The original image will be automatically positioned and
+                    scaled to fit this aspect ratio.
+
+                    Ignored for all other placement types.
+                shot_size:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                    - 1000
+                    - 1000
+                  description: >-
+                    The desired size of the final product shot. For optimal
+                    results, the total number of pixels should be around
+                    1,000,000. This parameter is only relevant when
+                    placement_type is automatic, manual_placement or
+                    custom_coordinates.
+                foreground_image_size:
+                  type: array
+                  items:
+                    type: integer
+                  description: >-
+                    Specifies the desired dimensions of the foreground image
+                    within the generated output. The size is defined as an array
+                    of integers representing [width, height] in pixels. This
+                    parameter is only relevant when placement_type is
+                    custom_coordinates.
+                foreground_image_location:
+                  type: array
+                  items:
+                    type: integer
+                  description: >-
+                    Specifies the desired [x, y] coordinates for positioning the
+                    foreground image within the full shot. The coordinates
+                    represent the upper-left corner of the foreground image.
+                    Values can extend outside the shot, in which case the input
+                    image will be cropped accordingly. This parameter is only
+                    relevant when placement_type is custom_coordinates.
+                manual_placement_selection:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - upper_left
+                      - upper_right
+                      - bottom_left
+                      - bottom_right
+                      - right_center
+                      - left_center
+                      - upper_center
+                      - bottom_center
+                      - center_vertical
+                      - center_horizontal
+                  default:
+                    - upper_left
+                  description: >-
+                    If you've selected placement_type=manual_placement, you
+                    should use this parameter to specify which
+                    placements/positions you would like to use from the list.
+                    You can select more than one placement in one request.
+                padding_values:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                    - 0
+                    - 0
+                    - 0
+                    - 0
+                  description: >-
+                    The desired padding in pixels around the product, when using
+                    placement_type=manual_padding. The order of the values is
+                    [left, right, top, bottom]. For optimal results, the total
+                    number of pixels, including padding, should be around
+                    1,000,000. It is recommended to first use the product cutout
+                    API, get the cutout and understand the size of the result,
+                    and then define the required padding and use the cutout as
+                    an input for this API.
+                force_rmbg:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Forces background removal, even if the original image
+                    already contains an alpha channel. Useful for refining
+                    existing foreground/background separation or ignoring
+                    unnecessary alpha channels.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: >
+                    When enabled, applies content moderation to both input
+                    visuals and modified outputs.
+
+
+                    For input images:
+
+                    - Processing stops at the first image that fails moderation
+
+                    - Returns a 422 error with details about which parameter
+                    failed
+
+
+                    For synchronous requests (sync=true):
+
+                    - If all modified images fail moderation, returns a 422
+                    error
+
+                    - If some images pass and others fail, returns a 200
+                    response with successful outputs and "blocked" objects for
+                    failed ones
+
+
+                    For asynchronous requests (sync=false):
+
+                    - Failed images are replaced with zero-byte files at their
+                    placeholder URLs
+
+                    - Successful images are stored at their original placeholder
+                    URLs   
+            examples:
+              Original placement:
+                value:
+                  image_url: URL
+                  mode: high_control
+                  scene_description: In a living room interior, on a kitchen counter
+                  placement_type: original
+                  num_results: 2
+                  original_quality: true
+                  optimize_description: true
+                  sync: true
+              Automatic placements:
+                value:
+                  image_url: URL
+                  scene_description: in a living room interior, on a kitchen counter
+                  placement_type: automatic
+                  shot_size:
+                    - 900
+                    - 550
+                  num_results: 1
+                  optimize_description: true
+              Manual placement from a list:
+                value:
+                  image_url: URL
+                  scene_description: in a living room interior, on a kitchen counter
+                  placement_type: manual_placement
+                  shot_size:
+                    - 900
+                    - 550
+                  manual_placement_selection:
+                    - upper_center
+                    - bottom_center
+                  num_results: 2
+                  optimize_description: true
+                  sync: true
+              Custom Coordinates:
+                value:
+                  image_url: URL
+                  scene_description: in a living room interior, on a kitchen counter
+                  placement_type: custom_coordinates
+                  foreground_image_size:
+                    - 500
+                    - 500
+                  foreground_image_location:
+                    - 100
+                    - 100
+                  shot_size:
+                    - 1000
+                    - 1000
+                  num_results: 2
+                  optimize_description: true
+                  sync: true
+              Manual padding:
+                value:
+                  image_url: URL
+                  scene_description: in a living room interior, on a kitchen counter
+                  placement_type: manual_padding
+                  padding_values:
+                    - 20
+                    - 30
+                    - 20
+                    - 30
+                  num_results: 2
+                  optimize_description: true
+                  sync: true
+              Automatic Aspect Ratio:
+                value:
+                  image_url: URL
+                  scene_description: In a living room interior, on a kitchen counter
+                  placement_type: automatic_aspect_ratio
+                  aspect_ratio: '4:3'
+                  num_results: 2
+                  optimize_description: true
+                  sync: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: >
+                      The array contains the results created in the request. In
+                      each result, the first value represents the URL of the
+                      result, the second value represents the seed, and the
+                      third value represents the session id of the result. It
+                      will take a few seconds for the image to become available
+                      via the URL if sync=false. You can recreate the same
+                      result in the future by using the seed as part of the
+                      request.
+
+
+                      When content_moderation is true:
+
+                      - For synchronous requests (sync=true): Results array will
+                      contain both successful generations and "blocked" objects
+                      for images that failed moderation
+
+                      - For asynchronous requests (sync=false): Failed images
+                      will be replaced with zero-byte files at their placeholder
+                      URLs
+                    items:
+                      type: array
+                      items:
+                        type: string
+              examples:
+                success:
+                  value:
+                    result:
+                      - - https://storage.server/outputs/valid_output_1.jpeg
+                        - '123111'
+                        - valid_output_1.jpeg
+                      - - https://storage.server/outputs/valid_output_2.jpeg
+                        - '123222'
+                        - valid_output_2.jpeg
+                partial_success:
+                  value:
+                    result:
+                      - - https://storage.server/outputs/valid_output_1.jpeg
+                        - '123111'
+                        - valid_output_1.jpeg
+                      - - blocked:true
+                        - error_code:422
+                        - >-
+                          description:The request could not be completed because
+                          the modified visual did not pass content moderation.
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: >-
+            Unsupported media type. Invalid file type. Supported file types are
+            jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: >-
+                    The request could not be completed because the visual in the
+                    '{parameter_name}' parameter did not pass content
+                    moderation.
+                all_outputs_blocked:
+                  value: >-
+                    The request could not be completed because all modified
+                    visuals failed content moderation.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/lifestyle_shot_by_image:
+    post:
+      summary: Lifestyle Product Shot by Image
+      tags:
+        - Product Endpoints
+      description: >-
+        [**Try out this capability in Bria's
+        sandbox**](https://platform.bria.ai/product-shot-editing/lifestyle-product-shot-by-image)
+
+
+        **Description**
+
+
+        Generates enriched product shots by placing them in visually compelling
+        environments, guided by a reference image. 
+
+
+
+        This endpoint also allows adjusting the position of the product and the
+        size of the final product shot.
+
+        This enables the creation of new and unique variations of your original
+        product image while maintaining control over layout and format.
+
+
+
+
+        To control product positioning and shot dimensions, use the
+        `placement_type` parameter, which offers several control modes:
+
+
+
+
+        - `original`: preserves the original position and size of the product
+        from the input image.
+
+
+
+
+
+        - `automatic`: generates results with 7 recommended placements, while
+        the shot_size is defined by the 'shot_size' parameter.
+
+
+
+
+
+        - `manual_placement`: allows choosing from predefined positions using
+        `manual_placement_selection`. The shot_size is defined by the
+        'shot_size' parameter.
+
+
+
+
+
+        - `custom_coordinates`: provides full control over the product's size
+        and location using `foreground_image_size` and
+        `foreground_image_location`. The shot_size is defined by the 'shot_size'
+        parameter.
+
+
+
+
+
+        - `manual_padding`: lets you define padding in pixels around the product
+        to control both size and placement.
+
+
+
+
+
+        - `automatic_aspect_ratio`: centers the product and resizes the canvas
+        automatically to match the specified `aspect_ratio`.
+
+
+
+
+
+        The parameters used for positioning and sizing depend on the selected
+        `placement_type`. Refer to the documentation for each mode to understand
+        the supported fields and behaviors.
+
+
+
+        This API endpoint supports content moderation via an optional parameter
+        that can prevent processing if input images contain inappropriate
+        content, and filters out unsafe modified images - the first blocked
+        input image will fail the entire request.
+      operationId: product-lifestyle-shot-by-image
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sku:
+                  type: string
+                  description: >-
+                    The Stock Keeping Unit identifier for the product. This
+                    parameter is optional.
+                sync:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Determines the response mode. When true, responses are
+                    synchronous. With false, responses are asynchronous,
+                    immediately providing URLs for images that are generated in
+                    the background. It is recommended to use sync=false for
+                    optimal performance. When generating more than 1 result, you
+                    should use the value false.
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the product shot to be placed in a lifestyle
+                    shot. If both image_url and file are provided, image_url
+                    will be used. Accepted formats are jpeg, jpg, png, webp.
+                    Maximum file size 12MB.
+                file:
+                  type: string
+                  description: >-
+                    The product shot file to be placed in a lifestyle shot, in
+                    base64 format. Used if image_url is not provided. Accepted
+                    formats are jpeg, jpg, png, webp. Maximum file size 12MB.
+                ref_image_urls:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    The URL of the reference image to be used for generating the
+                    lifestyle shot. If both ref_image_urls and ref_image_file
+                    are provided, ref_image_urls will be used. Accepted formats
+                    are jpeg, jpg, png, webp. Maximum file size 12MB.
+                ref_image_file:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    The reference image file to be used for generating the
+                    lifestyle shot, in base64 format. Only a single refernce
+                    image is supported at the moment. Used if ref_image_urls is
+                    not provided. Accepted formats are jpeg, jpg, png, webp.
+                    Maximum file size 12MB.
+                enhance_ref_image:
+                  type: boolean
+                  default: true
+                  description: >-
+                    When set to True, enhances the reference image by applying
+                    adjustments, such as lighting, shadows, and texture
+                    refinements, to produce more realistic and visually cohesive
+                    results. When enabled, this may also incorporate subtle
+                    elements from the reference image into the generated
+                    background for added authenticity.
+                ref_image_influence:
+                  type: number
+                  format: float
+                  minimum: 0
+                  maximum: 1
+                  default: 1
+                  description: >-
+                    Controls the degree of similarity between the generated
+                    background and the reference image, where 0.0 produces
+                    minimal resemblance and 1.0 creates a highly similar output.
+                num_results:
+                  type: integer
+                  default: 4
+                  description: >-
+                    The number of lifestyle product shots you would like to
+                    generate.
+                placement_type:
+                  type: string
+                  description: >-
+                    This parameter allows you to select the control mode for
+                    determining both the product's positioning and the final
+                    shot size.
+
+                    - "original" will preserve the original position of the
+                    product in the image. The parameters `original_quality`,
+                    `aspect_ratio`, `foreground_image_size`,
+                    `foreground_image_location`, `manual_placement_selection`,
+                    `padding_values`, and `shot_size` will be ignored when this
+                    mode is used.
+
+                    - "automatic" will generate results with 7 of the
+                    recommended product positions. The shot_size is defined by
+                    the 'shot_size' parameter.
+
+                    - "manual_placement" will allow you to select predefined
+                    positions, using the parameter "manual_placement_selection".
+                    The shot_size is defined by the 'shot_size' parameter.
+
+                    - "custom_coordinates" Provides precise control over the
+                    size and position of the image using the parameters
+                    "foreground_image_size" and "foreground_image_location".
+                    This includes positions outside the canvas, which may result
+                    in cropping. The shot_size is defined by the 'shot_size'
+                    parameter.
+
+                    - "manual_padding" will allow you to control the position
+                    and size of the image by defining the desired padding (using
+                    'padding_values') in pixels around the product.
+
+                    - "automatic_aspect_ratio" will automatically center the
+                    product within the canvas and resize the canvas to match the
+                    provided `aspect_ratio`. The parameters `original_quality`,
+                    `foreground_image_size`, `foreground_image_location`,
+                    `manual_placement_selection`, `padding_values`, and
+                    `shot_size` will be ignored when this mode is used.
+                  enum:
+                    - original
+                    - automatic
+                    - manual_placement
+                    - manual_padding
+                    - custom_coordinates
+                    - automatic_aspect_ratio
+                original_quality:
+                  type: boolean
+                  default: false
+                  description: >-
+                    This flag is only relevant when placement_type=original. If
+                    true, the output image retains the original input image's
+                    size (and not the reference image size); otherwise, the
+                    image is scaled to 1 megapixel (1MP) while preserving its
+                    aspect ratio.
+                aspect_ratio:
+                  type: string
+                  enum:
+                    - '1:1'
+                    - '2:3'
+                    - '3:2'
+                    - '3:4'
+                    - '4:3'
+                    - '4:5'
+                    - '5:4'
+                    - '9:16'
+                    - '16:9'
+                  description: >
+                    Defines the aspect ratio of the output product shot when
+                    `placement_type` is set to `automatic_aspect_ratio`.
+
+                    The original image will be automatically positioned and
+                    scaled to fit this aspect ratio.
+
+                    Ignored for all other placement types.
+                shot_size:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                    - 1000
+                    - 1000
+                  description: >-
+                    The desired size of the final product shot. For optimal
+                    results, the total number of pixels should be around
+                    1,000,000. This parameter is only relevant when
+                    placement_type is automatic,manual_placement or
+                    custom_coordinates.
+                foreground_image_size:
+                  type: array
+                  items:
+                    type: integer
+                  description: >-
+                    Specifies the desired dimensions of the foreground image
+                    within the generated output. The size is defined as an array
+                    of integers representing [width, height] in pixels. This
+                    parameter is only relevant when placement_type is
+                    custom_coordinates.
+                foreground_image_location:
+                  type: array
+                  items:
+                    type: integer
+                  description: >-
+                    Specifies the desired [x, y] coordinates for positioning the
+                    foreground image within the full shot. The coordinates
+                    represent the upper-left corner of the foreground image.
+                    Values can extend outside the shot, in which case the input
+                    image will be cropped accordingly. This parameter is only
+                    relevant when placement_type is custom_coordinates.
+                manual_placement_selection:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - upper_left
+                      - upper_right
+                      - bottom_left
+                      - bottom_right
+                      - right_center
+                      - left_center
+                      - upper_center
+                      - bottom_center
+                      - center_vertical
+                      - center_horizontal
+                  default:
+                    - upper_left
+                  description: >-
+                    If you've selected placement_type=manual_placement, you
+                    should use this parameter to specify which
+                    placements/positions you would like to use from the list.
+                    You can select more than one placement in one request.
+                padding_values:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                    - 0
+                    - 0
+                    - 0
+                    - 0
+                  description: >-
+                    The desired padding in pixels around the product, when using
+                    placement_type=manual_padding. The order of the values is
+                    [left, right, top, bottom]. For optimal results, the total
+                    number of pixels, including padding, should be around
+                    1,000,000. It is recommended to first use the product cutout
+                    API, get the cutout and understand the size of the result,
+                    and then define the required padding and use the cutout as
+                    an input for this API.
+                force_rmbg:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Forces background removal, even if the original image
+                    already contains an alpha channel. Useful for refining
+                    existing foreground/background separation or ignoring
+                    unnecessary alpha channels.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: >
+                    When enabled, applies content moderation to both input
+                    visuals and modified outputs.
+
+
+                    For input images:
+
+                    - Processing stops at the first image that fails moderation
+
+                    - Returns a 422 error with details about which parameter
+                    failed
+
+
+                    For synchronous requests (sync=true):
+
+                    - If all modified images fail moderation, returns a 422
+                    error
+
+                    - If some images pass and others fail, returns a 200
+                    response with successful outputs and "blocked" objects for
+                    failed ones
+
+
+                    For asynchronous requests (sync=false):
+
+                    - Failed images are replaced with zero-byte files at their
+                    placeholder URLs
+
+                    - Successful images are stored at their original placeholder
+                    URLs  
+            examples:
+              Original placement:
+                value:
+                  image_url: URL
+                  ref_image_urls: URL
+                  placement_type: original
+                  num_results: 2
+                  original_quality: true
+                  sync: true
+              Automatic placements:
+                value:
+                  image_url: URL
+                  ref_image_urls: URL
+                  placement_type: automatic
+                  shot_size:
+                    - 900
+                    - 550
+                  num_results: 1
+              Manual placement from a list:
+                value:
+                  image_url: URL
+                  ref_image_urls: URL
+                  placement_type: manual_placement
+                  shot_size:
+                    - 900
+                    - 550
+                  manual_placement_selection:
+                    - upper_center
+                    - bottom_center
+                  num_results: 2
+                  sync: true
+              Custom Coordinates:
+                value:
+                  image_url: URL
+                  ref_image_urls: URL
+                  placement_type: custom_coordinates
+                  foreground_image_size:
+                    - 500
+                    - 500
+                  foreground_image_location:
+                    - 100
+                    - 100
+                  shot_size:
+                    - 1000
+                    - 1000
+                  num_results: 2
+                  sync: true
+              Manual padding:
+                value:
+                  image_url: URL
+                  ref_image_urls: URL
+                  placement_type: manual_padding
+                  padding_values:
+                    - 20
+                    - 30
+                    - 20
+                    - 30
+                  num_results: 2
+                  optimize_description: true
+                  sync: true
+              Automatic Aspect Ratio:
+                value:
+                  image_url: URL
+                  ref_image_urls: URL
+                  placement_type: automatic_aspect_ratio
+                  aspect_ratio: '4:3'
+                  num_results: 2
+                  sync: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: >
+                      The array contains the results created in the request. In
+                      each result, the first value represents the URL of the
+                      result, the second value represents the seed, and the
+                      third value represents the session id of the result. It
+                      will take a few seconds for the image to become available
+                      via the URL if sync=false. You can recreate the same
+                      result in the future by using the seed as part of the
+                      request.
+
+
+                      When content_moderation is true:
+
+                      - For synchronous requests (sync=true): Results array will
+                      contain both successful generations and "blocked" objects
+                      for images that failed moderation
+
+                      - For asynchronous requests (sync=false): Failed images
+                      will be replaced with zero-byte files at their placeholder
+                      URLs
+                    items:
+                      type: array
+                      items:
+                        type: string
+              examples:
+                success:
+                  value:
+                    result:
+                      - - https://storage.server/outputs/valid_output_1.jpeg
+                        - '123111'
+                        - valid_output_1.jpeg
+                      - - https://storage.server/outputs/valid_output_2.jpeg
+                        - '123222'
+                        - valid_output_2.jpeg
+                partial_success:
+                  value:
+                    result:
+                      - - https://storage.server/outputs/valid_output_1.jpeg
+                        - '123111'
+                        - valid_output_1.jpeg
+                      - - blocked:true
+                        - error_code:422
+                        - >-
+                          description:The request could not be completed because
+                          the modified visual did not pass content moderation.
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: >-
+            Unsupported media type. Invalid file type. Supported file types are
+            jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: >-
+                    The request could not be completed because the visual in the
+                    '{parameter_name}' parameter did not pass content
+                    moderation.
+                all_outputs_blocked:
+                  value: >-
+                    The request could not be completed because all modified
+                    visuals failed content moderation.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /image/edit/product/integrate:
+    post:
+      summary: Embed products into a scene
+      servers:
+        - url: https://engine.prod.bria-api.com/v2
+          description: Specific server for v2 endpoints
+      tags:
+        - Product Endpoints
+      description: >-
+        [**Try out this capability in Bria's
+        sandbox**](https://platform.bria.ai/product-shot-editing/product-embedding)
+
+
+        **Description**
+
+
+        Integrate and embed one or more products into a predefined scene at
+        precise user-defined coordinates. 
+
+        This endpoint ensures the product matches the scene's lighting,
+        perspective, and aesthetics.
+
+
+        **Note on Product Cutout & Scaling:** Please use Product Cutput endpoint
+        first, to create a presice cutout of your product. **Crucially, the
+        provided `coordinates` (x, y, width, height) are applied to the
+        resulting tight cutout of the product, not the original source image.**
+        To avoid stretching or distortion, developers should ensure the
+        requested width/height matches the aspect ratio of the actual product
+        object rather than the original canvas.
+      operationId: product-integrate
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - scene
+                - products
+              properties:
+                scene:
+                  type: string
+                  description: >-
+                    Publicly available URL or Base64-encoded image of the scene
+                    where the product will be embedded. Accepted formats are
+                    jpeg, jpg, png, webp.
+                products:
+                  type: array
+                  description: >-
+                    An array where each object defines a product to be embedded
+                    and its specific placement within the scene. Supports 1 to N
+                    products.
+                  minItems: 1
+                  items:
+                    type: object
+                    required:
+                      - image
+                      - coordinates
+                    properties:
+                      image:
+                        type: string
+                        description: >
+                          Publicly available URL or Base64-encoded image of the
+                          product. Accepted formats are jpeg, jpg, png, webp.
+
+
+                          **Note:**
+
+                          - If the image contains an alpha channel, no cutout is
+                          applied.
+
+                          - If the image does not contain an alpha channel,
+                          automatic product cutout is applied.
+                      coordinates:
+                        type: object
+                        description: >
+                          An object specifying the exact placement and scaling
+                          of the **cutout product** within the scene.
+                        required:
+                          - x
+                          - 'y'
+                          - width
+                          - height
+                        properties:
+                          x:
+                            type: integer
+                            description: >-
+                              X-coordinate of the cutout product's top-left
+                              corner relative to the scene image.
+                          'y':
+                            type: integer
+                            description: >-
+                              Y-coordinate of the cutout product's top-left
+                              corner relative to the scene image.
+                          width:
+                            type: integer
+                            description: >-
+                              Target width for the tightly cropped product.
+                              Ensure this matches the product's aspect ratio to
+                              prevent distortion.
+                          height:
+                            type: integer
+                            description: Target height for the tightly cropped product.
+                seed:
+                  type: integer
+                  description: >-
+                    Seed for deterministic generation. Uses a random seed if
+                    omitted.
+                visual_input_content_moderation:
+                  type: boolean
+                  default: true
+                  description: >-
+                    If true, returns 422 on visual input moderation failure for
+                    scene or product.
+                visual_output_content_moderation:
+                  type: boolean
+                  default: true
+                  description: If true, returns 422 on visual output moderation failure.
+  /image/edit/product/cutout:
+    post:
+      summary: Product Cutout (v2)
+      servers:
+        - url: https://engine.prod.bria-api.com/v2
+          description: Specific server for v2 endpoints
+      tags:
+        - Product Endpoints
+      description: >-
+        **Description**
+
+
+        Creates a clean product cutout from any image by removing the background
+        and cropping the image tightly around the product. This capability is
+        especially valuable for eCommerce platforms and applications, and serves
+        as a fundamental building block for product imagery pipelines such as
+        Product Packshot, Product Shadow, and Embed products into a scene.
+
+
+        This is the v2 version of the Product Cutout capability, replacing the
+        legacy v1 endpoint (POST /v1/product/cutout). Both versions produce
+        identical results. v2 introduces the standard v2 API contract - JSON
+        requests, asynchronous execution with status polling or webhooks,
+        granular content moderation controls, and the standard v2 response
+        envelope. The v1 endpoint remains available, and new integrations should
+        use v2.
+
+
+        By default, requests are processed asynchronously. The API immediately
+        returns a request_id and a status URL. Track progress and retrieve the
+        result using the [Status Service](https://docs.bria.ai/status), or
+        receive the result via webhook_url. Set sync to true to hold the
+        connection open and receive the final result directly in the response.
+
+
+        This endpoint supports content moderation via optional parameters that
+        can prevent processing if the input image contains inappropriate content
+        or if the output would contain inappropriate content.
+      operationId: product-cutout-v2
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  description: >-
+                    Publicly available URL or Base64-encoded image containing
+                    the product to be cut out. Accepted formats are jpeg, jpg,
+                    png, webp. Maximum file size 12MB.
+                sync:
+                  type: boolean
+                  default: false
+                  description: >
+                    Specifies the response mode. This parameter is optional.
+
+                    - When `false` (default), the request is processed
+                    asynchronously: the API immediately returns a status URL to
+                    track progress.
+
+                    - When `true`, the request is processed synchronously: the
+                    API holds the connection open until the process is complete
+                    and then returns the final image URL in the response.
+                sku:
+                  type: string
+                  description: >-
+                    The Stock Keeping Unit identifier for the product. This
+                    parameter is optional.
+                preserve_alpha:
+                  type: boolean
+                  default: true
+                  description: >
+                    Controls whether the alpha channel values from the input
+                    image are retained in the output, if the input includes an
+                    alpha channel.
+
+                    - When true: The output image maintains the original
+                    transparency of fully and partially transparent pixels.
+
+                    - When false: The transparency values from the input are not
+                    preserved, but the output may still include an alpha channel
+                    (e.g., around the cropped area).
+
+                    - Has no effect if the input image does not include an alpha
+                    channel.
+                force_background_detection:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Forces background removal, even if the original image
+                    already contains an alpha channel. Useful for refining
+                    existing foreground/background separation or ignoring
+                    unnecessary alpha channels. Replaces the v1 parameter
+                    force_rmbg.
+                output_type:
+                  type: string
+                  default: png
+                  enum:
+                    - png
+                    - jpeg
+                  description: The desired output format. This parameter is optional.
+                visual_input_content_moderation:
+                  type: boolean
+                  default: false
+                  description: >-
+                    If true, applies content moderation to the input image and
+                    returns 422 on moderation failure. This parameter is
+                    optional.
+                visual_input_content_moderation_threshold:
+                  type: number
+                  default: 80
+                  description: >-
+                    Threshold used by the input content moderation check.
+                    Applies only when visual_input_content_moderation is
+                    enabled.
+                visual_output_content_moderation:
+                  type: boolean
+                  default: false
+                  description: >-
+                    If true, applies content moderation to the output image and
+                    returns 422 on moderation failure. This parameter is
+                    optional.
+                visual_output_content_moderation_threshold:
+                  type: number
+                  default: 80
+                  description: >-
+                    Threshold used by the output content moderation check.
+                    Applies only when visual_output_content_moderation is
+                    enabled.
+                webhook_url:
+                  type: string
+                  format: uri
+                  description: >-
+                    Optional URL for receiving the result via webhook when the
+                    async job completes. See
+                    [Webhooks](https://docs.bria.ai/webhooks).
+            example:
+              image: >-
+                https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg
+      responses:
+        '200':
+          description: Successful operation (Synchronous Success).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                    description: Unique identifier of the request.
+                  result:
+                    type: object
+                    properties:
+                      image_url:
+                        type: string
+                        description: The URL of the processed product cutout image.
+        '202':
+          description: >-
+            Accepted (Asynchronous). You can track the progress and retrieve the
+            final result using the Status Service. For more details, refer to
+            the [Status Service](https://docs.bria.ai/status) section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                    description: Unique identifier of the request.
+                  status_url:
+                    type: string
+                    description: >-
+                      URL for tracking the request status and retrieving the
+                      final result.
+        '400':
+          description: Bad request. For example, the input image is fully transparent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                      message:
+                        type: string
+                      details:
+                        type: string
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden.
+        '422':
+          description: >-
+            Unprocessable Entity. Validation or content moderation failure. The
+            response contains a structured error object with message and
+            details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: integer
+                      message:
+                        type: string
+                      details:
+                        type: string
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        5XX:
+          description: Internal server error. An error occurred on the server.
+  /products/consistent_shots:
+    post:
+      summary: Consistent Product Shots (Coming Soon)
+      tags:
+        - Product Endpoints
+      description: >-
+        **Description**
+
+        This feature allows users to create consistent product shots by
+        providing either a textual description of a scene or an image, along
+        with a group of product images. The resulting consistent product shots
+        are ideal for use on social media, eCommerce websites, product catalogs,
+        and other marketing materials, ensuring a uniform and professional
+        appearance across all platforms.
+      operationId: consistent-product-shots
+      responses:
+        '200':
+          description: Successful operation.
+  /product/contextual_keyword_extraction:
+    post:
+      summary: Contextual Keyword Extraction (Coming Soon)
+      tags:
+        - Product Endpoints
+      description: >-
+        **Description**
+
+        This feature allows users to extract relevant keywords from an image and
+        its context, focusing on the primary product rather than secondary
+        elements. This capability enhances search optimization in eCommerce by
+        ensuring that the keywords accurately represent the product being sold.
+        It can be particularly useful for improving product searchability on
+        eCommerce websites, enhancing SEO for product listings, automating
+        content management, and optimizing social media marketing efforts.
+      operationId: contextual-keyword-extraction
+      responses:
+        '200':
+          description: Successful operation.
+  /product/vehicle/shot_by_text:
+    post:
+      summary: Vehicle Shot by text
+      tags:
+        - Automotive Endpoints
+      description: >-
+        [**Try out this capability in Bria's Automobile
+        Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Creates enriched automotive product shots by placing vehicles in
+        realistic environments using textual descriptions.  
+
+
+
+        This endpoint includes vehicle-specific enhancements that adapt the
+        background scene to match automotive contexts, specifically - snow,
+        sand, and grass. It embeds the vehicle into the environment for a
+        natural, grounded appearance.  
+
+
+
+        This endpoint also allows adjusting the position of the product and the
+        size of the final product shot.
+
+        This enables the creation of new and unique variations of your original
+        product image while maintaining control over layout and format.
+
+
+
+        To control product positioning and shot dimensions, use the
+        `placement_type` parameter, which offers several control modes:
+
+
+
+        - `original`: preserves the original position and size of the product
+        from the input image.
+
+
+        - `automatic`: generates results with 7 recommended placements, while
+        the shot_size is defined by the 'shot_size' parameter.
+
+
+        - `manual_placement`: allows choosing from predefined positions using
+        `manual_placement_selection`. The shot_size is defined by the
+        'shot_size' parameter.
+
+
+        - `custom_coordinates`: provides full control over the product's size
+        and location using `foreground_image_size` and
+        `foreground_image_location`. The shot_size is defined by the 'shot_size'
+        parameter.
+
+
+        - `manual_padding`: lets you define padding in pixels around the product
+        to control both size and placement.
+
+
+        - `automatic_aspect_ratio`: centers the product and resizes the canvas
+        automatically to match the specified `aspect_ratio`.
+
+
+
+        The parameters used for positioning and sizing depend on the selected
+        `placement_type`. Refer to the documentation for each mode to understand
+        the supported fields and behaviors.
+
+
+
+        This API endpoint supports content moderation via an optional parameter
+        that can prevent processing if input images contain inappropriate
+        content, and filters out unsafe modified images — the first blocked
+        input image will fail the entire request.  
+      operationId: vehicle-shot-by-text
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sync:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Determines the response mode. When true, responses are
+                    synchronous. With false, responses are asynchronous,
+                    immediately providing URLs for images that are generated in
+                    the background. It is recommended to use sync=false for
+                    optimal performance. When generating more than 1 result, you
+                    should use the value false. When placement_type is
+                    automatic, sync has to be false.
+                mode:
+                  type: string
+                  enum:
+                    - base
+                    - high_control
+                    - fast
+                  default: high_control
+                  description: >
+                    Selects the background-generation mode.
+
+
+                    - **Base** - clean, high quality backgrounds.
+
+                    - **High_control** - stronger prompt adherence and scene
+                    context, finer control over layout and details.
+
+                    - **Fast** - same core capabilities as base, optimal speed
+                    and quality balace.
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the vehicle to be placed in the shot. If both
+                    image_url and file are provided, image_url will be used.
+                    Accepted formats are jpeg, jpg, png, webp. Maximum file size
+                    12MB.
+                file:
+                  type: string
+                  description: >-
+                    The vehicle file to be placed in the shot, in base64 format.
+                    Used if image_url is not provided. Accepted formats are
+                    jpeg, jpg, png, webp. Maximum file size 12MB.
+                scene_description:
+                  type: string
+                  description: >
+                    Text description of the new scene or background for the
+                    provided vehicle shot. Bria currently supports prompts in
+                    English only, excluding special characters.
+
+
+                    **Prompt length guidelines per mode:**
+
+                    - base / fast: ~50–60 words
+
+                    - high_control: ~90–110 words
+                optimize_description:
+                  type: boolean
+                  default: true
+                  description: >-
+                    When true, an additional logic takes the scene_description
+                    that was included and adjusts it to achieve optimal results.
+                    Built with Meta Llama 3.
+                num_results:
+                  type: integer
+                  default: 4
+                  description: >-
+                    The number of vehicle shots you would like to generate. You
+                    will get num_results x 10 results when
+                    placement_type=automatic and according to the number of
+                    required placements x num_results if
+                    placement_type=manual_placement.
+                exclude_elements:
+                  type: string
+                  description: >-
+                    Elements or features that should be excluded from the
+                    generated scene. This parameter is optional and is available
+                    only when fast=false. Bria currently supports descriptions
+                    in English only, excluding special characters.
+                placement_type:
+                  type: string
+                  description: >-
+                    This parameter allows you to select the control mode for
+                    determining both the product's positioning and the final
+                    shot size.
+
+                    - "original" will preserve the original position of the
+                    product in the image. The parameters `original_quality`,
+                    `aspect_ratio`, `foreground_image_size`,
+                    `foreground_image_location`, `manual_placement_selection`,
+                    `padding_values`, and `shot_size` will be ignored when this
+                    mode is used.
+
+                    - "automatic" will generate results with 7 of the
+                    recommended product positions. The shot_size is defined by
+                    the 'shot_size' parameter.
+
+                    - "manual_placement" will allow you to select predefined
+                    positions, using the parameter "manual_placement_selection".
+                    The shot_size is defined by the 'shot_size' parameter.
+
+                    - "custom_coordinates" Provides precise control over the
+                    size and position of the image using the parameters
+                    "foreground_image_size" and "foreground_image_location".
+                    This includes positions outside the canvas, which may result
+                    in cropping. The shot_size is defined by the 'shot_size'
+                    parameter.
+
+                    - "manual_padding" will allow you to control the position
+                    and size of the image by defining the desired padding (using
+                    'padding_values') in pixels around the product.
+
+                    - "automatic_aspect_ratio" will automatically center the
+                    product within the canvas and resize the canvas to match the
+                    provided `aspect_ratio`. The parameters `original_quality`,
+                    `foreground_image_size`, `foreground_image_location`,
+                    `manual_placement_selection`, `padding_values`, and
+                    `shot_size` will be ignored when this mode is used.
+                  enum:
+                    - original
+                    - automatic
+                    - manual_placement
+                    - manual_padding
+                    - custom_coordinates
+                    - automatic_aspect_ratio
+                original_quality:
+                  type: boolean
+                  default: false
+                  description: >-
+                    This flag is only relevant when placement_type=original. If
+                    true, the output image retains the original input image's
+                    size; otherwise, the image is scaled to 1 megapixel (1MP)
+                    while preserving its aspect ratio.
+                aspect_ratio:
+                  type: string
+                  enum:
+                    - '1:1'
+                    - '2:3'
+                    - '3:2'
+                    - '3:4'
+                    - '4:3'
+                    - '4:5'
+                    - '5:4'
+                    - '9:16'
+                    - '16:9'
+                  description: >
+                    Defines the aspect ratio of the output product shot when
+                    `placement_type` is set to `automatic_aspect_ratio`.
+
+                    The original image will be automatically positioned and
+                    scaled to fit this aspect ratio.
+
+                    Ignored for all other placement types.
+                shot_size:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                    - 1000
+                    - 1000
+                  description: >-
+                    The desired size of the final product shot. For optimal
+                    results, the total number of pixels should be around
+                    1,000,000. This parameter is only relevant when
+                    placement_type is automatic,manual_placement or
+                    custom_coordinates.
+                foreground_image_size:
+                  type: array
+                  items:
+                    type: integer
+                  description: >-
+                    Specifies the desired dimensions of the foreground image
+                    within the generated output. The size is defined as an array
+                    of integers representing [width, height] in pixels. This
+                    parameter is only relevant when placement_type is
+                    custom_coordinates.
+                foreground_image_location:
+                  type: array
+                  items:
+                    type: integer
+                  description: >-
+                    Specifies the desired [x, y] coordinates for positioning the
+                    foreground image within the full shot. The coordinates
+                    represent the upper-left corner of the foreground image.
+                    Values can extend outside the shot, in which case the input
+                    image will be cropped accordingly. This parameter is only
+                    relevant when placement_type is custom_coordinates.
+                manual_placement_selection:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - upper_left
+                      - upper_right
+                      - bottom_left
+                      - bottom_right
+                      - right_center
+                      - left_center
+                      - upper_center
+                      - bottom_center
+                      - center_vertical
+                      - center_horizontal
+                  default:
+                    - upper_left
+                  description: >-
+                    If you've selected placement_type=manual_placement, you
+                    should use this parameter to specify which
+                    placements/positions you would like to use from the list.
+                    You can select more than one placement in one request.
+                padding_values:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                    - 0
+                    - 0
+                    - 0
+                    - 0
+                  description: >-
+                    The desired padding in pixels around the product, when using
+                    placement_type=manual_padding. The order of the values is
+                    [left, right, top, bottom]. For optimal results, the total
+                    number of pixels, including padding, should be around
+                    1,000,000. It is recommended to first use the product cutout
+                    API, get the cutout and understand the size of the result,
+                    and then define the required padding and use the cutout as
+                    an input for this API.
+                force_rmbg:
+                  type: boolean
+                  default: false
+                  description: >-
+                    Forces background removal, even if the original image
+                    already contains an alpha channel. Useful for refining
+                    existing foreground/background separation or ignoring
+                    unnecessary alpha channels.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: >
+                    When enabled, applies content moderation to both input
+                    visuals and modified outputs.
+
+
+                    For input images:
+
+                    - Processing stops at the first image that fails moderation
+
+                    - Returns a 422 error with details about which parameter
+                    failed
+
+
+                    For synchronous requests (sync=true):
+
+                    - If all modified images fail moderation, returns a 422
+                    error
+
+                    - If some images pass and others fail, returns a 200
+                    response with successful outputs and "blocked" objects for
+                    failed ones
+
+
+                    For asynchronous requests (sync=false):
+
+                    - Failed images are replaced with zero-byte files at their
+                    placeholder URLs
+
+                    - Successful images are stored at their original placeholder
+                    URLs   
+            example:
+              image_url: URL
+              mode: high_control
+              scene_description: A vehicle on a coastal road at sunset
+              placement_type: original
+              num_results: 2
+              original_quality: true
+              optimize_description: true
+              sync: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: >
+                      The array contains the results created in the request. In
+                      each result, the first value represents the URL of the
+                      result, the second value represents the seed, and the
+                      third value represents the session id of the result. It
+                      will take a few seconds for the image to become available
+                      via the URL if sync=false. You can recreate the same
+                      result in the future by using the seed as part of the
+                      request.
+
+
+                      When content_moderation is true:
+
+                      - For synchronous requests (sync=true): Results array will
+                      contain both successful generations and "blocked" objects
+                      for images that failed moderation
+
+                      - For asynchronous requests (sync=false): Failed images
+                      will be replaced with zero-byte files at their placeholder
+                      URLs
+                    items:
+                      type: array
+                      items:
+                        type: string
+              examples:
+                success:
+                  value:
+                    result:
+                      - - https://storage.server/outputs/valid_output_1.jpeg
+                        - '123111'
+                        - valid_output_1.jpeg
+                      - - https://storage.server/outputs/valid_output_2.jpeg
+                        - '123222'
+                        - valid_output_2.jpeg
+                partial_success:
+                  value:
+                    result:
+                      - - https://storage.server/outputs/valid_output_1.jpeg
+                        - '123111'
+                        - valid_output_1.jpeg
+                      - - blocked:true
+                        - error_code:422
+                        - >-
+                          description:The request could not be completed because
+                          the modified visual did not pass content moderation.
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: >-
+            Unsupported media type. Invalid file type. Supported file types are
+            jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: >-
+                    The request could not be completed because the visual in the
+                    '{parameter_name}' parameter did not pass content
+                    moderation.
+                all_outputs_blocked:
+                  value: >-
+                    The request could not be completed because all modified
+                    visuals failed content moderation.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/shot_by_image:
+    post:
+      summary: Vehicle Shot by Image (Coming soon)
+      tags:
+        - Automotive Endpoints
+      description: |
+        Coming soon
+      operationId: vehicle-shot-by-image
+  /product/vehicle/segment:
+    post:
+      summary: Segmentation
+      tags:
+        - Automotive Endpoints
+      description: >-
+        [**Try out this capability in Bria's Automobile
+        Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Generates segmentation masks for specific vehicle parts from an input
+        image, enabling further enhancements such as reflection generation or
+        wheel refinement.  
+
+
+
+        This endpoint returns separate binary masks for each segmented region,
+        including windows, wheels, and body parts. If a specific part is not
+        detected in the image, it will be returned with an empty URL.  
+
+
+
+        The API supports input via image URL or base64-encoded image file, and
+        also includes optional content moderation.
+      operationId: vehicle-segmentation
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the image containing the vehicle to segment. If
+                    both image_url and file are provided, image_url will be
+                    used. Accepted formats are jpeg, jpg, png, webp. Max file
+                    size 12MB.
+                file:
+                  type: string
+                  description: >-
+                    Base64-encoded image containing the vehicle to segment. Used
+                    only if image_url is not provided. Accepted formats are
+                    jpeg, jpg, png, webp. Max file size 12MB.
+            example:
+              image_url: https://example.com/car.jpeg
+      responses:
+        '200':
+          description: Segmentation masks successfully generated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  windshield:
+                    type: string
+                    description: >-
+                      URL to the PNG mask of the windshield. Empty string if not
+                      detected.
+                  rear_window:
+                    type: string
+                    description: >-
+                      URL to the PNG mask of the rear window. Empty string if
+                      not detected.
+                  side_windows:
+                    type: string
+                    description: >-
+                      URL to the PNG mask of the side windows. Empty string if
+                      not detected.
+                  body:
+                    type: string
+                    description: >-
+                      URL to the PNG mask of the vehicle body. Empty string if
+                      not detected.
+                  wheels:
+                    type: string
+                    description: >-
+                      URL to the PNG mask of all visible wheels. Empty string if
+                      not detected.
+                  hubcap:
+                    type: string
+                    description: >-
+                      URL to the PNG mask of all visible hubcaps. Empty string
+                      if not detected.
+                  tires:
+                    type: string
+                    description: >-
+                      URL to the PNG mask of all visible hubcaps. Empty string
+                      if not detected.
+              examples:
+                success:
+                  value:
+                    windshield: https://example.com/masks/windshield.png
+                    rear_window: ''
+                    side_windows: https://example.com/masks/side_windows.png
+                    body: https://example.com/masks/body.png
+                    wheels: https://example.com/masks/wheels.png
+                    hubcap: https://example.com/masks/hubcap.png
+                    tires: https://example.com/masks/tires.png
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types - jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/generate_reflections:
+    post:
+      summary: Reflections
+      tags:
+        - Automotive Endpoints
+      description: >-
+        [**Try out this capability in Bria's Automobile
+        Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Generates realistic reflections on relevant surfaces of a product image,
+        such as glass, metal, or glossy materials.
+
+
+
+        Reflection masks can be provided manually or generated automatically
+        using our segmentation tools.
+
+
+
+        The output includes an updated image with applied reflections and
+        optional reflection layers per region.
+      operationId: vehicle-generate-reflections
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the vehicle shot. If both image_url and file are
+                    provided, image_url will be used. Accepted formats are jpeg,
+                    jpg, png, webp. Max file size 12MB.
+                file:
+                  type: string
+                  description: >-
+                    The vehicle shot file in base64 format. Used only if
+                    image_url is not provided. Accepted formats are jpeg, jpg,
+                    png, webp. Max file size 12MB.
+                masks:
+                  type: object
+                  description: >-
+                    An object containing URLs to binary masks for each region to
+                    apply reflections on. Accepted keys are `windshield`,
+                    `rear_window`, `side_windows`, `body`, `wheels`.
+                layers:
+                  type: boolean
+                  description: >-
+                    If true, returns separate images per region along with the
+                    full composite. If false, only the full image is returned.
+                seed:
+                  type: integer
+                  description: Optional seed for consistent reflection results.
+            example:
+              image_url: https://example.com/car.jpg
+              masks:
+                windshield: https://example.com/masks/windshield.png
+                side_windows: https://example.com/masks/side_windows.png
+                body: https://example.com/masks/body.png
+                wheels: https://example.com/masks/wheels.png
+              layers: true
+              seed: 42
+      responses:
+        '200':
+          description: Reflections successfully applied.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL of the image with reflections applied.
+                  seed:
+                    type: integer
+                    description: The seed used to generate the reflections.
+                  layers:
+                    type: object
+                    description: >-
+                      Returned only when layers=true. Contains region-specific
+                      reflection images.
+                    additionalProperties:
+                      type: string
+              examples:
+                layers_false:
+                  value:
+                    url: >-
+                      https://example.com/results/full_image_with_reflections.png
+                    seed: 123
+                layers_true:
+                  value:
+                    url: >-
+                      https://example.com/results/full_image_with_reflections.png
+                    seed: 123
+                    layers:
+                      windshield: https://example.com/reflections/windshield.png
+                      rear_window: null
+                      side_windows: https://example.com/reflections/side_windows.png
+                      body: https://example.com/reflections/body.png
+                      wheels: https://example.com/reflections/wheels.png
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/refine_tires:
+    post:
+      summary: Tires Refinement
+      tags:
+        - Automotive Endpoints
+      description: >-
+        [**Try out this capability in Bria's Automobile
+        Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Enhances the appearance of the vehicle tires by adding realistic
+        textures that match specific surfaces - snow, mud, grass.  
+
+
+
+        This endpoint accepts a binary mask of all tires and returns the image
+        with refined tires. You can optionally receive the refined wheels as a
+        separate layer.  
+      operationId: vehicle-refine-tires
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the image containing the vehicle. If both
+                    image_url and file are provided, image_url takes precedence.
+                    Accepted formats are jpeg, jpg, png, webp.
+                file:
+                  type: string
+                  description: >-
+                    The image file in base64 format. Used only if image_url is
+                    not provided. Accepted formats are jpeg, jpg, png, webp.
+                masks:
+                  type: object
+                  description: >-
+                    An object containing the URLs of binary masks for the wheels
+                    and hubcaps.
+                  properties:
+                    tires:
+                      type: string
+                      description: Binary mask URL for the tires.
+                layers:
+                  type: boolean
+                  description: >-
+                    If true, returns only the refined wheels layer. If false,
+                    returns the full image with refined wheels.
+            example:
+              image_url: https://example.com/car.jpg
+              masks:
+                tires: https://example.com/masks/tires.png
+              layers: true
+      responses:
+        '200':
+          description: Wheel refinement successfully applied.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL of the full image with refined wheels.
+                  layer_url:
+                    type: string
+                    description: >-
+                      URL of the separate refined wheels layer. Only returned if
+                      layers=true.
+                  seed:
+                    type: integer
+                    description: Optional seed used for generation.
+              examples:
+                layers_false:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    seed: 123
+                layers_true:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    layer_url: https://example.com/results/wheels_layer.png
+                    seed: 123
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/apply_effect:
+    post:
+      summary: Apply Effects
+      tags:
+        - Automotive Endpoints
+      description: >-
+        [**Try out this capability in Bria's Automobile
+        Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Adds visual overlays such as dust, snow, fog, light leaks, and lens
+        flare to enhance the realism and atmosphere of a product image.
+
+
+
+        Each effect includes multiple variations to ensure visually unique
+        results. Effects can be applied directly to the image or delivered as
+        separate layers.
+      operationId: vehicle-apply-effect
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the vehicle image. If both image_url and file are
+                    provided, image_url is used. Accepted formats are jpeg, jpg,
+                    png, webp.
+                file:
+                  type: string
+                  description: >-
+                    The vehicle image in base64 format. Used if image_url is not
+                    provided. Accepted formats are jpeg, jpg, png, webp.
+                effect:
+                  type: string
+                  description: >-
+                    The visual effect to apply to the image. Supported values
+                    are dust, snow, fog, light leaks, lens flare.
+                layers:
+                  type: boolean
+                  default: false
+                  description: >-
+                    If true, returns only the effect layer. If false, returns
+                    the full image with the effect composited.
+                seed:
+                  type: integer
+                  description: Optional seed for generating consistent effect variations.
+            example:
+              image_url: https://example.com/vehicle.jpg
+              effect: fog
+              layers: false
+              seed: 42
+      responses:
+        '200':
+          description: Effect applied successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL of the image with the effect applied.
+                  layer_url:
+                    type: string
+                    description: URL of the effect layer. Only returned if layers=true.
+                  seed:
+                    type: integer
+                    description: Seed used for effect generation.
+              examples:
+                layers_false:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    seed: 123
+                layers_true:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    layer_url: https://example.com/results/effect_layer.png
+                    seed: 123
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/harmonize:
+    post:
+      summary: Harmonization
+      tags:
+        - Automotive Endpoints
+      description: >-
+        [**Try out this capability in Bria's Automobile
+        Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Applies predefined lighting and tone presets to match the product image
+        with a desired environmental context.
+
+
+
+        Available presets include hot-day, cold-day, hot-night, and cold-night.
+        These harmonization styles help unify the subject with its background
+        for a consistent and visually appealing result.
+      operationId: vehicle-harmonize
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+          description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the vehicle image. If both image_url and file are
+                    provided, image_url takes precedence. Accepted formats are
+                    jpeg, jpg, png, webp.
+                file:
+                  type: string
+                  description: >-
+                    The vehicle image in base64 format. Used only if image_url
+                    is not provided. Accepted formats are jpeg, jpg, png, webp.
+                preset:
+                  type: string
+                  description: >-
+                    The preset to apply. Supported values are warm-day,
+                    cold-day, warm-night, cold-night.
+            example:
+              image_url: https://example.com/images/car_side_view.png
+              preset: cold-day
+      responses:
+        '200':
+          description: Preset applied successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL of the image with the preset applied.
+              example:
+                url: https://example.com/results/full_image_refined_1.png
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: >-
+                    Quota exceeded: Free users can make up to 1000 requests in
+                    total. Please upgrade your plan to continue using the
+                    service.
+                access_denied:
+                  value: >-
+                    Access denied: Your subscription does not include access to
+                    this feature/product.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+components:
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+        - code
+        - message
+        - details
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+        - error
+        - request_id
+    SyncSuccessResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+          required:
+            - image_url
+        request_id:
+          type: string
+      required:
+        - result
+        - request_id
+    SyncEditResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+            seed:
+              type: integer
+            structured_instruction:
+              type: string
+          required:
+            - image_url
+            - seed
+            - structured_instruction
+        request_id:
+          type: string
+        warning:
+          type: string
+          description: >-
+            Returned only when ip_signal = true and the instruction field
+            included IP content.
+      required:
+        - result
+        - request_id
+    SyncStructuredInstructionResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            seed:
+              type: integer
+            structured_instruction:
+              type: string
+          required:
+            - seed
+            - structured_instruction
+        request_id:
+          type: string
+        warning:
+          type: string
+          description: >-
+            Returned only when ip_signal = true and the instruction field
+            included IP content.
+      required:
+        - result
+        - request_id
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+        - request_id
+        - status_url
+    SyncSuccessWithSeed:
+      allOf:
+        - $ref: '#/components/schemas/SyncSuccessResponse'
+        - type: object
+          properties:
+            result:
+              allOf:
+                - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+                - type: object
+                  properties:
+                    seed:
+                      type: string
+    SyncSuccessWithSeedAndRefinedPrompt:
+      allOf:
+        - $ref: '#/components/schemas/SyncSuccessResponse'
+        - type: object
+          properties:
+            result:
+              allOf:
+                - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+                - type: object
+                  properties:
+                    seed:
+                      type: integer
+                    refined_prompt:
+                      type: string
+                      description: |
+                        Refined version of the input prompt.
+                        **Returned only when:**
+                        - The request included a `prompt` parameter.
+                        - The request did NOT include a `reference_image`.
+    SyncSuccessWithSeedAndPrompt:
+      allOf:
+        - $ref: '#/components/schemas/SyncSuccessResponse'
+        - type: object
+          properties:
+            result:
+              allOf:
+                - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+                - type: object
+                  properties:
+                    seed:
+                      type: integer
+                    prompt:
+                      type: string
+                      description: Original prompt sent by the user.
+    StatusSuccessResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+          required:
+            - image_url
+        status:
+          type: string
+          enum:
+            - COMPLETED
+        request_id:
+          type: string
+      required:
+        - result
+        - status
+        - request_id
+    StatusErrorResponse:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - FAILED
+          required:
+            - status
+    parameters:
+      ApiTokenHeader:
+        name: api_token
+        in: header
+        description: API Token required for authentication
+        required: true
+        schema:
+          type: string

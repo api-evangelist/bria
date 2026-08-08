@@ -1,0 +1,409 @@
+openapi: 3.0.0
+info:
+  title: Overview
+  version: ''
+  description: >
+    For access to the AI Search API (excluding the 'Caption' endpoint), please
+    [Contact Us](https://bria.ai/contact-us) 
+
+
+    Bria's AI Search API equips builders with advanced visual search
+    capabilities that go beyond traditional label or keyword matching.  
+
+
+    The API enables searching through registered images using either text
+    queries or image references, with results sorted by match scores. 
+
+
+    Developers can leverage features including image captioning, similarity
+    search, and search refinements through style, atmosphere, and camera angle
+    filters.  
+externalDocs:
+  description: Register and get API Access
+  url: hhttps://platform.bria.ai/organization-management/api-keys
+servers:
+  - url: https://engine.prod.bria-api.com/v1
+paths:
+  /caption:
+    post:
+      summary: Get Caption
+      tags:
+        - Endpoints
+      description: >-
+
+
+        **Description**
+
+
+
+        The *Caption Route* is used to get a caption that describes the given
+        image.
+      operationId: get-caption
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: >-
+                    The URL of the input image. If both image_url and image_file
+                    are provided, image_url will be used. Accepted formats are
+                    jpeg, jpg, png, webp. Maximum file size 12MB.
+                file:
+                  type: string
+                  description: >-
+                    The file of the input image, in base64 format. Used if
+                    image_url is not provided. Accepted formats are jpeg, jpg,
+                    png, webp. Maximum file size 12MB.
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        caption:
+                          type: string
+                          example: woman walking on a bridge in the jungle
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: >-
+            Unsupported media type. Invalid file type. Supported file types are
+            jpeg, jpg, png, webp.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /search:
+    get:
+      summary: Search by text
+      tags:
+        - Endpoints
+      description: >-
+        **Description**
+
+
+        By using the *Search Route*, you can utilize Bria's generative search
+        capabilities, which don't require labels or keywords. The user can send
+        any text query and receive relevant images that match the query.
+
+
+        The *Search Route* returns the images, sorted by the match score, from
+        highest match to lowest match. The images are returned in batches, and
+        you can specify how many images to receive in one batch, and which batch
+        to receive in each call.
+
+
+        Search will only work on images that have been onboarded using the
+        `register` endpoint.
+
+        **Note:** To use this endpoint, please [Contact
+        Us](https://bria.ai/contact-us).
+      operationId: search
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+        - name: query
+          in: query
+          schema:
+            type: string
+            example: woman traveling in the world
+          description: the text query for which the user is looking for matching images.
+        - name: num_results_per_page
+          in: query
+          schema:
+            type: integer
+            example: 1
+          description: >-
+            how many images you would like to receive from the gallery search.
+            The default value is 50. The maximum value is 500. No need to use
+            this parameter when gallery_search=false.
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+          description: >-
+            which batch of images you would like to receive in the current call.
+            Synthetic results will only be included in page no. 1. The default
+            value is 1. For each query, we support 800 results, so if you set
+            num_results_per_page=50, you will have 16 pages of results.
+        - name: gallery_id
+          in: query
+          schema:
+            type: string
+            example: '425'
+          description: >-
+            Bria will provide you with this parameter which represents your
+            account's image gallery. You must include this parameter.
+        - name: style
+          in: query
+          schema:
+            type: string
+            example: photo realistic
+            enum:
+              - stock photography
+              - photo realistic
+              - fashion
+              - retro
+              - sports
+              - still life
+              - hyper realistic
+              - travel
+              - artistic
+              - 3d render
+              - realistic
+              - fantasy
+              - comic book
+              - minimalistic
+          description: >-
+            Which style you would like to see in your results, this parameter is
+            optional.
+        - name: atmosphere
+          in: query
+          schema:
+            type: string
+            enum:
+              - dramatic
+              - vivid
+              - warm
+              - cool
+            example: dramatic
+          description: >-
+            Which atmosphere you would like to get in your results, this
+            parameter is optional.
+        - name: camera
+          in: query
+          schema:
+            type: string
+            enum:
+              - portrait
+              - close up
+              - aerial
+              - landscape
+            example: portrait
+          description: >-
+            Which camera angle you would like to see in your results, this
+            parameter is optional.
+        - name: medium
+          in: query
+          schema:
+            type: string
+            enum:
+              - photography
+              - art
+            example: photography
+          description: >-
+            Which medium should be included in your results, this parameter is
+            optional.
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    description: >-
+                      there are multiple objects in this array (based on the
+                      amount specified in num_results_per_page) and each object
+                      represents a single image. The images in the array are
+                      sorted by the similarity score, from the highest to the
+                      lowest. If the specified batch (=page) is empty, the
+                      results array will be empty.
+                    items:
+                      type: object
+                      properties:
+                        visual_id:
+                          type: string
+                          description: visual id of the image, documented in Bria.
+                          example: a169a6862f24de75
+                        org_image_key:
+                          type: string
+                          description: >-
+                            It will be returned if the image was registered
+                            using an org_image_key.
+                          example: None
+                        source_url:
+                          type: string
+                          description: >-
+                            It will be returned if the image was registered
+                            using a URL.
+                          example: None
+        '400':
+          description: Bad request.
+        '404':
+          description: Specified Image does not exist.
+        '405':
+          description: Method not allowed.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '500':
+          description: Internal server error.
+        '506':
+          description: Insufficient data. The given input is not supported by the Bria API.
+  /search_similar_images:
+    get:
+      summary: Search by Image
+      tags:
+        - Endpoints
+      description: >-
+        **Description**
+
+
+        By using the *Search Route*, you can utilize Bria's generative search
+        capabilities, which don't require labels or keywords. The user can send
+        any text query and receive relevant images that match the query.
+
+
+        The *Search Route* returns the images, sorted by the match score, from
+        highest match to lowest match. The images are returned in batches, and
+        you can specify how many images to receive in one batch, and which batch
+        to receive in each call.
+
+
+        Search will only work on images that have been onboarded using the
+        `register` endpoint.
+
+
+        **Note:** To use this endpoint, please [Contact
+        Us](https://bria.ai/contact-us).
+      operationId: search-similar-images
+      parameters:
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+        - name: vhash
+          in: query
+          schema:
+            type: string
+            example: e01592ef1188df76
+          description: >-
+            the visual id of the image for which the user is looking for similar
+            images.
+        - name: num_results_per_page
+          in: query
+          schema:
+            type: integer
+            example: 1
+          description: >-
+            how many images you would like to receive in the current call. The
+            default value is 50. The maximum value is 500.
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+          description: >-
+            which batch of images you would like to receive in the current call.
+            The default value is 1. For each query, we support 800 results, so
+            if you set num_results_per_page=50, you will have 16 pages of
+            results.
+        - name: gallery_id
+          in: query
+          schema:
+            type: string
+            example: '425'
+          description: >-
+            Bria will provide you with this parameter which represents your
+            account's image gallery. You must include this parameter.
+        - name: url
+          in: query
+          schema:
+            type: string
+            example: >-
+              If you are using the vhash paramater, there is no need to use this
+              parameter
+          description: >-
+            URL of an image, for which you would like to find similar images.
+            When you want to search based on modified images, or images that
+            have not been uploaded or registered to Bria, you can use this
+            parameter. When this parameter is provided, the visual_id parameter
+            can be None. The supported file types are jpg, jpeg and png, up to
+            12 mb.
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    description: >-
+                      there are multiple objects in this array (based on the
+                      amount specified in num_results_per_page) and each object
+                      represents a single image. The images in the array are
+                      sorted by the similarity score, from the highest to the
+                      lowest. If the specified batch (=page) is empty, the
+                      results array will be empty.
+                    items:
+                      type: object
+                      properties:
+                        visual_id:
+                          type: string
+                          description: visual id of the image, documented in Bria.
+                          example: a169a6862f24de75
+                        org_image_key:
+                          type: string
+                          description: >-
+                            It will be returned if the image was registered
+                            using an org_image_key.
+                          example: None
+                        source_url:
+                          type: string
+                          description: >-
+                            It will be returned if the image was registered
+                            using a URL.
+                          example: None
+        '400':
+          description: Bad request.
+        '404':
+          description: Specified Image does not exist.
+        '405':
+          description: Method not allowed.
+        '429':
+          description: >-
+            Request limit exceeded. Your account has reached its maximum allowed
+            requests. Please upgrade your plan or try again later.
+        '500':
+          description: Internal server error.
+        '506':
+          description: Insufficient data. The given input is not supported by the Bria API.
+components: {}

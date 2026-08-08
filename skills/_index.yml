@@ -1,0 +1,74 @@
+generated: '2026-08-08'
+method: searched
+source: https://github.com/Bria-AI/bria-skill (provider-published) + openapi/ (generated)
+note: >-
+  Bria publishes its own Agent Skills — five SKILL.md files in the bria-skill repository,
+  distributed as the npm package bria-skills and installable with `npx skills add
+  bria-ai/bria-skill`. Those five are saved here VERBATIM. Two additional skills were generated
+  by API Evangelist for marquee flows Bria's own skills do not cover, grounded in operationIds
+  verified against the specs in openapi/.
+skills:
+- file: bria-bria-ai.md
+  name: bria-ai
+  method: searched
+  official: true
+  version: 1.3.4
+  license: MIT
+  source: https://github.com/Bria-AI/bria-skill/blob/main/skills/bria-ai/SKILL.md
+  description: >-
+    Core Bria skill — 20+ endpoints for text-to-image generation, natural-language and
+    object-level editing, background removal and replacement, product photography, upscaling,
+    restyling and relighting.
+- file: bria-vgl.md
+  name: vgl
+  method: searched
+  official: true
+  license: MIT
+  source: https://github.com/Bria-AI/bria-skill/blob/main/skills/vgl/SKILL.md
+  api: openapi/bria-image-generation-openapi-original.yml
+  description: >-
+    Visual Generation Language — structured JSON that explicitly defines objects, lighting,
+    camera, composition and style for deterministic, reproducible generation.
+- file: bria-remove-background.md
+  name: remove-background
+  method: searched
+  official: true
+  license: MIT
+  source: https://github.com/Bria-AI/bria-skill/blob/main/skills/remove-background/SKILL.md
+  api: openapi/bria-image-editing-openapi-original.yml
+  description: Image background removal for transparent PNGs, cutouts and masks, powered by Bria RMBG 2.0.
+- file: bria-video-remove-background.md
+  name: video-remove-background
+  method: searched
+  official: true
+  license: MIT
+  source: https://github.com/Bria-AI/bria-skill/blob/main/skills/video-remove-background/SKILL.md
+  api: openapi/bria-video-editing-openapi-original.yml
+  description: Video background removal for alpha-channel clips and green-screen-free footage.
+- file: bria-image-utils.md
+  name: image-utils
+  method: searched
+  official: true
+  license: MIT
+  source: https://github.com/Bria-AI/bria-skill/blob/main/skills/image-utils/SKILL.md
+  description: >-
+    Local image manipulation with Python Pillow — resize, crop, composite, watermark, format
+    conversion. Companion utility skill; does not call the Bria API.
+- file: bria-tailored-model-training.md
+  name: bria-tailored-model-training
+  method: generated
+  official: false
+  api: openapi/bria-tailored-generation-openapi-original.yml
+  operations: [create-project, create-dataset, upload-image, bulk-upload-images, get-bulk-upload-status, update-image-caption, regenerate-all-captions, create-model, start-training, get-model, list-checkpoints, get-checkpoint, image-generate-tailored, structured-prompt-generate-tailored, get_status]
+  description: >-
+    Train a tailored model on your own dataset and generate with it. Covers the only stateful
+    resource hierarchy in Bria's API, which the provider's own skills do not address.
+- file: bria-product-shot-pipeline.md
+  name: bria-product-shot-pipeline
+  method: generated
+  official: false
+  api: openapi/bria-product-shot-editing-openapi-original.yml
+  operations: [product-cutout, product-cutout-v2, product-packshot, product-shadow, product-lifestyle-shot-by-text, product-lifestyle-shot-by-image, product-integrate, consistent-product-shots, contextual-keyword-extraction, vehicle-segmentation, vehicle-shot-by-text, vehicle-shot-by-image, vehicle-generate-reflections, vehicle-refine-tires, vehicle-harmonize, get_status]
+  description: >-
+    Cutout to packshot to shadow to lifestyle scene, plus the automotive variant with reflections,
+    tire refinement and harmonization.

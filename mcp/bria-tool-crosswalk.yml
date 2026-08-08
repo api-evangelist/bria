@@ -1,0 +1,115 @@
+generated: '2026-08-08'
+method: derived
+source: mcp/bria-mcp.yml + skills/bria-bria-ai.md + openapi/*-openapi-original.yml
+note: >-
+  Bria's MCP tools/list is auth-gated (401 anonymous) and Bria publishes no tool names, so this
+  crosswalk binds DOCUMENTED MCP CAPABILITIES — not verbatim tool names — to the OpenAPI
+  operationIds that back them. Every operationId below was grepped out of the specs in this repo.
+  Confidence is capped at medium for that reason; no row asserts a tool name Bria has not
+  published.
+surfaces:
+  openapi:
+    files: 10
+    operations: 103
+    root: openapi/
+    gated: false
+  mcp:
+    url: https://mcp.prod.bria-api.com/mcp
+    gated: true
+    gate: 401 'either API key or Bearer token is required'
+  graphql: null
+  agent_skills:
+    published_by_provider: true
+    source: https://github.com/Bria-AI/bria-skill
+    files: 5
+crosswalk:
+- tool: '(unnamed) background removal'
+  category: image-editing
+  rest:
+  - background-remove
+  binding: rest
+  confidence: medium
+  note: Bria MCP docs list "Background removal"; the v2 REST op is POST /v2/image/edit/remove_background.
+- tool: '(unnamed) background generation'
+  category: image-editing
+  rest:
+  - background-replace
+  binding: rest
+  confidence: medium
+  note: Bria MCP docs list "Background removal and generation"; generation maps to replace_background.
+- tool: '(unnamed) image expansion'
+  category: image-editing
+  rest:
+  - image-expansion
+  binding: rest
+  confidence: medium
+- tool: '(unnamed) increase resolution'
+  category: image-editing
+  rest:
+  - increase-resolution
+  - enhance
+  binding: rest
+  confidence: medium
+  note: Fans out — Bria ships both an upscale (increase_resolution) and a detail-enhancing (enhance) operation.
+- tool: '(unnamed) image generation'
+  category: image-generation
+  rest:
+  - image-generate
+  - image-generate-lite
+  binding: rest
+  confidence: medium
+- tool: '(unnamed) reimagine by structure'
+  category: image-generation
+  rest:
+  - structured-prompt-generate
+  - structured-prompt-generate-from-diff
+  binding: rest
+  confidence: low
+  note: >-
+    "Reimagine images based on their structure" is Bria's phrasing; the structured-prompt (VGL)
+    generation operations are the closest published REST equivalent, but the binding is inferred.
+mcp_only: []
+mcp_only_note: >-
+  None identified. Every documented MCP capability has a public REST counterpart. This cannot be
+  asserted as complete while tools/list is gated.
+rest_only:
+- capability: Tailored Generation (fine-tuning)
+  operations: 38
+  examples: [create-project, create-dataset, bulk-upload-images, create-model, start-training, list-checkpoints, download-tailored-model, image-generate-tailored]
+- capability: Product Shot & Automotive
+  operations: 16
+  examples: [product-cutout, product-packshot, product-shadow, product-lifestyle-shot-by-text, product-lifestyle-shot-by-image, product-integrate, consistent-product-shots, vehicle-segmentation, vehicle-generate-reflections, vehicle-harmonize]
+- capability: Video Editing
+  operations: 8
+  examples: [erase-object, mask-by-prompt, mask-by-key-points, foreground-mask, increase-resolution, remove-background, replace-background, green-screen]
+- capability: Image Editing (beyond the six MCP capabilities)
+  operations: 17
+  examples: [edit-image, add-object-by-text, replace-object-by-text, erase-object-by-text, blend-image, reseason, rewrite, sketch-to-image, restore, colorize, restyle, relight, erase, gen-fill, erase-foreground, blur-bg, crop]
+- capability: Ads Generation
+  operations: 3
+  examples: [generate-ads, get-brands, get-templates]
+- capability: Attribution
+  operations: 4
+  examples: [postAttributionByImage, postAttributionByEmbedding, postAttributionByVideo, postAttributionByVideoEmbedding]
+- capability: Image Onboarding
+  operations: 2
+  examples: [register-image, remove-image]
+- capability: Status Service
+  operations: 1
+  examples: [get_status]
+- capability: AI Search (deprecated)
+  operations: 3
+  examples: [get-caption, search, search-similar-images]
+coverage:
+  tools_named: 0
+  capabilities_documented: 6
+  capabilities_bound: 6
+  mcp_only: 0
+  rest_operations_total: 103
+  rest_operations_with_a_capability: 9
+  rest_operations_without: 94
+finding: >-
+  The MCP surface exposes roughly 9 of 103 published REST operations. Tailored Generation,
+  product shot, automotive and video editing — the majority of Bria's contract — are REST-only
+  and unreachable from an MCP client. The provider-published Agent Skills cover materially more
+  of the surface than the MCP server does.

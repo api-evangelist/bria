@@ -1,0 +1,44 @@
+generated: '2026-08-08'
+method: searched
+source: https://platform.bria.ai/llms.txt, https://docs.bria.ai/, https://github.com/Bria-AI
+note: >-
+  Bria's client-side surface is delivered mainly as embeddable iframes and host-application
+  plugins rather than as a web-component or element library.
+families:
+- family: Embedded iframe
+  description: >-
+    Bria publishes an iframe integration for embedding its editing and generation UI inside a
+    host application.
+  items:
+  - name: Bria iframe
+    repository: https://github.com/Bria-AI/iframe-doc
+    kind: iframe embed
+- family: Creative software plugins
+  description: Host-application plugins that surface Bria capabilities inside third-party creative tools.
+  items:
+  - name: Figma plugin
+    url: https://www.figma.com/community/plugin/1541740878931198133/ai-image-generation-editing-bria-ai
+  - name: Adobe Photoshop plugin
+    url: https://exchange.adobe.com/apps/cc/92224702/bria-ai-plugin-for-photoshop
+  - name: ComfyUI nodes
+    url: https://github.com/Bria-AI/ComfyUI-BRIA-API
+  - name: Houdini tools
+    url: https://github.com/Bria-AI/Houdini-tools
+  - name: Nuke VFX tools
+    url: https://github.com/Bria-AI/Nuke-tools
+  - name: OBS Studio plugin
+    url: https://github.com/Bria-AI/obs-backgroundremoval
+- family: Hosted platform surfaces
+  description: Prebuilt experiences hosted by Bria and linked from its own llms.txt index.
+  items:
+  - name: API Building Blocks
+    url: https://platform.bria.ai/api-building-blocks
+  - name: Playground hub
+    url: https://platform.bria.ai/playground-hub
+  - name: Apps
+    url: https://platform.bria.ai/apps
+  - name: Labs
+    url: https://platform.bria.ai/labs
+loader_libraries: []
+gaps:
+- No published web-component or JavaScript element library (no Bria.js-style loader).

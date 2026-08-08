@@ -1,0 +1,80 @@
+generated: '2026-08-08'
+method: searched
+source: https://docs.bria.ai/webhooks
+spec_type: Webhooks
+asyncapi: null
+asyncapi_note: >-
+  Bria publishes no AsyncAPI document. Its event surface is a single signed webhook callback per
+  async job. Captured here as a webhook catalog rather than fabricated as AsyncAPI.
+subscription:
+  mechanism: per-request
+  parameter: webhook_url
+  passed_in: request body of any async endpoint
+  sdk: 'BriaSyncClient/BriaAsyncClient .submit(webhook_url=...) keyword argument'
+  note: >-
+    There is no webhook management API — no endpoint to register, list, rotate or delete an
+    endpoint. The callback URL is supplied per job.
+delivery:
+  method: POST
+  content_type: application/json
+  fires_on: terminal job state
+  ack_window_seconds: 10
+  ack_requirement: respond 2xx within 10 seconds
+  retries:
+    strategy: exponential backoff
+    max_attempts: 5
+    window: 45 minutes
+    stop_condition: any 2xx response
+  guarantee: at-least-once
+  dedup_key: Bria-Webhook-Id (the job's request_id)
+headers:
+- name: Bria-Webhook-Id
+  description: The job's request_id. Use as the deduplication key.
+- name: Bria-Webhook-Timestamp
+  description: Unix epoch seconds at signature generation.
+- name: Bria-Webhook-Signature
+  description: 'v1=<base64> HMAC-SHA256 signature.'
+signing:
+  algorithm: HMAC-SHA256
+  scheme: Svix-inspired, Bria-specific key derivation
+  signed_message: '{webhook_id}.{timestamp}.{raw_body}'
+  signing_key_derivation: 'HMAC-SHA256(api_token, "bria-webhook-signing-v1")'
+  version_prefix: v1=
+  verifier: bria_client.toolkit.verify_webhook_signature
+  note: >-
+    The raw API token is never used directly to sign; a derived signing key is. Reference
+    implementations are published for Python and JavaScript.
+events:
+- event: job.completed
+  documented_name: null
+  payload_status: COMPLETED
+  payload:
+    request_id: string
+    status: COMPLETED
+    result:
+      image_url: string
+      video_url: string
+      structured_prompt: object
+      seed: integer
+      prompt: string
+  note: >-
+    Bria does not name its events. The payload is identical to the Status Service response for the
+    same request_id, so one parser serves both surfaces.
+- event: job.error
+  documented_name: null
+  payload_status: ERROR
+  payload:
+    request_id: string
+    status: ERROR
+    error:
+      message: string
+      code: string
+applies_to:
+  surface: every async v2 endpoint
+  operations: 46
+  note: 46 operations declare a 202 Accepted async response across the ten specs.
+gaps:
+- No AsyncAPI description.
+- No webhook management API and no endpoint registry.
+- No replay or redelivery endpoint; after 5 attempts over 45 minutes the result is only retrievable by polling the Status Service.
+- Events are unnamed and untyped; a consumer branches on the status string.

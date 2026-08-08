@@ -1,0 +1,125 @@
+generated: '2026-08-08'
+method: derived
+source: openapi/*-openapi-original.yml + https://docs.bria.ai/status
+note: >-
+  Bria's REST surface is predominantly job-shaped rather than resource-shaped: 60 of 103
+  operations are stateless transformations that accept an image or video and return a result,
+  with no persisted entity. A real entity graph exists only inside Tailored Generation and
+  Image Onboarding.
+entities:
+- name: Request
+  id_field: request_id
+  id_type: uuid
+  persisted: true
+  lifetime: until the job reaches a terminal state and the result is collected
+  states: [IN_PROGRESS, COMPLETED, ERROR, UNKNOWN]
+  source: openapi/bria-status-openapi-original.yml
+  description: >-
+    The universal handle for every async call. Returned by every v2 submit alongside a status_url,
+    echoed in every error envelope, and used as the webhook deduplication key.
+- name: Project
+  id_field: project_id
+  persisted: true
+  source: openapi/bria-tailored-generation-openapi-original.yml
+  operations: [create-project, get-projects, get-project-by-id, update-project, delete-project]
+- name: Dataset
+  id_field: dataset_id
+  persisted: true
+  source: openapi/bria-tailored-generation-openapi-original.yml
+  operations: [create-dataset, get-datasets, get-dataset-by-id, update-dataset, delete-dataset, clone-dataset, download-dataset]
+- name: DatasetImage
+  id_field: image_id
+  persisted: true
+  source: openapi/bria-tailored-generation-openapi-original.yml
+  operations: [upload-image, get-images, get-image, update-image-caption, delete-image, bulk-upload-images, get-bulk-upload-status, regenerate-all-captions]
+- name: Model
+  id_field: model_id
+  persisted: true
+  source: openapi/bria-tailored-generation-openapi-original.yml
+  operations: [create-model, get-models, get-model, update-model, delete-model, start-training, stop-training, download-tailored-model]
+- name: Checkpoint
+  id_field: checkpoint_step
+  persisted: true
+  source: openapi/bria-tailored-generation-openapi-original.yml
+  operations: [list-checkpoints, get-checkpoint, delete-checkpoint]
+- name: RegisteredImage
+  id_field: visual_id
+  persisted: true
+  source: openapi/bria-image-onboarding-openapi-original.yml
+  operations: [register-image, remove-image]
+- name: Brand
+  id_field: null
+  persisted: true
+  source: openapi/bria-ad-generation-openapi-original.yml
+  operations: [get-brands]
+- name: AdTemplate
+  id_field: template_id
+  persisted: true
+  source: openapi/bria-ad-generation-openapi-original.yml
+  operations: [get-templates]
+- name: StructuredPrompt
+  id_field: null
+  persisted: false
+  source: openapi/bria-image-generation-openapi-original.yml
+  description: >-
+    Bria's Visual Generation Language (VGL) JSON object — an explicit description of objects,
+    lighting, camera, composition and style. Passed as a value, not stored as a resource.
+  docs: https://docs.bria.ai/vgl
+relationships:
+- from: Dataset
+  to: Project
+  kind: belongs_to
+  via: project_id
+  evidence: 'GET /tailored-gen/projects/{project_id}/datasets'
+- from: Project
+  to: Dataset
+  kind: has_many
+  via: project_id
+- from: DatasetImage
+  to: Dataset
+  kind: belongs_to
+  via: dataset_id
+  evidence: 'POST /tailored-gen/datasets/{dataset_id}/images'
+- from: Dataset
+  to: DatasetImage
+  kind: has_many
+  via: dataset_id
+- from: Model
+  to: Project
+  kind: belongs_to
+  via: project_id
+  evidence: 'GET /tailored-gen/projects/{project_id}/models'
+- from: Project
+  to: Model
+  kind: has_many
+  via: project_id
+- from: Checkpoint
+  to: Model
+  kind: belongs_to
+  via: model_id
+  evidence: 'GET /tailored-gen/models/{model_id}/checkpoints'
+- from: Model
+  to: Checkpoint
+  kind: has_many
+  via: model_id
+- from: Model
+  to: Dataset
+  kind: has_one
+  via: dataset_id
+  confidence: medium
+  evidence: A tailored model is trained from a dataset; the binding is stated in the create-model request body.
+- from: AdTemplate
+  to: Brand
+  kind: belongs_to
+  via: brand
+  confidence: low
+- from: Request
+  to: '*'
+  kind: has_one
+  via: request_id
+  note: Every async operation across every product produces exactly one Request.
+id_prefixes: []
+id_prefixes_note: >-
+  Bria uses bare UUIDs and integers; it publishes no typed id prefixes, so an id alone does not
+  identify its entity type.
+subway: null

@@ -1,0 +1,432 @@
+openapi: 3.0.0
+info:
+  title: Overview
+  version: ''
+  description: >
+    The **Status Service** provides progress tracking for asynchronous requests.
+    This functionality is supported exclusively for **V2 endpoints**.
+
+
+    ### Workflow
+
+    1. Submit a request with `sync=false` (default behavior).
+
+    2. The API returns a `status_url` and a `request_id`.
+
+    3. Continuously poll the `status_url` (or use the `/status/{request_id}`
+    endpoint) until the `status` field indicates a terminal state.
+
+
+    ### Status Values
+
+    - **`IN_PROGRESS`** – The request has been accepted and is currently being
+    processed.  
+      Continue polling until the status changes to either `COMPLETED` or an error state.
+
+    - **`COMPLETED`** – The request was successfully processed.  
+      The response includes either `result.image_url` for images or `result.video_url` for videos, , or structured_prompt (for structured prompt generation)."  
+      For some endpoints, additional optional fields (seed, prompt, refined_prompt, structured_prompt) may be included.
+    - **`ERROR`** – A processing error occurred in the pipeline.  
+      The response includes an `error` object with details about the failure. Polling should be stopped.
+
+    - **`UNKNOWN`** – An unexpected internal error occurred (equivalent to an
+    HTTP `500` in asynchronous workflows).  
+      This status should not occur under normal circumstances. If it does, contact [Support](mailto:support@bria.ai). and provide the `request_id`.
+tags:
+  - name: Endpoints
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+servers:
+  - url: https://engine.prod.bria-api.com/v2
+paths:
+  /status/{request_id}:
+    get:
+      tags:
+        - Endpoints
+      servers:
+        - url: https://engine.prod.bria-api.com/v2
+      summary: Get Request Status
+      description: >
+        Retrieves the current status of an asynchronous request.
+
+          **Behavior**
+        - Under normal operation, this endpoint returns **`200 OK`**, regardless
+        of whether the request is in progress, completed, or has failed at the
+        job level.  
+
+        - The `status` field in the response (`IN_PROGRESS`, `COMPLETED`,
+        `ERROR`, `UNKNOWN`) indicates the state of the job.  
+
+        - When the job fails (status=`ERROR`), details of the failure are
+        provided in the `error` object, but the HTTP status remains `200`.
+
+        - When `status=COMPLETED`, `result` includes `image_url` for images or
+        `video_url` for videos, or structured_prompt based on the original
+        endpoint.
+
+
+        **Other Possible Responses**
+
+        - **`404 NOT_FOUND`** – Returned when the specified `request_id` does
+        not exist or has expired.  
+
+        - **`5XX`** – Returned when the Status Service itself experiences an
+        internal error.
+          For real-time updates, check [Bria's Status Page](https://status.bria.ai). You can also contact our [Support](mailto:support@bria.ai).
+
+        - When `status=COMPLETED`, `result` may also include:
+          - `seed` – Deterministic seed used for generation (if supported by the endpoint).
+          - `prompt` – Original prompt provided by the user (if applicable).
+          - `refined_prompt` – System-enhanced version of the input prompt (if applicable).
+          - `structured_prompt` – The detailed JSON structured prompt used for V2 generation.
+      operationId: get_status
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the request.
+        - in: header
+          name: api_token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: >-
+            The `status` field indicates whether the request completed
+            successfully or failed.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StatusSuccessResponse'
+                  - $ref: '#/components/schemas/StatusErrorResponse'
+              examples:
+                completed_image_generation:
+                  summary: Completed Image Generation Request
+                  value:
+                    status: COMPLETED
+                    result:
+                      image_url: >-
+                        https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo/new_year_2026.png
+                      seed: '123456'
+                      structured_prompt: >-
+                        {"short_description": "A photorealistic, high-resolution
+                        rendering of balloon lettering spelling out \"HAPPY NEW
+                        YEAR 2026\" against a pristine white backdrop. The
+                        balloons are meticulously crafted with a metallic,
+                        reflective surface, showcasing a vibrant color palette
+                        of Pantone Bran, Crocus, and Deja vu blue. The
+                        composition is perfectly aligned and balanced,
+                        emphasizing the celebratory message with natural, soft
+                        lighting that creates subtle, elegant reflections and
+                        shadows.","objects": [{"description": "A cluster of
+                        individual balloon letters forming the word \"HAPPY\".
+                        Each letter is inflated and has a smooth, highly
+                        reflective metallic surface, catching and distorting the
+                        ambient light. The letters are arranged horizontally,
+                        slightly overlapping to create a cohesive
+                        word.","location": "top-left to center","relationship":
+                        "Part of the main textual display, positioned above 'NEW
+                        YEAR'.","relative_size": "large within
+                        frame","shape_and_color": "Irregular letter shapes,
+                        primarily Pantone Bran (a rich, deep orange-brown) with
+                        hints of Crocus (a vibrant purple) and Deja vu blue (a
+                        muted, dusty blue) in the reflections.","texture":
+                        "Smooth, highly reflective metallic
+                        foil.","appearance_details": "Slightly rounded edges,
+                        showing subtle seams where the foil is joined. The
+                        surface exhibits a high degree of realism with minor
+                        imperfections and creases visible upon close
+                        inspection.","number_of_objects": 5,"orientation":
+                        "Horizontal"},{"description": "A cluster of individual
+                        balloon letters forming the phrase \"NEW YEAR\". These
+                        letters are also inflated and possess the same metallic,
+                        reflective quality as the 'HAPPY' balloons. They are
+                        arranged horizontally, directly below 'HAPPY',
+                        maintaining a consistent visual style.","location":
+                        "center","relationship": "Part of the main textual
+                        display, positioned below 'HAPPY' and above
+                        '2026'.","relative_size": "large within
+                        frame","shape_and_color": "Irregular letter shapes,
+                        primarily Crocus (a vibrant purple) with reflections of
+                        Pantone Bran and Deja vu blue.","texture": "Smooth,
+                        highly reflective metallic foil.","appearance_details":
+                        "Each letter is distinct, with a slightly inflated,
+                        three-dimensional appearance. The metallic sheen creates
+                        a dynamic interplay of light and color across their
+                        surfaces.","number_of_objects": 7,"orientation":
+                        "Horizontal"},{"description": "A cluster of individual
+                        balloon numbers forming \"2026\". These numbers are
+                        crafted from the same metallic balloon material,
+                        maintaining visual continuity with the words above. They
+                        are positioned centrally below 'NEW YEAR'.","location":
+                        "bottom-center","relationship": "Part of the main
+                        textual display, positioned below 'NEW
+                        YEAR'.","relative_size": "large within
+                        frame","shape_and_color": "Numerical shapes, primarily
+                        Deja vu blue (a muted, dusty blue) with reflections of
+                        Pantone Bran and Crocus.","texture": "Smooth, highly
+                        reflective metallic foil.","appearance_details": "The
+                        numbers appear robust and fully inflated, with crisp
+                        edges and a flawless metallic finish that reflects the
+                        surrounding light sources.","number_of_objects":
+                        4,"orientation": "Horizontal"},{"description": "Several
+                        small, spherical balloons scattered around the main
+                        lettering, acting as decorative accents. These balloons
+                        are also metallic and share the same color palette,
+                        adding depth and a festive touch to the
+                        scene.","location": "scattered around the main
+                        lettering","relationship": "Complementary decorative
+                        elements to the main balloon
+                        lettering.","relative_size": "small","shape_and_color":
+                        "Spherical, in Pantone Bran, Crocus, and Deja vu
+                        blue.","texture": "Smooth, reflective
+                        metallic.","appearance_details": "Perfectly round and
+                        shiny, reflecting miniature versions of the light
+                        sources and the main lettering.","number_of_objects":
+                        5,"orientation": "Various,
+                        floating"}],"background_setting": "A clean, seamless
+                        white studio backdrop, providing a stark contrast that
+                        makes the colorful balloons pop. The backdrop extends
+                        smoothly from the floor to the wall, creating an
+                        infinite white space that eliminates distractions and
+                        emphasizes the subject.","lighting": {"conditions":
+                        "Bright, natural light, simulating a well-lit studio
+                        environment.","direction": "Soft, diffused light coming
+                        from slightly above and in front of the balloons, with
+                        secondary fill light from the sides.","shadows": "Soft,
+                        subtle, and elongated shadows cast behind and beneath
+                        the balloons, indicating depth and dimension without
+                        being harsh or distracting. The shadows are light gray
+                        against the white background."},"aesthetics":
+                        {"composition": "Centered and perfectly aligned, with
+                        the balloon lettering arranged in a clear, readable
+                        hierarchy. The overall composition is balanced and
+                        symmetrical, drawing the viewer's eye directly to the
+                        celebratory message.","color_scheme": "A vibrant,
+                        harmonious palette of Pantone Bran (orange-brown),
+                        Crocus (purple), and Deja vu blue, creating a festive
+                        yet sophisticated feel against the neutral white
+                        background.","mood_atmosphere": "Joyful, celebratory,
+                        optimistic, and clean.","preference_score": "very
+                        high","aesthetic_score": "very
+                        high"},"photographic_characteristics":
+                        {"depth_of_field": "Shallow, with the balloons in sharp
+                        focus and the background subtly blurred to emphasize the
+                        subject, though the white backdrop inherently provides
+                        minimal blur.","focus": "Sharp focus on the balloon
+                        lettering, highlighting the intricate details and
+                        reflective surfaces.","camera_angle": "Eye-level,
+                        providing a direct and engaging view of the balloon
+                        arrangement.","lens_focal_length": "Standard lens (e.g.,
+                        50mm), ensuring a natural perspective without
+                        distortion, ideal for capturing the full arrangement
+                        clearly."},"style_medium": "photograph","text_render":
+                        [{"text": "HAPPY NEW YEAR 2026","location":
+                        "center","size": "large within frame","color": "Pantone
+                        Bran, Crocus, Deja vu blue (as balloon colors)","font":
+                        "inflated balloon lettering","appearance_details":
+                        "Metallic, reflective, three-dimensional balloon
+                        letters."}],"context": "This is a concept for a
+                        high-resolution, ultra-realistic promotional image or
+                        greeting card for a New Year's celebration, intended for
+                        digital display or print media.","artistic_style":
+                        "realistic, detailed, vibrant"}
+                    request_id: '123456'
+                completed_image_edit:
+                  summary: Completed Request (image editing)
+                  value:
+                    status: COMPLETED
+                    result:
+                      image_url: https://example.com/generated_image.png
+                    request_id: '123456'
+                completed_video:
+                  summary: Completed Request (video)
+                  value:
+                    status: COMPLETED
+                    result:
+                      video_url: https://example.com/generated_video.mp4
+                    request_id: '123456'
+                completed_structured_prompt:
+                  summary: Completed Structured Prompt Request
+                  value:
+                    status: COMPLETED
+                    result:
+                      seed: '123456'
+                      structured_prompt: >-
+                        {\"short_description\": \"A close-up shot of an elegant
+                        ring featuring a prominent, teardrop-shaped red
+                        gemstone...\",\"objects\": [...],...}
+                    request_id: '123456'
+                completed_image_edit_with_seed:
+                  summary: Completed Request (image edit, with seed)
+                  value:
+                    status: COMPLETED
+                    result:
+                      image_url: https://example.com/generated_image.png
+                      seed: '42'
+                    request_id: '123456'
+                completed_image_edit_with_prompt:
+                  summary: Completed Request (image edit, with prompt)
+                  value:
+                    status: COMPLETED
+                    result:
+                      image_url: https://example.com/generated_image.png
+                      seed: '42'
+                      prompt: A fantasy landscape with mountains
+                    request_id: '123456'
+                completed_image_edit_with_refined_prompt:
+                  summary: Completed Request (image edit, with refined prompt)
+                  value:
+                    status: COMPLETED
+                    result:
+                      image_url: https://example.com/generated_image.png
+                      seed: '42'
+                      refined_prompt: High-detail fantasy landscape with dramatic mountains
+                    request_id: '123456'
+                error:
+                  summary: Error Response
+                  value:
+                    status: ERROR
+                    error:
+                      code: 500
+                      message: Internal Server Error
+                      details: Unexpected error occurred.
+                    request_id: '123456'
+        '404':
+          description: |
+            The provided `request_id` does not exist or has expired.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - NOT_FOUND
+                required:
+                  - status
+              examples:
+                not_found_example:
+                  summary: Request ID Not Found
+                  value:
+                    status: NOT_FOUND
+        5XX:
+          description: >
+            **Internal Server Error** – A critical failure occurred in Bria's
+            infrastructure, preventing the Status Service from responding.  
+
+            - This response indicates a service outage or unexpected runtime
+            failure.  
+
+            - Check [Bria's Status Page](https://status.bria.ai) for real-time
+            updates. 
+
+            - Contact [Support](mailto:support@bria.ai).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internal_error:
+                  summary: Service Outage
+                  value:
+                    error:
+                      code: 503
+                      message: Service Unavailable
+                      details: >-
+                        Bria's Status Service is temporarily unavailable. Please
+                        try again later.
+components:
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+        - code
+        - message
+        - details
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+        - error
+        - request_id
+    StatusSuccessResponse:
+      type: object
+      properties:
+        result:
+          oneOf:
+            - title: ImageResult
+              type: object
+              properties:
+                image_url:
+                  type: string
+                seed:
+                  type: integer
+                  description: >-
+                    Deterministic generation seed (returned only for endpoints
+                    that support reproducible outputs).
+                prompt:
+                  type: string
+                  description: >-
+                    Original prompt sent by the user (returned only if
+                    applicable).
+                refined_prompt:
+                  type: string
+                  description: >-
+                    Refined version of the input prompt (returned only if
+                    applicable and supported by the endpoint).
+                structured_prompt:
+                  type: string
+                  description: >-
+                    The detailed JSON structured prompt used for the V2
+                    generation (returned only by V2 image generation and
+                    structured prompt generation endpoints).
+              required:
+                - image_url
+            - title: VideoResult
+              type: object
+              properties:
+                video_url:
+                  type: string
+              required:
+                - video_url
+        status:
+          type: string
+          enum:
+            - COMPLETED
+        request_id:
+          type: string
+      required:
+        - result
+        - status
+        - request_id
+    StatusErrorResponse:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - ERROR
+                - UNKNOWN
+          required:
+            - status

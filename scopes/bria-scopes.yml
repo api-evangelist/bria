@@ -1,0 +1,44 @@
+generated: '2026-08-08'
+method: probed
+source: https://engine.prod.bria-api.com/.well-known/oauth-authorization-server
+docs: https://docs.bria.ai/mcp-authentication
+note: >-
+  No OpenAPI in this repo declares an oauth2 securityScheme, so nothing was derivable from the
+  specs. These scopes come from Bria's own RFC 8414 authorization-server metadata, probed live on
+  both the engine and MCP hosts. Bria publishes no scopes/permissions reference page; the three
+  scopes below are the complete advertised set and are identity scopes only — Bria's API
+  authorization is carried by the api_token key, not by OAuth scope.
+schemes:
+- name: OAuth2
+  source: well-known/bria-engine-oauth-authorization-server.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://engine.prod.bria-api.com/v2/auth/authorize
+    tokenUrl: https://engine.prod.bria-api.com/v2/auth/token
+    code_challenge_methods: [S256]
+  - flow: deviceCode
+    deviceAuthorizationUrl: https://engine.prod.bria-api.com/v2/auth/device/authorize
+- name: OAuth2-MCP
+  source: well-known/bria-mcp-oauth-authorization-server.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://mcp.internal.production.bria-api.com/authorize
+    tokenUrl: https://mcp.internal.production.bria-api.com/token
+    code_challenge_methods: [S256]
+scopes:
+- scope: openid
+  description: OpenID Connect identity scope; requests an ID token for the authenticating user.
+  flows: [authorizationCode]
+  sources: [well-known/bria-engine-oauth-authorization-server.json, well-known/bria-mcp-oauth-authorization-server.json]
+- scope: profile
+  description: Basic profile claims for the authenticating user.
+  flows: [authorizationCode]
+  sources: [well-known/bria-engine-oauth-authorization-server.json, well-known/bria-mcp-oauth-authorization-server.json]
+- scope: email
+  description: Email address claim for the authenticating user.
+  flows: [authorizationCode]
+  sources: [well-known/bria-engine-oauth-authorization-server.json, well-known/bria-mcp-oauth-authorization-server.json]
+gaps:
+- >-
+  No capability scopes are published. An agent cannot request read-only or per-product access;
+  a Bria token is all-or-nothing across every generation, editing and training operation.
