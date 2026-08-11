@@ -36,181 +36,12 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: bria:image-generation
-  name: Bria Image Generation API
-  description: Text-to-image and structured-prompt (VGL) image generation using Bria's
-    FIBO and FIBO Lite models, including generation from a structured JSON prompt and
-    generation from a structured-prompt diff.
-  humanURL: https://docs.bria.ai/image-generation
-  baseURL: https://engine.prod.bria-api.com/v2
-  tags:
-  - Image Generation
-  - Generative AI
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-image-generation-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-image-generation-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/image-generation
-- aid: bria:image-editing
-  name: Bria Image Editing API
-  description: Twenty-three v2 image editing operations covering object add/replace/erase
-    by text, masked erase and generative fill, background remove/replace/blur, expand,
-    enhance, increase resolution, restyle, relight, reseason, colorize, restore and
-    text rewrite.
-  humanURL: https://docs.bria.ai/image-editing
-  baseURL: https://engine.prod.bria-api.com/v2/image/edit
-  tags:
-  - Image Editing
-  - Generative AI
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-image-editing-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-image-editing-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/image-editing
-- aid: bria:video-editing
-  name: Bria Video Editing API
-  description: Video background removal and replacement, green screen, object erase,
-    resolution increase, and mask generation by prompt, key points or foreground.
-  humanURL: https://docs.bria.ai/video-editing
-  baseURL: https://engine.prod.bria-api.com/v2/video/edit
-  tags:
-  - Video
-  - Image Editing
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-video-editing-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-video-editing-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/video-editing
-- aid: bria:product-shot-editing
-  name: Bria Product Shot API
-  description: Product packshot, cutout, shadow, lifestyle shot by text or image, product
-    embedding and consistent product shots, plus a dedicated automotive set for vehicle
-    segmentation, reflections, tire refinement and harmonization.
-  humanURL: https://docs.bria.ai/product-shot-editing
-  baseURL: https://engine.prod.bria-api.com/v1
-  tags:
-  - Ecommerce
-  - Images
-  - Automotive
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-product-shot-editing-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-product-shot-editing-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/product-shot-editing
-- aid: bria:tailored-generation
-  name: Bria Tailored Generation API
-  description: Fine-tuning surface for training tailored models on customer datasets
-    — projects, datasets, image upload and captioning, model training lifecycle, checkpoints,
-    model download, and tailored image and image-to-video generation.
-  humanURL: https://docs.bria.ai/tailored-generation
-  baseURL: https://engine.prod.bria-api.com/v2
-  tags:
-  - Machine Learning
-  - Training
-  - Generative AI
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-tailored-generation-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-tailored-generation-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/tailored-generation
-- aid: bria:status
-  name: Bria Status Service API
-  description: Polling surface for Bria's async-by-default v2 endpoints; returns IN_PROGRESS,
-    COMPLETED, ERROR or UNKNOWN for a request_id along with the result payload.
-  humanURL: https://docs.bria.ai/status
-  baseURL: https://engine.prod.bria-api.com/v2
-  tags:
-  - Jobs
-  - Status
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-status-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-status-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/status
-- aid: bria:ad-generation
-  name: Bria Ads Generation API
-  description: Generates ad creatives from brand and template registries, with endpoints
-    to list brands, list ad templates and retrieve a single template by id.
-  humanURL: https://docs.bria.ai/ad-generation
-  baseURL: https://engine.prod.bria-api.com/v1
-  tags:
-  - Advertising
-  - Marketing
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-ad-generation-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-ad-generation-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/ad-generation
-- aid: bria:attribution-service
-  name: Bria Attribution Service API
-  description: Attribution of generated images and video back to the licensed training
-    content that influenced them, by image, by video, or by embedding — the machine-readable
-    side of Bria's licensing and indemnification posture.
-  humanURL: https://docs.bria.ai/bria-attribution-service
-  baseURL: https://engine.prod.bria-api.com
-  tags:
-  - Attribution
-  - Compliance
-  - Licensing
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-attribution-service-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-attribution-service-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/bria-attribution-service
-- aid: bria:image-onboarding
-  name: Bria Image Onboarding API
-  description: Registers customer images with Bria so they can be referenced by visual_id
-    in downstream generation and editing calls, and removes them again.
-  humanURL: https://docs.bria.ai/image-onboarding
-  baseURL: https://engine.prod.bria-api.com/v1
-  tags:
-  - Images
-  - Storage
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-image-onboarding-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-image-onboarding-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/image-onboarding
-- aid: bria:ai-search
-  name: Bria AI Search API (deprecated)
-  description: Deprecated visual search surface — image captioning, text search and
-    similar-image search. Bria labels this section deprecated in its own documentation
-    navigation.
-  humanURL: https://docs.bria.ai/ai-search-deperecated
-  baseURL: https://engine.prod.bria-api.com/v1
-  tags:
-  - Search
-  - Deprecated
-  properties:
-  - type: OpenAPI
-    url: openapi/bria-ai-search-deperecated-openapi-original.yml
-  - type: Overlay
-    url: overlays/bria-ai-search-deperecated-overlay.yaml
-  - type: Documentation
-    url: https://docs.bria.ai/ai-search-deperecated
 - aid: bria:mcp
   name: Bria MCP Server
-  description: Bria's hosted, remote Model Context Protocol server, exposing image generation
-    and editing to any MCP client. Authenticated with either a static api_token header
-    or an OAuth 2.0 bearer token; anonymous tools/list is refused.
+  description: >-
+    Bria's hosted, remote Model Context Protocol server, exposing image generation and editing to any
+    MCP client. Authenticated with either a static api_token header or an OAuth 2.0 bearer token; anonymous
+    tools/list is refused.
   humanURL: https://docs.bria.ai/mcp-authentication
   baseURL: https://mcp.prod.bria-api.com/mcp
   tags:
@@ -223,7 +54,402 @@ apis:
     url: mcp/bria-tool-crosswalk.yml
   - type: Documentation
     url: https://docs.bria.ai/mcp-authentication
+- aid: bria:bria-automotive-endpoints-api
+  name: Bria Automotive Endpoints API
+  description: The Automotive Endpoints API from Bria — 7 operation(s) for automotive endpoints.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Automotive Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-automotive-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-dataset-api
+  name: Bria Dataset API
+  description: Manage training datasets
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Dataset
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-dataset-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-editing-endpoints-api
+  name: Bria Editing Endpoints API
+  description: >-
+    Tools for modifying video content (Erase, Upscale, Remove BG, Green Screen, Replace Background). REST
+    async.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Editing Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-editing-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-endpoints-api
+  name: Bria Endpoints API
+  description: The Endpoints API from Bria — 15 operation(s) for endpoints.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-image-attribution-api
+  name: Bria Image Attribution API
+  description: The Image Attribution API from Bria — 2 operation(s) for image attribution.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Image Attribution
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-image-attribution-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-image-generation-api
+  name: Bria Image Generation API
+  description: Generate images using tailored models
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Image Generation
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-image-generation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-masking-endpoints-api
+  name: Bria Masking Endpoints API
+  description: >-
+    Tools for generating segmentation masks (by prompt, by key points, foreground). REST async.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Masking Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-masking-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-model-api
+  name: Bria Model API
+  description: Manage and train models
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Model
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-model-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-product-endpoints-api
+  name: Bria Product Endpoints API
+  description: The Product Endpoints API from Bria — 9 operation(s) for product endpoints.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Product Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-product-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-project-api
+  name: Bria Project API
+  description: Manage your projects
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Project
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-project-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-v2-endpoints-api
+  name: Bria v2 endpoints API
+  description: Endpoints that are part of BRIA API version 2.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - v2 endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-v2-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-video-attribution-api
+  name: Bria Video Attribution API
+  description: The Video Attribution API from Bria — 2 operation(s) for video attribution.
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Video Attribution
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-video-attribution-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-video-generation-api
+  name: Bria Video Generation API
+  description: Image-to-Video capabilities
+  humanURL: https://docs.bria.ai/image-generation
+  baseURL: https://engine.prod.bria-api.com/v2
+  tags:
+  - Video Generation
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-video-generation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.bria.ai/image-generation
+  - type: Documentation
+    url: https://docs.bria.ai/image-editing
+  - type: Documentation
+    url: https://docs.bria.ai/video-editing
+  - type: Documentation
+    url: https://docs.bria.ai/product-shot-editing
+  - type: Documentation
+    url: https://docs.bria.ai/tailored-generation
+  - type: Documentation
+    url: https://docs.bria.ai/status
+  - type: Documentation
+    url: https://docs.bria.ai/ad-generation
+  - type: Documentation
+    url: https://docs.bria.ai/bria-attribution-service
+  - type: Documentation
+    url: https://docs.bria.ai/image-onboarding
+  - type: Documentation
+    url: https://docs.bria.ai/ai-search-deperecated
 common:
+- type: Overlay
+  url: overlays/bria-ad-generation-overlay.yaml
 - type: Website
   url: https://bria.ai/
 - type: DeveloperPortal
