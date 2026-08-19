@@ -1,0 +1,2385 @@
+{
+  "item": [
+    {
+      "id": "255f2e62-66f7-4615-a9f1-d75d69b88cbf",
+      "name": "Editing Endpoints",
+      "description": {
+        "content": "Tools for modifying video content (Erase, Upscale, Remove BG, Green Screen, Replace Background). REST async.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a6f76916-b899-4131-8b5a-176bea3439ea",
+          "name": "Eraser",
+          "request": {
+            "name": "Eraser",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/eraser-video)\n\n\n**Description**\nInitiates an asynchronous object erasure job. Removes objects defined by the mask input and reconstructs the background.\n\n\n**Mask Input**\n\n\nThis endpoint requires a mask definition object. You can provide a direct `mask_url`, or use one of our masking endpoints (`mask_by_prompt`, `mask_by_key_points`) to define the mask area.\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned\n\n\nConstraints & Limits:\n\n- **Max Duration:** 5 seconds. Videos longer than 5s will be truncated if `auto_trim` is true, or rejected if false.\n\n- **Max Resolution:** 750p. Inputs higher than 750p will be automatically downscaled.\n\n- **Frame Rate:** Recommended 24 FPS (preserved in output).\n\n\nPreservation Rules:\n\n- Aspect Ratio (within 16:9 constraint)\n\n- Frame Rate\n\n- Audio (preserved by default)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "erase"
+              ],
+              "host": [
+                "{{erase-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"mask\": \"<string>\",\n  \"preserve_audio\": true,\n  \"auto_trim\": false,\n  \"output_container_and_codec\": \"mp4_h264\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9c1d7f6-c1ba-4481-a47f-d8e3027baa34",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6426399a-2db8-4192-a9b8-45d31ce620a2",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16a3fc3f-a947-4d2a-89b3-df300d306318",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9def78e1-6e8a-4e21-88d2-b0e0f7d592c3",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d829e132-b093-4c2e-997b-1cf1a77eb494",
+              "name": "Unsupported input container or codec",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6ba1c46-8c79-4275-91eb-0e0b6b64f38b",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ec96d3de-65db-45cd-82ee-15a71399c40c",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d54d057-c412-40e2-8c4c-44fe8293343c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "erase"
+                  ],
+                  "host": [
+                    "{{erase-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_video.mp4\",\n  \"mask\": \"https://bria-test-images.s3.us-east-1.amazonaws.com/videos/eraser/video1_mask.mp4\",\n  \"output_container_and_codec\": \"mp4_h264\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "24bddbf0-a188-4c3d-b6bf-11dffa3cc0f3",
+          "name": "Increase Resolution - up to 8K",
+          "request": {
+            "name": "Increase Resolution - up to 8K",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-increase-resolution)\n\n\n**Description**\nInitiates an asynchronous resolution upscaling job for a video.\n\n**Upscales up to 8K output!**\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned\n\n\nSupported input containers:\n\n- .mp4, .mov, .webm, .avi, .gif\n\n\nSupported input codecs:\n\n- H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG\n\n\nInput attributes preserved in output:\n\n- Aspect Ratio\n\n- Frame Rate\n\n- Color Bit Depth\n\n- Audio if present\n\n- Transparency if present and supported by the selected output preset\n\n\nLimits:\n\n- Max input duration: 60 seconds\n\n- Max output resolution: 7680x4320 (8K). If the selected `desired_increase` would exceed this limit the server returns 422 Unprocessable Entity.\n\n\nEncoding:\n\n- Bitrate is adjusted automatically to match the target resolution to preserve quality.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "increase_resolution"
+              ],
+              "host": [
+                "{{increase_resolution-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"desired_increase\": 2,\n  \"output_container_and_codec\": \"mp4_h264\",\n  \"preserve_audio\": true,\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3bba30bb-683a-4a44-89d9-16a7bca7fcfd",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e655f9c-0896-4d33-a597-b28dfeca310a",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b081230-da76-41d9-9d76-233b034ca2bf",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f54b155-e198-4298-a196-4403139309d6",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59055ae4-953b-420c-b534-52b0d18082ce",
+              "name": "Unsupported input container or codec",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19f967dd-bd08-4af7-82e6-90ef1aca590a",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a452985d-830a-4637-97ba-7a19b4987eb5",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5c03114-b174-4a72-884e-7bf82735ce36",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "increase_resolution"
+                  ],
+                  "host": [
+                    "{{increase_resolution-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/3446608-sd_426_240_25fps.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2206b905-59a5-4ddc-a862-e22825e675e4",
+          "name": "Remove Background",
+          "request": {
+            "name": "Remove Background",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-remove-background)\n\n\n**Description**\nInitiates an asynchronous background removal job for a video.\n\n> **Need real-time / low-latency background removal?** See [Streaming Background Removal](#tag/Streaming-Endpoints) for the WebSocket-based variant.\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned\n\n\nSupported input containers:\n\n- .mp4, .mov, .webm, .avi, .gif\n\n\nSupported input codecs:\n\n- H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG\n\n\nInput attributes preserved in output:\n\n- Aspect Ratio and resolution (unless `auto_zoom` is enabled - see Auto Zoom below)\n\n- Frame Rate\n\n- Audio if present\n\n\nLimits:\n\n- Max input duration: 60 seconds\n\n- Resolutions: Input resolution up to 16000x16000 (16K). Inputs larger than this return 413 Payload Too Large. Output resolution matches the input resolution. When `auto_zoom` is enabled, the output is cropped to the foreground subject and may be smaller than the input.\n\n\nBackground and transparency control:\n\n- `background_color` must be one of the predefined string values listed below. Hex values are not supported. Default is `Transparent`.\n\n- If `background_color` is `Transparent`, the selected output preset must support alpha. Otherwise the server responds with 422 Unprocessable Entity.\n\n\nOutput transparency support by preset:\n\n- Alpha supported: `webm_vp9`, `mov_proresks`, `mkv_vp9`, `mkv_raw`, `gif`, `mov_h265` when encoded as HEVC with Alpha\n\n- Alpha not supported: `mp4_h264`, `mp4_h265`, `mkv_h264`, `mkv_h265`, `avi_h264`\n\nAuto Zoom:\n\n- Set `auto_zoom` to `true` to automatically crop the output video to the foreground subject, creating a zoom-in effect.\n\n- The crop is calculated once for the entire video - the smallest rectangle that contains the subject across all frames - so the framing is stable throughout, with no per-frame movement.\n\n- If the subject moves across a large portion of the frame, the crop is minimal and the output may match the input framing.\n\n- When cropping is applied, the output resolution and aspect ratio differ from the input.\n\n- Enabling this option increases processing time.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "remove_background"
+              ],
+              "host": [
+                "{{remove_background-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"background_color\": \"Black\",\n  \"auto_zoom\": false,\n  \"output_container_and_codec\": \"mp4_h264\",\n  \"preserve_audio\": true,\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8ee3d6c3-a0f7-4f06-b3d3-e0d12a934aad",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6febf857-1762-4400-9bde-8bafc974f6f6",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc9ae9f4-649c-4d8a-8847-7d5918a4d8db",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1fb2ed66-dac8-4040-a210-3454fa91cee1",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb2a69e9-d01d-4e05-8ea4-af745e5115c0",
+              "name": "Payload Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "209c7fa2-06a7-4a8f-ad54-35a64b49e247",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f7e532f-186a-4a9b-9dc3-fe040029ce97",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d4db769-5a74-4a92-8478-b4026a25e804",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "remove_background"
+                  ],
+                  "host": [
+                    "{{remove_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "271a309f-6e3b-48f5-96b5-5a8764e7aba4",
+          "name": "Replace Background",
+          "request": {
+            "name": "Replace Background",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-replace-background)\n\n\n**Description**\n\nan asynchronous job that detects the video background and composites a user-provided image or video asset behind the subject. Size and duration mismatches between the input video and the background asset are handled automatically.\n\n\n\n**behavior:**\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status/endpoints/get_status) with the `request_id` until a terminal status is returned\n\n\n\n**foreground input containers:**\n\n- .mp4, .mov, .webm, .avi, .gif\n\n\n\n**foreground input codecs:*\n\n- H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG\n\n\n\n**background input formats:**\n\n- Image: .jpg, .png, .webp, .gif\n\n- Video: .mp4, .mov, .webm, .avi\n\n\n\n**attributes preserved in output:**\n\n- Aspect Ratio and resolution (matches foreground video)\n\n- Frame Rate (matches foreground video)\n\n- Foreground audio if present and `preserve_audio` is true. Background audio is always discarded.\n\n\n**Limitations**:\n\n- Max foreground duration: 60 seconds\n\n- Max background video duration: 60 seconds\n\n- Resolutions: Input resolution up to 16000x16000 (16K) for both foreground and background. Inputs larger than this return 413 Payload Too Large. Output resolution matches the foreground input resolution.\n\n- Video Background spect ratio: provided background video must be of same aspect ratio as the foeground video.\n\n**mismatch handling (image bakground)**:\n\n- Background is scaled to cover the full frame, then center-cropped to exactly match the foreground resolution. Some background edges may be clipped.\n\n\n**mismatch handling (video backgrounds only)**:\n\n- Background video shorter than foreground: loop from 0s until foreground ends.\n\n- Background video longer than foreground: play from 0s, trim at foreground end.\n\n\n**Output transparency**:\n\n- Output is fully opaque (composited).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "replace_background"
+              ],
+              "host": [
+                "{{replace_background-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"background_url\": \"<string>\",\n  \"output_container_and_codec\": \"webm_vp9\",\n  \"preserve_audio\": true,\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "137de701-a310-4060-8af8-a691738b7736",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c38d1695-96a8-403d-9a45-0cd8e7d51efa",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d310470a-f00f-48eb-b232-e93de9a3a556",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28a5d880-7048-42fb-b280-225749068264",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8e3a5e9-7483-4cb7-bcf4-3814a20d60cd",
+              "name": "Payload Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37da460e-6c6a-4b79-8826-395b5510e9f9",
+              "name": "Unsupported input container or codec (foreground or background)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70421c8e-0f07-436d-8ed8-c68f1631715a",
+              "name": "Unprocessable entity (e.g., unreachable background URL, background URL not provided, unsupported background format, background exceeds 60s)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72246cb0-8dea-4fb1-b6c5-bb528f8add91",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3928c3b9-e212-41dc-8346-cdba383adf6e",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "replace_background"
+                  ],
+                  "host": [
+                    "{{replace_background-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"background_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/batch_replace_example_input.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f70a425-bbd2-4d5f-84bd-accd689f6a96",
+          "name": "Green Screen",
+          "request": {
+            "name": "Green Screen",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-green-screen)\n\n\n**Description**\nInitiates an asynchronous job that detects the video background and replaces it with a solid green (or blue) screen, producing a chroma-key-ready output for downstream compositing tools.\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status/endpoints/get_status) with the `request_id` until a terminal status is returned\n\n\nSupported input containers:\n\n- .mp4, .mov, .webm, .avi, .gif\n\n\nSupported input codecs:\n\n- H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG\n\n\nInput attributes preserved in output:\n\n- Aspect Ratio and resolution\n\n- Frame Rate\n\n- Audio if present and `preserve_audio` is true\n\n\nLimits:\n\n- Max input duration: 60 seconds\n\n- Resolutions: Input resolution up to 16000x16000 (16K). Inputs larger than this return 413 Payload Too Large. Output resolution matches the input resolution.\n\n\nGreen shade selection:\n\n- `broadcast_green` (#00B140) - industry standard for professional pipelines. Default.\n\n- `chroma_green` (#00FF00) - works with consumer editors.\n\n- `blue_screen` (#0000FF) - use when the subject wears green.\n\n\nOutput transparency:\n\n- Output is fully opaque (no alpha channel needed). `mp4_h264` is recommended for broad editor compatibility.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "green_screen"
+              ],
+              "host": [
+                "{{green_screen-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"green_shade\": \"broadcast_green\",\n  \"output_container_and_codec\": \"webm_vp9\",\n  \"preserve_audio\": true,\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "02dd7c33-128b-4a42-8b4e-55943c229643",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "363a1fcd-c5ff-4679-b56c-b3e880dfe8a9",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fccefc8f-3ff5-460b-ba3f-b2bce7b660a6",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "643bffa1-43f6-4847-9b34-f622640c60ed",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1edd6304-d11b-481d-8ae5-42b3f4bdeef6",
+              "name": "Payload Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c65d75f-6171-47da-abe3-3c5dbadd4bce",
+              "name": "Unsupported input container or codec",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f24fefb0-7e56-4ade-9adf-12257170d7f9",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42c9c3d6-c9b2-4d09-8fef-6622e7c53fc3",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4135c875-c55c-49c4-998a-71dadcd0cc94",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "green_screen"
+                  ],
+                  "host": [
+                    "{{green_screen-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"https://labs-assets.bria.ai/sandbox-example-inputs/5586521-uhd_3840_2160_25fps_original.mp4\",\n  \"green_shade\": \"broadcast_green\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/edit",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/edit",
+      "key": "erase-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/edit",
+      "key": "increase_resolution-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/edit",
+      "key": "remove_background-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/edit",
+      "key": "replace_background-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/edit",
+      "key": "green_screen-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "53d7ffad-1ec5-40ca-89f0-3a07a125f1e5",
+    "name": "Video API Reference Editing Endpoints API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.\n\nThe Video API is organized into two transport paradigms:\n\n- **REST API (Async)** — Standard HTTP request/response. You submit a job, receive a `request_id` and `status_url`, and poll the [Status Service](https://docs.bria.ai/status) until the job completes. Use this for editing, masking, and most batch-style workflows.\n- **Streaming API (WebSocket)** — Persistent bidirectional connection for low-latency, frame-by-frame processing. Use this when you need real-time output (e.g., live video feeds, interactive previews).\n\n**Asynchronous Requests and the Status Service**  \nBria API v2 REST endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.\n\nSee the full guide at [Status Service Documentation](https://docs.bria.ai/status) for complete details and usage examples.\n",
+      "type": "text/plain"
+    }
+  }
+}

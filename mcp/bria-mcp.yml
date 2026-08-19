@@ -20,15 +20,13 @@ authentication:
   anonymous_introspection: refused
 introspection:
   attempted: '2026-08-08'
-  method: 'POST tools/list (jsonrpc 2.0)'
+  method: POST tools/list (jsonrpc 2.0)
   http_status: 401
-  response: 'either API key or Bearer token is required'
+  response: either API key or Bearer token is required
   result: gated
-  note: >-
-    The live tool list and per-tool inputSchema require an authenticated session. Bria publishes
-    no tool names in llms.txt or in the docs, so the capabilities below are the documented
-    capability set, not a verbatim tools/list. Tool NAMES are unknown and are deliberately not
-    invented here.
+  note: The live tool list and per-tool inputSchema require an authenticated session. Bria publishes no
+    tool names in llms.txt or in the docs, so the capabilities below are the documented capability set,
+    not a verbatim tools/list. Tool NAMES are unknown and are deliberately not invented here.
 capabilities:
   source: https://docs.bria.ai/mcp-authentication
   documented:
@@ -45,8 +43,7 @@ input_formats:
 constraints:
 - When the MCP client is Claude, only public image URLs are supported.
 tools: []
-tools_note: >-
-  Intentionally empty. tools/list is auth-gated and Bria does not publish tool names; an invented
+tools_note: Intentionally empty. tools/list is auth-gated and Bria does not publish tool names; an invented
   list would be fabrication. Re-run with an authenticated token to populate.
 x-evidence:
   fetched: '2026-08-08'
@@ -58,3 +55,10 @@ x-evidence:
     http_status: 200
   - url: https://docs.bria.ai/mcp-authentication.md
     http_status: 200
+deployment:
+  mode: remote
+  endpoint: https://mcp.prod.bria-api.com/mcp
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,326 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tailored Generation API Reference Model API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Model",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "include_training_parameters",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes detailed training parameters and checkpoint steps."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of models. If there are no models, an empty array is returned."
+        },
+        {
+          "info": {
+            "name": "Create Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new model."
+        },
+        {
+          "info": {
+            "name": "Get Models by Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/projects/:project_id/models",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_training_parameters",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve all models for a project."
+        },
+        {
+          "info": {
+            "name": "Get Model by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve full model information."
+        },
+        {
+          "info": {
+            "name": "Update Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a model's name and description."
+        },
+        {
+          "info": {
+            "name": "Delete Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a specific model."
+        },
+        {
+          "info": {
+            "name": "Start Training",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id/start_training",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start model training. Training duration is typically 2-4 hours.\nThe associated dataset must have a status of 'completed' before training can begin.\n\n**Default Training Parameters:**\nIf parameters are not provided, defaults are automatically selected:\n* `rank`: 128\n* `learning_rate`: 0.0001\n* `lr_scheduler`: \"constant_with_warmup\"\n* `total_training_steps`: 750\n* `checkpoint_interval`: 500\n    \n**Constraints:**\nAdvanced training parameters are only supported when the model's `training_mode` is set"
+        },
+        {
+          "info": {
+            "name": "Stop Training",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id/stop_training",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Stop an ongoing model training process. Once stopped, training cannot be resumed - a new model would need to be created and trained."
+        },
+        {
+          "info": {
+            "name": "List Checkpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id/checkpoints",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all available checkpoints for a model. Only available for models trained in `expert` mode."
+        },
+        {
+          "info": {
+            "name": "Get Specific Checkpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id/checkpoints/:checkpoint_step",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "checkpoint_step",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details for a specific model checkpoint."
+        },
+        {
+          "info": {
+            "name": "Delete Checkpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id/checkpoints/:checkpoint_step",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "checkpoint_step",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently delete a specific model checkpoint. Cannot delete the checkpoint currently selected for inference."
+        },
+        {
+          "info": {
+            "name": "Download Tailored Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/models/:model_id/download",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download a trained tailored generation model after completing the training process. \nThe response includes a pre-signed URL for downloading the model and details about the base model used.\n\nTo use the tailored model source code, access to the base model source code is required. \nThe base model source code is exclusively available through Bria's **Source Code and Weights** product. \nFor more information, contact us at **info@bria.ai**.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

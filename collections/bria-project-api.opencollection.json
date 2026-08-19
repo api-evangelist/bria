@@ -1,0 +1,131 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tailored Generation API Reference Project API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Project",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/projects",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieve all projects within the organization. If there are no projects, returns an empty array."
+        },
+        {
+          "info": {
+            "name": "Create Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/projects",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new project within the organization.\n\nThe following IP types are supported:\n\n**Defined Character**\nA specific character that maintains consistent identity and unique traits while being reproduced in different poses, situations, and actions.\n\nMedium: Photography\n\n<img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/photogrpahy_dog.png\" alt=\"Example of defined character in different poses, photography medium\" />\n\nMedium: Illustration\n\n<img src=\"https://bria-data"
+        },
+        {
+          "info": {
+            "name": "Get Project by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/projects/:project_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve full project information."
+        },
+        {
+          "info": {
+            "name": "Update Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/projects/:project_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a specific project."
+        },
+        {
+          "info": {
+            "name": "Delete Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/projects/:project_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently delete a project and all its associated resources, including all datasets, images, and models. This action cannot be undone. Training models must be stopped before deletion."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

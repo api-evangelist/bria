@@ -1,0 +1,486 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tailored Generation API Reference Dataset API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Dataset",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Datasets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all datasets. If there are no datasets, returns an empty array."
+        },
+        {
+          "info": {
+            "name": "Create Dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new dataset.\n\nDatasets use JSON structured data (`visual_schema`) for training. You must generate a visual schema via `/generate_visual_schema` before completing the dataset.\n\n**Completion Requirements:**\nMinimum 5 images required to mark as completed.\n\n**Upload types**:\n* **Basic upload type**: Supports up to 200 images, uploading image files\n* **Advanced upload type**: Supports up to 5000 images, uploading a zip file\n"
+        },
+        {
+          "info": {
+            "name": "Get Datasets by Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/projects/:project_id/datasets",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_models",
+                "value": "",
+                "type": "query",
+                "description": "If true, include model objects using the dataset."
+              },
+              {
+                "name": "include_models_ids",
+                "value": "",
+                "type": "query",
+                "description": "If true, include model IDs using the dataset."
+              }
+            ]
+          },
+          "docs": "Retrieve all datasets for a specific project."
+        },
+        {
+          "info": {
+            "name": "Get Dataset by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "max_images",
+                "value": "",
+                "type": "query",
+                "description": "The maximum number of images to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieve a specific dataset including its images."
+        },
+        {
+          "info": {
+            "name": "Update Dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a dataset.\n\nYou can update `visual_schema` only when the dataset status is `draft`.\n  \n**Completion Requirements:**\nTo set `status` to `completed`, the dataset must have at least **5 images**.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a specific dataset. Deletes all associated images."
+        },
+        {
+          "info": {
+            "name": "Clone Dataset As Draft",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/clone",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new draft dataset based on an existing one. This is useful when you would like to use the same dataset again for another training, but with some modification (create a variation). The cloned dataset inherits the `visual_schema` from the source dataset."
+        },
+        {
+          "info": {
+            "name": "Get Images",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve all images in a specific dataset."
+        },
+        {
+          "info": {
+            "name": "Upload Image Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload a new image to a dataset.\n\n**Image Requirements:**\n- Recommended minimum resolution: 1024x1024 pixels for best quality\n  - By default, smaller images (down to 256x256) will be automatically upscaled (`increase_resolution=true`)\n  - To strictly enforce the 1024x1024 minimum, set `increase_resolution=false`\n- Supported formats: jpg, jpeg, png, webp\n- Preferably use original high-quality assets\n\n**Dataset Guidelines:**\n- Recommended: 5-50 images for optimal results\n- Maximum supported: 200 i"
+        },
+        {
+          "info": {
+            "name": "Regenerate All Captions",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Regenerate captions for all images in a dataset. This is crucial after updating the visual schema, to ensure full compatibility with the new schema.\n\nThis is an asynchronous operation. Once called, poll Get Dataset by ID until `captions_update_status` changes to 'completed'.\n"
+        },
+        {
+          "info": {
+            "name": "Advanced Image Upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images/bulk-upload",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Efficiently upload a large volume of images (up to 5000) from a ZIP file to an advanced dataset.\n\n**Upload without Schema:** You can initiate a bulk upload even if `visual_schema` is null. Images will be uploaded but caption generation will be skipped. You must call **Regenerate All Captions** after defining the schema.\n\n**General:**\n* Asynchronous operation; status can be retrieved via `{dataset_id}/bulk-upload/status`.\n* Supported for 'advanced' upload type datasets only.\n* If the dataset is n"
+        },
+        {
+          "info": {
+            "name": "Get Image by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images/:image_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "image_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve full image information."
+        },
+        {
+          "info": {
+            "name": "Update Image Caption",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images/:image_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "image_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the caption of a specific image. Two mutually exclusive options:\n\n1. **Provide a new caption**: Use the `caption` parameter (sets `caption_source` to \"manual\"). The caption must be a string containing a **valid JSON structure**.\n2. **Regenerate automatically**: Set `regenerate_caption` to true (sets `caption_source` to \"automatic\").\n\n**Constraints:**\n* Cannot update captions in a completed dataset\n* Cannot provide both caption and regenerate_caption\n"
+        },
+        {
+          "info": {
+            "name": "Delete Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images/:image_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "image_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Permanently remove an image from a dataset. Cannot delete images from completed datasets."
+        },
+        {
+          "info": {
+            "name": "Get Bulk Upload Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/datasets/:dataset_id/images/bulk-upload/status",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve the status and progress of a bulk image upload job."
+        },
+        {
+          "info": {
+            "name": "Generate Visual Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/generate_visual_schema",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates a structured JSON visual schema (backbone) based on the provided sample images.\n\nThe visual schema represents mutual characteristics (style, IP, colors, etc.) across training images and is used for:\n1. Caption generation during image upload.\n2. Prompt translation (user text → structured prompt) during generation.\n\n**Usage:**\n- Provide 5-10 representative images of your style/IP.\n- The returned `visual_schema` string must be added to your dataset using `PUT /tailored-gen/datasets/{datas"
+        },
+        {
+          "info": {
+            "name": "Refine Structured Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/tailored-gen/refine_structured_prompt",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refines a Structured Prompt object (such as a Visual Schema or an Image Caption) based on user instructions.\n\n**Access Control & Validation:**\n* Requires a valid `dataset_id` to verify ownership.\n* The referenced dataset must be in `draft` mode.\n\n**Use Cases:**\n1. **Refine Visual Schema:** Input the initial schema and instructions like \"Make the style description more detailed\".\n2. **Refine Image Caption:** Input a specific image's caption and instructions like \"Fix the description of the hair c"
+        },
+        {
+          "info": {
+            "name": "Download Dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v2/datasets/:dataset_id/download",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download an advanced dataset. Returns a pre-signed URL for downloading the dataset.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

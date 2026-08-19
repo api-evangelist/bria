@@ -1,0 +1,94 @@
+openapi: 3.2.0
+info:
+  title: Tailored Generation API Reference Video Generation API
+  version: ''
+  description: "Tailored Generation provides capabilities to generate visuals (photos, illustrations, vectors) \nthat preserve and faithfully reproduce specific IP elements or guidelines, ensuring consistency \nacross all generated outputs.\n\nThe Tailored Generation APIs allow you to manage and train tailored models that maintain the \nintegrity of your visual IP. You can train models through our Console or implement training \ndirectly via API.\n\n**Fully Automated Training Mode**\nBria supports users in training high-quality finetuned models without the guesswork. Based on the selected IP type & dataset, Bria automatically selects the right training parameters. \nThis means that the user only needs to spend time curating their dataset.\n\n**Advanced Customization and Access:** Bria offers 2 types of advanced training customization: Expert training mode and source-code & weights.\n  - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets.\n  - **Source-code & Weights** is for developers seeking deeper customization and access to Bria's source-available GenAI models via [Hugging Face](https://huggingface.co/briaai).  \n\nAll methods allow full control over fine-tuning, pipeline creation, and integration into proprietary workflows—empowering AI teams to develop and optimize their own generative AI solutions.\n\nThe Tailored Generation Training API provides a set of endpoints to manage the entire lifecycle \nof a tailored generation project:\n\n1. **Project Management**: Create and manage projects that define IP characteristics:\n  - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or \n    retrieve existing projects that belong to your organization.\n  - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character, \n    stylized_scene) and medium.\n  - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete \n    specific projects.\n\n2. **Dataset Management**: Organize and refine datasets within your projects:\n  - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or \n    retrieve existing ones.\n  - **Generate a Visual Schema**\n    - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images.\n  - **Refine Structured Data**\n    - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions.\n    - *Example:* You can send your generated schema with the instruction \"Character's name is Lucy\" to improve the training metadata programmatically.\n  - **Upload and Manage Images**: \n    - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually.\n    - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced).\n  - **Clone Datasets**: Create variations of existing datasets using the clone functionality.\n\n3. **Model Management**: Train and optimize tailored models based on your datasets:\n  - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list \n    existing ones.\n  - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria's recipes) and Expert mode (for training parameter tweaking).\n  - **Monitor and Control**: Manage the model lifecycle, including training start/stop, \n    status monitoring, and version control over the training parameters.\n\n4. **Generation Capabilities**:\n  - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation.\n  - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation.\n  - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images.\n\n### **Training Process**\n\nTo train a tailored model:\n\n1. **Create a Project**: Use the `/projects` endpoint to define your IP type and medium.\n2. **Create a Dataset**: Use the `/datasets` endpoint to create a dataset within your project.\n3. **Define Visual Identity**:\n   - **Step A (Generate):** Call `/tailored-gen/generate_visual_schema`, sampling 5-10 images from your input set.\n   - **Step B (Refine - Optional):** Call `/tailored-gen/refine_structured_prompt` with the generated schema and instructions to tweak the definitions (e.g., \"Remove references to blue background\").\n   - **Step C (Apply):** Update the dataset with the final schema using `/datasets/{dataset_id}`.\n4. **Upload Images**: Upload images using the `/datasets/{dataset_id}/images` or `/datasets/{dataset_id}/images/bulk` endpoints \n  (minimum resolution: 1024x1024px). note: if you upload images before updating the visual schema, use the Regenerate All Captions endpoint to caption the images.\n5. **Prepare Dataset**: Review auto-generated captions (you can also use `refine_structured_prompt` to fix specific image captions) and update the dataset status to 'completed'.\n6. **Create Model**: Use the `/models` endpoint to create a model, which requires a training mode.\n7. **Start Training**: Initiate training via the `/models/{id}/start_training` endpoint. \n  Training typically takes 4-6 hours.\n8. **Monitor Progress**: Check the training status using the `/models/{id}` endpoint until \n  training is 'Completed'.\n9. **Generate Images**: \n  - Use `v2/image/generate/tailored` for text-to-image generation.\n"
+servers:
+- url: https://engine.prod.bria-api.com/v2/
+tags:
+- name: Video Generation
+  description: Image-to-Video capabilities
+paths:
+  /video/generate/tailored/image-to-video:
+    post:
+      summary: Generate Video from Tailored Image (Beta)
+      description: "(Beta)\nInitiates an asynchronous job to generate a 5-second MP4 video file animating a source image created by a tailored model.\n\n**Asynchronous Requests and the Status Service** Bria API endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.  \n\nSee the full guide at [Status Service Documentation](https://docs.bria.ai/status) for complete details and usage examples.\n\nOn successful initiation, this endpoint returns a 202 Accepted response. Poll the `status_url` or use the Status Service with the `request_id` to check for job completion.\nOnce 'Completed', the status response will contain the URL to the generated MP4 video.\n"
+      tags:
+      - Video Generation
+      servers:
+      - url: https://engine.prod.bria-api.com/v2
+      operationId: generate-video-from-tailored-image
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: Your API token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tailored_model_id:
+                  type: string
+                  description: The ID of the tailored model that generated the input image.
+                image:
+                  type: string
+                  description: Publicly accessible URL or base64 string of the source image.
+                seed:
+                  type: integer
+                  description: Optional seed for reproducible results.
+              required:
+              - tailored_model_id
+              - image
+            example:
+              tailored_model_id: your_tailored_model_id
+              image: https://example.com/image.png
+              seed: 42
+      responses:
+        '202':
+          description: Accepted. The video generation job was successfully initiated. You can track the progress and retrieve the final result using the Status Service. For more details, refer to the [Status Service](https://docs.bria.ai/status) section.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request_id:
+                    type: string
+                    description: The unique identifier for this asynchronous request.
+                  status_url:
+                    type: string
+                    format: uri
+                    description: The URL to poll for the status of the generation job.
+        '400':
+          description: Bad Request. Invalid request body.
+        '401':
+          description: Unauthorized. The api_token is missing or invalid.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not Found. The specified tailored_model_id does not exist.
+        '415':
+          description: Unsupported Media Type.
+        '422':
+          description: Unprocessable Entity. Invalid image data.
+        '429':
+          description: Too Many Requests. Rate limit exceeded.
+        '500':
+          description: Internal Server Error.
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+x-tagGroups:
+- name: Training Endpoints
+  tags:
+  - Project
+  - Dataset
+  - Model
+- name: Generation Endpoints
+  tags:
+  - Image Generation
+  - Video Generation

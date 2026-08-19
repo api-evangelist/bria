@@ -1,0 +1,3571 @@
+{
+  "item": [
+    {
+      "id": "9aa2cbf4-2d02-4457-b11e-d938438647f1",
+      "name": "Product Endpoints",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "11065573-cf6c-41d6-80f4-ccf29fe18433",
+          "name": "Product Cutout",
+          "request": {
+            "name": "Product Cutout",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-cutout)\n\n**Description**\n\nThis capability allows you to create a precise cutout of a product from any given image. This feature is especially valuable for eCommerce platforms and applications, serving as a fundamental building block for crafting a user-friendly interface. \n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content or if the modified output would contain inappropriate content.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "cutout"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"<string>\",\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"force_rmbg\": false,\n  \"preserve_alpha\": true,\n  \"content_moderation\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "858baa93-796c-4f2b-8a59-b5c1e120d29a",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result_url\": \"URL\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d044a7ca-460a-4ad1-8372-17dfa345a947",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1865f52f-37d1-4b7b-82a8-d36ad78fe955",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1aa18494-948c-44ac-be23-65ad6e74a58e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "383e7fa2-be3e-4f9f-822f-504dedd1614c",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "17086d1e-fd5f-401a-9410-bccce30a89fd",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "362ad171-fe8a-4462-b2b1-c0fdb38778f4",
+              "name": "Unsupported media type. Invalid file type. Supported file types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ce09c6aa-ba68-493d-8936-4da987f48030",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"The request could not be completed because the visual in the '{parameter_name}' parameter did not pass content moderation.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "54ce44c6-e7f1-4b66-a9f8-b428cdd55499",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "991c359c-4a65-4d74-8265-e2f4087a8bb0",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f53f997f-e6c6-4dba-bd62-8ba83382f040",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e25d910f-e0c0-42f5-84a3-d52f27b2c513",
+          "name": "Product Packshot",
+          "request": {
+            "name": "Product Packshot",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-packshot)\n\n**Description**\n\nThe Product Pack Shot feature is designed to create professional standard pack shots. The output is a 2000x2000 px image, with the product size and location according to best practices. This feature can allow users to take any photo of a product and transform it into a professional pack shot, placing the product on a clean, seamless background, typically white but customizable to any color.\n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content or if the modified output would contain inappropriate content.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "packshot"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"<string>\",\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"background_color\": \"#FFFFFF\",\n  \"force_rmbg\": false,\n  \"content_moderation\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a17155d1-c456-4697-8e45-8f02b7190990",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result_url\": \"URL\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7b59144-f6d2-4135-b5de-34ea8afd307b",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e7029b16-fab4-4d1b-bc73-d91d9e64fe25",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "424316ee-a354-4e7e-9528-6a93b031078e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9cdef593-d4e0-4afa-a499-dc2a1053245c",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "29418a40-c518-4062-9ed1-0441b5389be2",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "74c8ed55-99af-4baa-bc59-ef56991d96e7",
+              "name": "Unsupported media type. Invalid file type. Supported file types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "82602e48-742a-43aa-8d8e-8db1e04e0efe",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"The request could not be completed because the visual in the '{parameter_name}' parameter did not pass content moderation.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f23dd03b-5f9a-47da-b940-10e6a795bf61",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "90cae2e2-3bbc-4eeb-9a66-4134ed6d4db8",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "91dc7818-3d70-491e-a318-e607c8870ada",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "packshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_packshot_example_image.jpg\",\n  \"background_color\": \"#FFFFFF\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5c845afb-e79d-4df5-bc1d-10dee9470b34",
+          "name": "Product Shadow",
+          "request": {
+            "name": "Product Shadow",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-shadow)\n\n**Description**\n\n\nThe Product Shadow API allows you to add consistent and customizable shadow to a product cutout. This feature is designed to work in combination with other capabilities like product cutout,  product packshot and product lifestyle shots, enhancing the visual appeal of e-commerce and product imagery.\n\n\nIf the product image isn't a product cutout, you should use the product cutout API first. The product shadow API accepts a product cutout as input. Once you have a product cutout with a shadow, you can use it in product packshot or product lifestyle shot APIs, where needed.\n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content or if the modified output would contain inappropriate content.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "shadow"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"<string>\",\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"type\": \"regular\",\n  \"background_color\": \"<string>\",\n  \"shadow_color\": \"#000000\",\n  \"shadow_offset\": [\n    0,\n    15\n  ],\n  \"shadow_intensity\": 60,\n  \"shadow_blur\": \"<integer>\",\n  \"shadow_width\": \"<integer>\",\n  \"shadow_height\": 70,\n  \"force_rmbg\": false,\n  \"preserve_alpha\": true,\n  \"content_moderation\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0e2eec5a-6ac1-4e78-8dbb-e71f92fcdf06",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result_url\": \"URL\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e788a50-80a1-4722-b637-4724d7d97457",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "20087341-5ee9-4132-82f4-2539b98fa37f",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "80ef1fcb-ab99-4797-b002-a73faf6f4684",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64bdbd07-bbbe-4a03-8162-e5d459caca0b",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d5b07949-1da9-4d89-97c2-d515aaeab95d",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a47bdef9-24dd-4dcf-b461-30c11804a724",
+              "name": "Unsupported media type. Invalid file type. Supported file types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "758f9afa-e641-40d5-91c7-588229eee9d4",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"The request could not be completed because the visual in the '{parameter_name}' parameter did not pass content moderation.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9cd044a-3e2a-482a-b5a1-84b287858051",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "46822b9d-bec1-4d5d-bacc-7966db237bbb",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8c4aff32-c668-46c0-aaed-0deb3675bdb1",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "shadow"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://i.ibb.co/p6VjyrfY/6901921e-8856-4fbd-b344-b5e88bcf90e6.png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7cf39e5c-825d-4fa8-b854-b7b356950670",
+          "name": "Lifestyle Product Shot by Text",
+          "request": {
+            "name": "Lifestyle Product Shot by Text",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/lifestyle-product-shot-by-text)\n\n**Description**\n\nCreates enriched product shots by placing them in various environments using textual descriptions.\n\n\nIn addition, you can adjust the background of the product by replacing it with a solid color. \n\nTo do this, specify a hex color code (e.g., #FF5733) in the `scene_description`. \n\n\nThis feature is only available when generating a single result (`num_results=1`).\n\n\nThis endpoint also allows adjusting the position of the product and the size of the final product shot.\n\n\nThis enables the creation of new and unique variations of your original product image while maintaining control over layout and format.\n\n\nTo control product positioning and shot dimensions, use the `placement_type` parameter, which offers several control modes:\n\n\n\n\n- `original`: preserves the original position and size of the product from the input image.\n\n\n\n\n- `automatic`: generates results with 7 recommended placements, while the shot_size is defined by the 'shot_size' parameter.\n\n\n\n\n- `manual_placement`: allows choosing from predefined positions using `manual_placement_selection`. The shot_size is defined by the 'shot_size' parameter.\n\n\n\n\n- `custom_coordinates`: provides full control over the product's size and location using `foreground_image_size` and `foreground_image_location`. The shot_size is defined by the 'shot_size' parameter.\n\n\n\n\n- `manual_padding`: lets you define padding in pixels around the product to control both size and placement.\n\n\n\n\n- `automatic_aspect_ratio`: centers the product and resizes the canvas automatically to match the specified `aspect_ratio`.\n\n\n\n\n\nThe parameters used for positioning and sizing depend on the selected `placement_type`. Refer to the documentation for each mode to understand the supported fields and behaviors.\n\n\nWe offer 3 different background generation modes when generating by text: base, high contol and fast.\n\n  - **Base** - clean, high quality backgrounds.\n  - **High_control** - Stronger prompt adherence and scene context, finer control over layout and details - **we recommend using this mode.**\n  - **Fast** - same core capabilities as base, optimal speed and quality balace.\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content, and filters out unsafe modified images - the first blocked input image will fail the entire request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "lifestyle_shot_by_text"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"<string>\",\n  \"sync\": false,\n  \"mode\": \"fast\",\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"scene_description\": \"<string>\",\n  \"optimize_description\": true,\n  \"num_results\": 4,\n  \"exclude_elements\": \"<string>\",\n  \"placement_type\": \"original\",\n  \"original_quality\": false,\n  \"aspect_ratio\": \"<string>\",\n  \"shot_size\": [\n    1000,\n    1000\n  ],\n  \"foreground_image_size\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"foreground_image_location\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"manual_placement_selection\": [\n    \"upper_left\"\n  ],\n  \"padding_values\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"force_rmbg\": false,\n  \"content_moderation\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d8cbbff2-9493-462a-a35b-9af459444481",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": [\n    [\n      \"https://storage.server/outputs/valid_output_1.jpeg\",\n      \"123111\",\n      \"valid_output_1.jpeg\"\n    ],\n    [\n      \"https://storage.server/outputs/valid_output_2.jpeg\",\n      \"123222\",\n      \"valid_output_2.jpeg\"\n    ]\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0102e1a8-f188-4078-b9e4-44964e32e124",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5f2a01e3-e2aa-4f44-9cfd-72609690aa11",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1e26f8d1-887c-41c8-ad41-8cd0d35f357c",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "623d8f3d-7a76-4dc9-b749-724bb9738ea4",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c9932dc3-82ba-4204-9816-2f081e935ad2",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fa2f0146-5bb8-4560-9946-80eca529e567",
+              "name": "Unsupported media type. Invalid file type. Supported file types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cdfad226-0cf4-4465-976c-9915598817c9",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"The request could not be completed because the visual in the '{parameter_name}' parameter did not pass content moderation.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "953b10e5-111a-4b49-b64d-692459ffaedc",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6a4c22df-3612-43d6-9124-c5524dd96490",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "61d91452-d66e-484a-9e92-9d7a93da34a4",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"In a living room interior, on a kitchen counter\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92c0ff47-b0d7-4869-8498-18392eeda179",
+          "name": "Lifestyle Product Shot by Image",
+          "request": {
+            "name": "Lifestyle Product Shot by Image",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/lifestyle-product-shot-by-image)\n\n**Description**\n\nGenerates enriched product shots by placing them in visually compelling environments, guided by a reference image. \n\n\nThis endpoint also allows adjusting the position of the product and the size of the final product shot.\nThis enables the creation of new and unique variations of your original product image while maintaining control over layout and format.\n\n\n\nTo control product positioning and shot dimensions, use the `placement_type` parameter, which offers several control modes:\n\n\n\n- `original`: preserves the original position and size of the product from the input image.\n\n\n\n\n- `automatic`: generates results with 7 recommended placements, while the shot_size is defined by the 'shot_size' parameter.\n\n\n\n\n- `manual_placement`: allows choosing from predefined positions using `manual_placement_selection`. The shot_size is defined by the 'shot_size' parameter.\n\n\n\n\n- `custom_coordinates`: provides full control over the product's size and location using `foreground_image_size` and `foreground_image_location`. The shot_size is defined by the 'shot_size' parameter.\n\n\n\n\n- `manual_padding`: lets you define padding in pixels around the product to control both size and placement.\n\n\n\n\n- `automatic_aspect_ratio`: centers the product and resizes the canvas automatically to match the specified `aspect_ratio`.\n\n\n\n\nThe parameters used for positioning and sizing depend on the selected `placement_type`. Refer to the documentation for each mode to understand the supported fields and behaviors.\n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content, and filters out unsafe modified images - the first blocked input image will fail the entire request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "lifestyle_shot_by_image"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"<string>\",\n  \"sync\": false,\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"ref_image_urls\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"ref_image_file\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"enhance_ref_image\": true,\n  \"ref_image_influence\": 1,\n  \"num_results\": 4,\n  \"placement_type\": \"<string>\",\n  \"original_quality\": false,\n  \"aspect_ratio\": \"<string>\",\n  \"shot_size\": [\n    1000,\n    1000\n  ],\n  \"foreground_image_size\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"foreground_image_location\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"manual_placement_selection\": [\n    \"upper_left\"\n  ],\n  \"padding_values\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"force_rmbg\": false,\n  \"content_moderation\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d20cffb8-3beb-4a2c-b50c-63ccc3f484fc",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": [\n    [\n      \"https://storage.server/outputs/valid_output_1.jpeg\",\n      \"123111\",\n      \"valid_output_1.jpeg\"\n    ],\n    [\n      \"https://storage.server/outputs/valid_output_2.jpeg\",\n      \"123222\",\n      \"valid_output_2.jpeg\"\n    ]\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0400607-c1ff-430f-987c-1e33c4d161ad",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6a234d72-4766-485a-8891-b3382ab8aec5",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7ff44f4f-0a8f-4a0e-9029-3517ed932b96",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df22a6be-a03d-4539-b3dc-d5ada7271e83",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3659bd8e-efd5-49dc-96e7-5338e811da96",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "01fe6b36-1ecf-47ad-a634-b31ceeac38a7",
+              "name": "Unsupported media type. Invalid file type. Supported file types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b5549b63-f74a-4b06-b66a-f67ff2a0bcb2",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"The request could not be completed because the visual in the '{parameter_name}' parameter did not pass content moderation.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "150c6515-3eed-42bf-b6a0-b2198d43660b",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a30ac093-61c1-4b04-bcf1-3669d97443ad",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c75e48c2-c828-48dd-984b-99ff0c49a035",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "lifestyle_shot_by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"ref_image_urls\": \"URL\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b57e500-c5a6-44ef-a836-e20b078263f0",
+          "name": "Embed products into a scene",
+          "request": {
+            "name": "Embed products into a scene",
+            "description": {
+              "content": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-embedding)\n\n**Description**\n\nIntegrate and embed one or more products into a predefined scene at precise user-defined coordinates. \nThis endpoint ensures the product matches the scene's lighting, perspective, and aesthetics.\n\n**Note on Product Cutout & Scaling:** Please use Product Cutput endpoint first, to create a presice cutout of your product. **Crucially, the provided `coordinates` (x, y, width, height) are applied to the resulting tight cutout of the product, not the original source image.** To avoid stretching or distortion, developers should ensure the requested width/height matches the aspect ratio of the actual product object rather than the original canvas.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v2",
+                "image",
+                "edit",
+                "product",
+                "integrate"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scene\": \"<string>\",\n  \"products\": [\n    {\n      \"image\": \"<string>\",\n      \"coordinates\": {\n        \"x\": \"<integer>\",\n        \"y\": \"<integer>\",\n        \"width\": \"<integer>\",\n        \"height\": \"<integer>\"\n      }\n    }\n  ],\n  \"seed\": \"<integer>\",\n  \"visual_input_content_moderation\": true,\n  \"visual_output_content_moderation\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5a3463d7-8f6f-4930-bb87-678f51a64444",
+          "name": "Product Cutout (v2)",
+          "request": {
+            "name": "Product Cutout (v2)",
+            "description": {
+              "content": "**Description**\n\nCreates a clean product cutout from any image by removing the background and cropping the image tightly around the product. This capability is especially valuable for eCommerce platforms and applications, and serves as a fundamental building block for product imagery pipelines such as Product Packshot, Product Shadow, and Embed products into a scene.\n\nThis is the v2 version of the Product Cutout capability, replacing the legacy v1 endpoint (POST /v1/product/cutout). Both versions produce identical results. v2 introduces the standard v2 API contract - JSON requests, asynchronous execution with status polling or webhooks, granular content moderation controls, and the standard v2 response envelope. The v1 endpoint remains available, and new integrations should use v2.\n\nBy default, requests are processed asynchronously. The API immediately returns a request_id and a status URL. Track progress and retrieve the result using the [Status Service](https://docs.bria.ai/status), or receive the result via webhook_url. Set sync to true to hold the connection open and receive the final result directly in the response.\n\nThis endpoint supports content moderation via optional parameters that can prevent processing if the input image contains inappropriate content or if the output would contain inappropriate content.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v2",
+                "image",
+                "edit",
+                "product",
+                "cutout"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"sync\": false,\n  \"sku\": \"<string>\",\n  \"preserve_alpha\": true,\n  \"force_background_detection\": false,\n  \"output_type\": \"png\",\n  \"visual_input_content_moderation\": false,\n  \"visual_input_content_moderation_threshold\": 80,\n  \"visual_output_content_moderation\": false,\n  \"visual_output_content_moderation_threshold\": 80,\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b084b43f-ac1e-40b8-b244-035ae943fcab",
+              "name": "Successful operation (Synchronous Success).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"result\": {\n    \"image_url\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd527e67-dfb2-4d9b-bc3b-a86aa86c2562",
+              "name": "Accepted (Asynchronous). You can track the progress and retrieve the final result using the Status Service. For more details, refer to the [Status Service](https://docs.bria.ai/status) section.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fccd18e8-4320-473e-82f3-b66ef02abdc1",
+              "name": "Bad request. For example, the input image is fully transparent.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"error\": {\n    \"code\": 9437,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e337489-a836-4765-a553-f78873adc1eb",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "227767dc-c21e-4df4-be0d-c11b59972ffb",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4afc762a-5593-4578-b112-191518a66207",
+              "name": "Unprocessable Entity. Validation or content moderation failure. The response contains a structured error object with message and details.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"error\": {\n    \"code\": 9437,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7f7dcae-0772-4b53-96be-a1cba9f19dbd",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "605e7b5b-cff1-4765-8f9c-b9cbd25fab44",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "edit",
+                    "product",
+                    "cutout"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"https://labs-assets.bria.ai/sandbox-example-inputs/product_cutout_example_image.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8e507926-a40d-4e31-b4ef-80fa2079aedd",
+          "name": "Consistent Product Shots (Coming Soon)",
+          "request": {
+            "name": "Consistent Product Shots (Coming Soon)",
+            "description": {
+              "content": "**Description**\nThis feature allows users to create consistent product shots by providing either a textual description of a scene or an image, along with a group of product images. The resulting consistent product shots are ideal for use on social media, eCommerce websites, product catalogs, and other marketing materials, ensuring a uniform and professional appearance across all platforms.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "products",
+                "consistent_shots"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6686d369-2431-420c-b677-9604dd099eb1",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "products",
+                    "consistent_shots"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5de161fb-49fc-4ea3-b75f-5848008b6d0c",
+          "name": "Contextual Keyword Extraction (Coming Soon)",
+          "request": {
+            "name": "Contextual Keyword Extraction (Coming Soon)",
+            "description": {
+              "content": "**Description**\nThis feature allows users to extract relevant keywords from an image and its context, focusing on the primary product rather than secondary elements. This capability enhances search optimization in eCommerce by ensuring that the keywords accurately represent the product being sold. It can be particularly useful for improving product searchability on eCommerce websites, enhancing SEO for product listings, automating content management, and optimizing social media marketing efforts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "contextual_keyword_extraction"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5ac03764-bd4b-43a8-b28b-8f25195c89cf",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "contextual_keyword_extraction"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "278ea585-000d-4c66-ad3f-a32165a475ac",
+    "name": "Product Shot API Reference Product Endpoints API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Below you will find the technical specifications, request schemas, and response models for our endpoints. \n \nChoose an endpoint from the sidebar to view code samples and run test requests. \n",
+      "type": "text/plain"
+    }
+  }
+}

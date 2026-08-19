@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Video API Reference Masking Endpoints API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Masking Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate Mask by Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/mask_by_prompt",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates a segmentation mask video based on a text prompt.\n\nResponse behavior:\n- Returns HTTP 202 with `request_id` and `status_url`\n- The final result (via Status Service) will contain a `mask_url`.\n\nConstraints:\n- Max Duration: 5 seconds (Truncated if `auto_trim`=true).\n- Max Resolution: 750p."
+        },
+        {
+          "info": {
+            "name": "Generate Mask by Key Points",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/mask_by_key_points",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates a segmentation mask video based on coordinate key points.\n\nResponse behavior:\n- Returns HTTP 202 with `request_id` and `status_url`\n- The final result (via Status Service) will contain a `mask_url`.\n\nConstraints:\n- Max Duration: 5 seconds (Truncated if `auto_trim`=true).\n- Max Resolution: 750p."
+        },
+        {
+          "info": {
+            "name": "Foreground Mask",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/foreground_mask",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates an asynchronous foreground mask generation job for a video.\n\nResponse behavior:\n- Returns HTTP 202 with `request_id` and `status_url`\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned\n\nSupported input containers:\n- .mp4, .mov, .webm, .avi, .gif\n\nSupported input codecs:\n- H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG\n\nInput attributes preserved in output:\n- Aspect Ratio and reso"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

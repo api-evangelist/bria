@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tailored Generation API Reference Image Generation API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Image Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate Image - Tailored Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/generate/tailored",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Description**\n\nGenerates a new image using a tailored model.\n\nThis endpoint translates your input (`prompt` and/or `structured_prompt`) into a structured JSON prompt using the state-of-the-art **Gemini 2.5 Flash** VLM bridge. It internally uses the model's visual schema (backbone) to ensure the generated image matches your trained visual identity.\n\nThe response includes both the final `image_url` and the `structured_prompt` (JSON).\n\n**Input Combination Rules**\nThe request body must include **o"
+        },
+        {
+          "info": {
+            "name": "Generate Structured Prompt - Tailored Model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/structured_prompt/generate/tailored",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Description**\n\nCreates a new detailed, machine-readable structured prompt in JSON format or refines an existing one using text inputs and a tailored model's visual schema (backbone).\n\nThis endpoint uses the state-of-the-art **Gemini 2.5 Flash** VLM bridge. The tailored model's visual schema is provided as input to Gemini along with the user prompt to generate the structured prompt.\n\n**It returns ONLY the JSON string and does not generate an image.**\n\n**Use Cases:**\n* **Control & Auditability:*"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

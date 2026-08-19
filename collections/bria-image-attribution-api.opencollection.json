@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bria Attribution Service API Reference Image Attribution API",
+    "version": "1.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Image Attribution",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Attribution via Images API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/attribution/by_image",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Attribution via Images API"
+        },
+        {
+          "info": {
+            "name": "Attribution By Embedding (irreversible vectors - self-hosted)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/attribution/by_embedding",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Integration for self-hosted image attribution models. See [Bria Attribution GitHub](https://github.com/Bria-AI/bria-attribution).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

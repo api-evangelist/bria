@@ -1,0 +1,898 @@
+{
+  "item": [
+    {
+      "id": "35b24d11-d1d8-4919-82d7-02cc7e0a1810",
+      "name": "Image Generation",
+      "description": {
+        "content": "Generate images using tailored models",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "489bbb21-3dfe-4c9e-b39b-4b8b5a035ec1",
+          "name": "Generate Image - Tailored Model",
+          "request": {
+            "name": "Generate Image - Tailored Model",
+            "description": {
+              "content": "**Description**\n\nGenerates a new image using a tailored model.\n\nThis endpoint translates your input (`prompt` and/or `structured_prompt`) into a structured JSON prompt using the state-of-the-art **Gemini 2.5 Flash** VLM bridge. It internally uses the model's visual schema (backbone) to ensure the generated image matches your trained visual identity.\n\nThe response includes both the final `image_url` and the `structured_prompt` (JSON).\n\n**Input Combination Rules**\nThe request body must include **one** of the following mutually exclusive combinations:\n* `prompt`: Generates a new image from text.\n* `structured_prompt`: Recreates a previous image exactly (requires seed).\n* `structured_prompt` + `prompt`: Refines a previous image using new text instructions.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v2",
+                "image",
+                "generate",
+                "tailored"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tailored_model_id\": \"<string>\",\n  \"tailored_model_influence\": 1,\n  \"prompt\": \"<string>\",\n  \"structured_prompt\": \"<string>\",\n  \"negative_prompt\": \"<string>\",\n  \"guidance_scale\": 5,\n  \"aspect_ratio\": \"1:1\",\n  \"steps_num\": 50,\n  \"seed\": \"<integer>\",\n  \"sync\": false,\n  \"prompt_content_moderation\": true,\n  \"visual_output_content_moderation\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "03df72e3-546b-4ae3-8ff3-45e167ac5d23",
+              "name": "Successful operation (Synchronous).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"image_url\": \"string\",\n  \"structured_prompt\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0493b11-175c-40b5-b7c0-29cea0381e19",
+              "name": "Accepted (Asynchronous).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d117a75e-56c9-4403-849b-3cd1d3bc359f",
+              "name": "Bad request. Invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "873a167d-6d25-4556-9d41-0a0564571ae7",
+              "name": "Forbidden. Model does not belong to organization.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9ca6cad8-aa2b-4554-a839-6084c9188518",
+              "name": "Unprocessable Entity (Moderation failure).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0a0595a5-5285-4eac-9f94-e090c3431690",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3cf40d52-386a-41a8-95ae-87f00dd631cd",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "image",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9fb07d2f-1019-4ccd-b15e-150b99004591",
+          "name": "Generate Structured Prompt - Tailored Model",
+          "request": {
+            "name": "Generate Structured Prompt - Tailored Model",
+            "description": {
+              "content": "**Description**\n\nCreates a new detailed, machine-readable structured prompt in JSON format or refines an existing one using text inputs and a tailored model's visual schema (backbone).\n\nThis endpoint uses the state-of-the-art **Gemini 2.5 Flash** VLM bridge. The tailored model's visual schema is provided as input to Gemini along with the user prompt to generate the structured prompt.\n\n**It returns ONLY the JSON string and does not generate an image.**\n\n**Use Cases:**\n* **Control & Auditability:** Inspect or programmatically edit the JSON *before* generating an image.\n* **Consistency:** Generate one `structured_prompt` and pass it to `/image/generate/tailored` multiple times.\n* **Hybrid Deployment:** Use Bria's VLM bridge via API while hosting the FIBO image model on a private cloud.\n\n**Input Combination Rules**\nThe request body must use exactly one of the following combinations:\n* **Text Only**: `prompt`\n* **Structured Prompt and Text**: `structured_prompt` and `prompt` (Refinement)\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v2",
+                "structured_prompt",
+                "generate",
+                "tailored"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tailored_model_id\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"structured_prompt\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"sync\": false,\n  \"prompt_content_moderation\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "91a40da5-feef-4812-9540-5e3d47453369",
+              "name": "Successful operation (Synchronous).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "structured_prompt",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"structured_prompt\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0fc7b38-abda-40bd-b143-5d127071526e",
+              "name": "Accepted (Asynchronous).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "structured_prompt",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d828e504-dc79-4679-bae5-3a3ca97860b5",
+              "name": "Bad request. Invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "structured_prompt",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1cf1df32-c355-4d17-9662-8a0271ad9955",
+              "name": "Forbidden. Model does not belong to organization.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "structured_prompt",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9648ec8a-38f7-4d6f-9d46-7e0b915ed9c8",
+              "name": "Unprocessable Entity (Moderation failure).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "structured_prompt",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7483ea18-479a-4c30-9dc9-219275dedfca",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "structured_prompt",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "17a6c0bf-f092-4e03-ba6d-cf003dd7534f",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "structured_prompt",
+                    "generate",
+                    "tailored"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"model_123\",\n  \"prompt\": \"A product photo in the brand's visual style\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c61d7fc3-055e-4141-a788-82e18c363a38",
+    "name": "Tailored Generation API Reference Image Generation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tailored Generation provides capabilities to generate visuals (photos, illustrations, vectors) \nthat preserve and faithfully reproduce specific IP elements or guidelines, ensuring consistency \nacross all generated outputs.\n\nThe Tailored Generation APIs allow you to manage and train tailored models that maintain the \nintegrity of your visual IP. You can train models through our Console or implement training \ndirectly via API.\n\n**Fully Automated Training Mode**\nBria supports users in training high-quality finetuned models without the guesswork. Based on the selected IP type & dataset, Bria automatically selects the right training parameters. \nThis means that the user only needs to spend time curating their dataset.\n\n**Advanced Customization and Access:** Bria offers 2 types of advanced training customization: Expert training mode and source-code & weights.\n  - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets.\n  - **Source-code & Weights** is for developers seeking deeper customization and access to Bria's source-available GenAI models via [Hugging Face](https://huggingface.co/briaai).  \n\nAll methods allow full control over fine-tuning, pipeline creation, and integration into proprietary workflows—empowering AI teams to develop and optimize their own generative AI solutions.\n\nThe Tailored Generation Training API provides a set of endpoints to manage the entire lifecycle \nof a tailored generation project:\n\n1. **Project Management**: Create and manage projects that define IP characteristics:\n  - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or \n    retrieve existing projects that belong to your organization.\n  - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character, \n    stylized_scene) and medium.\n  - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete \n    specific projects.\n\n2. **Dataset Management**: Organize and refine datasets within your projects:\n  - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or \n    retrieve existing ones.\n  - **Generate a Visual Schema**\n    - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images.\n  - **Refine Structured Data**\n    - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions.\n    - *Example:* You can send your generated schema with the instruction \"Character's name is Lucy\" to improve the training metadata programmatically.\n  - **Upload and Manage Images**: \n    - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually.\n    - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced).\n  - **Clone Datasets**: Create variations of existing datasets using the clone functionality.\n\n3. **Model Management**: Train and optimize tailored models based on your datasets:\n  - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list \n    existing ones.\n  - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria's recipes) and Expert mode (for training parameter tweaking).\n  - **Monitor and Control**: Manage the model lifecycle, including training start/stop, \n    status monitoring, and version control over the training parameters.\n\n4. **Generation Capabilities**:\n  - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation.\n  - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation.\n  - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images.\n\n### **Training Process**\n\nTo train a tailored model:\n\n1. **Create a Project**: Use the `/projects` endpoint to define your IP type and medium.\n2. **Create a Dataset**: Use the `/datasets` endpoint to create a dataset within your project.\n3. **Define Visual Identity**:\n   - **Step A (Generate):** Call `/tailored-gen/generate_visual_schema`, sampling 5-10 images from your input set.\n   - **Step B (Refine - Optional):** Call `/tailored-gen/refine_structured_prompt` with the generated schema and instructions to tweak the definitions (e.g., \"Remove references to blue background\").\n   - **Step C (Apply):** Update the dataset with the final schema using `/datasets/{dataset_id}`.\n4. **Upload Images**: Upload images using the `/datasets/{dataset_id}/images` or `/datasets/{dataset_id}/images/bulk` endpoints \n  (minimum resolution: 1024x1024px). note: if you upload images before updating the visual schema, use the Regenerate All Captions endpoint to caption the images.\n5. **Prepare Dataset**: Review auto-generated captions (you can also use `refine_structured_prompt` to fix specific image captions) and update the dataset status to 'completed'.\n6. **Create Model**: Use the `/models` endpoint to create a model, which requires a training mode.\n7. **Start Training**: Initiate training via the `/models/{id}/start_training` endpoint. \n  Training typically takes 4-6 hours.\n8. **Monitor Progress**: Check the training status using the `/models/{id}` endpoint until \n  training is 'Completed'.\n9. **Generate Images**: \n  - Use `v2/image/generate/tailored` for text-to-image generation.\n",
+      "type": "text/plain"
+    }
+  }
+}

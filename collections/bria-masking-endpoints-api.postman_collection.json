@@ -1,0 +1,1434 @@
+{
+  "item": [
+    {
+      "id": "ae98e331-84f8-4ad8-aaad-f44235b9bb40",
+      "name": "Masking Endpoints",
+      "description": {
+        "content": "Tools for generating segmentation masks (by prompt, by key points, foreground). REST async.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5eaf13f9-0e8e-4240-9539-b696adc36e8a",
+          "name": "Generate Mask by Prompt",
+          "request": {
+            "name": "Generate Mask by Prompt",
+            "description": {
+              "content": "Generates a segmentation mask video based on a text prompt.\n\nResponse behavior:\n- Returns HTTP 202 with `request_id` and `status_url`\n- The final result (via Status Service) will contain a `mask_url`.\n\nConstraints:\n- Max Duration: 5 seconds (Truncated if `auto_trim`=true).\n- Max Resolution: 750p.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mask_by_prompt"
+              ],
+              "host": [
+                "{{mask_by_prompt-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"auto_trim\": false,\n  \"output_container_and_codec\": \"mp4_h264\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5c7c34a7-85bb-45a9-872f-17aba03dd0ba",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4abe4f9-9b50-4489-96b1-e782cceeface",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"No objects detected for prompt in image\",\n    \"details\": \"Object detection failed. We could not find a match for your description. Please refine your prompt: 'XXXX'\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3523c5ef-2cb5-4f07-8a54-c051fef05e2d",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7439fca-67c1-44b1-8e36-5ce7bf5d4453",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28516358-b796-4fe5-b88f-772d2b745677",
+              "name": "Unsupported input container or codec",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "400b3f2b-af95-486c-80fa-143f9c68aed3",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45042721-3978-41c1-8170-e3615c817294",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fd5ada8-5832-4c4d-aa11-3e95531d8cbe",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_prompt"
+                  ],
+                  "host": [
+                    "{{mask_by_prompt-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"prompt\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2bdb9e3a-0758-410a-bbd3-1fcb1a91edac",
+          "name": "Generate Mask by Key Points",
+          "request": {
+            "name": "Generate Mask by Key Points",
+            "description": {
+              "content": "Generates a segmentation mask video based on coordinate key points.\n\nResponse behavior:\n- Returns HTTP 202 with `request_id` and `status_url`\n- The final result (via Status Service) will contain a `mask_url`.\n\nConstraints:\n- Max Duration: 5 seconds (Truncated if `auto_trim`=true).\n- Max Resolution: 750p.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mask_by_key_points"
+              ],
+              "host": [
+                "{{mask_by_key_points-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"key_points\": [\n    {\n      \"x\": \"<integer>\",\n      \"y\": \"<integer>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"x\": \"<integer>\",\n      \"y\": \"<integer>\",\n      \"type\": \"<string>\"\n    }\n  ],\n  \"frame_index\": \"<integer>\",\n  \"auto_trim\": false,\n  \"output_container_and_codec\": \"mp4_h264\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1eb427f6-53b5-4e31-afc4-a1e53bac4875",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ee7df34-2e67-4df1-b174-ee046a3a3f49",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a1d3ed5-54bc-4e59-869c-f6b091510422",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc8de7bf-c6a8-4ec4-bce5-4fe2eca42838",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d62349c-b2a7-4c25-8c4f-176190a59dfd",
+              "name": "Unsupported input container or codec",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff2397f3-e464-40d6-994c-5715fd173736",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de6550b7-c4bb-42d6-967b-1b5f1fad13e7",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "064c6a9a-ee5a-4a66-8e85-47146d355a83",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mask_by_key_points"
+                  ],
+                  "host": [
+                    "{{mask_by_key_points-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\",\n  \"frame_index\": 88,\n  \"key_points\": [\n    {\n      \"x\": 650,\n      \"y\": 400,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 655,\n      \"y\": 405,\n      \"type\": \"positive\"\n    },\n    {\n      \"x\": 50,\n      \"y\": 100,\n      \"type\": \"negative\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bb9d1e47-ff41-4ac8-877b-1d1f0576f6fa",
+          "name": "Foreground Mask",
+          "request": {
+            "name": "Foreground Mask",
+            "description": {
+              "content": "Initiates an asynchronous foreground mask generation job for a video.\n\nResponse behavior:\n- Returns HTTP 202 with `request_id` and `status_url`\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned\n\nSupported input containers:\n- .mp4, .mov, .webm, .avi, .gif\n\nSupported input codecs:\n- H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG\n\nInput attributes preserved in output:\n- Aspect Ratio and resolution\n- Frame Rate\n- Audio if present\n\nLimits:\n- Max input duration: 60 seconds\n- Resolutions: Input resolution up to 16000x16000 (16K). Inputs larger than this return 413 Payload Too Large. Output resolution matches the input resolution.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "foreground_mask"
+              ],
+              "host": [
+                "{{foreground_mask-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"video\": \"<string>\",\n  \"output_container_and_codec\": \"mp4_h264\",\n  \"webhook_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f3e6c011-e27c-4a8a-9c7e-f48577ccbeaa",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "019956eb-44c9-48f7-abde-5cb66f7fc1d3",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "915c919e-f9c9-4d2f-b4fb-2a8185eb7754",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28f72a4d-a2e3-4cfa-92b6-e013968394ee",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f842e05-5b88-4d0f-9e4c-8d6470ea9445",
+              "name": "Payload Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce1c0c28-b2d3-43f0-9f6e-22de22227c34",
+              "name": "Unsupported input container or codec",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85f06503-b0fc-4196-8e15-804f36796518",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38314610-0139-4866-819e-f77c936d170c",
+              "name": "Too many requests",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd0876e9-98fd-49e6-9edc-48163edefc15",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "foreground_mask"
+                  ],
+                  "host": [
+                    "{{foreground_mask-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"video\": \"example\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/edit",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/segment",
+      "key": "mask_by_prompt-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/segment",
+      "key": "mask_by_key_points-Url"
+    },
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/video/generate",
+      "key": "foreground_mask-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "ce10cd4e-c7b5-45c4-a53a-407259895beb",
+    "name": "Video API Reference Masking Endpoints API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.\n\nThe Video API is organized into two transport paradigms:\n\n- **REST API (Async)** — Standard HTTP request/response. You submit a job, receive a `request_id` and `status_url`, and poll the [Status Service](https://docs.bria.ai/status) until the job completes. Use this for editing, masking, and most batch-style workflows.\n- **Streaming API (WebSocket)** — Persistent bidirectional connection for low-latency, frame-by-frame processing. Use this when you need real-time output (e.g., live video feeds, interactive previews).\n\n**Asynchronous Requests and the Status Service**  \nBria API v2 REST endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.\n\nSee the full guide at [Status Service Documentation](https://docs.bria.ai/status) for complete details and usage examples.\n",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "item": [
+    {
+      "id": "2bc3b2a1-8f78-467b-afb0-3f1b28593935",
+      "name": "Image Attribution",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "babafbcd-2598-4e21-9095-5dc38d8b2779",
+          "name": "Attribution via Images API",
+          "request": {
+            "name": "Attribution via Images API",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "image",
+                "attribution",
+                "by_image"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"<string>\",\n  \"model_version\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de426ad7-a3e6-4614-afa9-7618b004a5a2",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "image",
+                    "attribution",
+                    "by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"<string>\",\n  \"model_version\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c074f85-38e8-49d3-bd54-5ffd6f891437",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "image",
+                    "attribution",
+                    "by_image"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image\": \"<string>\",\n  \"model_version\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": 123,\n    \"message\": \"string\",\n    \"details\": \"string\"\n  },\n  \"request_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c9f96cb5-f918-4c8b-97b8-7c061b42b78a",
+          "name": "Attribution By Embedding (irreversible vectors - self-hosted)",
+          "request": {
+            "name": "Attribution By Embedding (irreversible vectors - self-hosted)",
+            "description": {
+              "content": "Integration for self-hosted image attribution models. See [Bria Attribution GitHub](https://github.com/Bria-AI/bria-attribution).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "image",
+                "attribution",
+                "by_embedding"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"embeddings_base64\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"model_version\": \"<string>\",\n  \"embeddings_uid\": \"<string>\",\n  \"model_name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f921969c-d542-4d37-a664-b90c86752045",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "image",
+                    "attribution",
+                    "by_embedding"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"embeddings_base64\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"model_version\": \"<string>\",\n  \"embeddings_uid\": \"<string>\",\n  \"model_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d7a3dc69-0b5f-4dde-afb5-35805fd5b5bc",
+    "name": "Bria Attribution Service API Reference Image Attribution API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs. \n\nThis service supports both **Image** and **Video** assets via two integration architectures: \n\n**Attribution with No Compute Cost**, where assets are sent directly to Bria for processing.\n\n**Attribution with Full Data Privacy**, where the Attribution Model is hosted within your environment and only irreversible vectors (embeddings) are shared with Bria.\n",
+      "type": "text/plain"
+    }
+  }
+}

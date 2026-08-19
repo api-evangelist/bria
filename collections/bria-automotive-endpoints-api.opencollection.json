@@ -1,0 +1,154 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Product Shot API Reference Automotive Endpoints API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Automotive Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Vehicle Shot by text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/vehicle/shot_by_text",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nCreates enriched automotive product shots by placing vehicles in realistic environments using textual descriptions.  \n\n\nThis endpoint includes vehicle-specific enhancements that adapt the background scene to match automotive contexts, specifically - snow, sand, and grass. It embeds the vehicle into the environment for a natural, grounded appearance.  \n\n\nThis endpoint also allows adj"
+        },
+        {
+          "info": {
+            "name": "Vehicle Shot by Image (Coming soon)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/vehicle/shot_by_image"
+          },
+          "docs": "Coming soon\n"
+        },
+        {
+          "info": {
+            "name": "Segmentation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/vehicle/segment",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nGenerates segmentation masks for specific vehicle parts from an input image, enabling further enhancements such as reflection generation or wheel refinement.  \n\n\nThis endpoint returns separate binary masks for each segmented region, including windows, wheels, and body parts. If a specific part is not detected in the image, it will be returned with an empty URL.  \n\n\nThe API supports "
+        },
+        {
+          "info": {
+            "name": "Reflections",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/vehicle/generate_reflections",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nGenerates realistic reflections on relevant surfaces of a product image, such as glass, metal, or glossy materials.\n\n\nReflection masks can be provided manually or generated automatically using our segmentation tools.\n\n\nThe output includes an updated image with applied reflections and optional reflection layers per region."
+        },
+        {
+          "info": {
+            "name": "Tires Refinement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/vehicle/refine_tires",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nEnhances the appearance of the vehicle tires by adding realistic textures that match specific surfaces - snow, mud, grass.  \n\n\nThis endpoint accepts a binary mask of all tires and returns the image with refined tires. You can optionally receive the refined wheels as a separate layer.  "
+        },
+        {
+          "info": {
+            "name": "Apply Effects",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/vehicle/apply_effect",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nAdds visual overlays such as dust, snow, fog, light leaks, and lens flare to enhance the realism and atmosphere of a product image.\n\n\nEach effect includes multiple variations to ensure visually unique results. Effects can be applied directly to the image or delivered as separate layers."
+        },
+        {
+          "info": {
+            "name": "Harmonization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/vehicle/harmonize",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nApplies predefined lighting and tone presets to match the product image with a desired environmental context.\n\n\nAvailable presets include hot-day, cold-day, hot-night, and cold-night. These harmonization styles help unify the subject with its background for a consistent and visually appealing result."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

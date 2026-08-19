@@ -1,0 +1,516 @@
+openapi: 3.2.0
+info:
+  title: Tailored Generation API Reference Project API
+  version: ''
+  description: "Tailored Generation provides capabilities to generate visuals (photos, illustrations, vectors) \nthat preserve and faithfully reproduce specific IP elements or guidelines, ensuring consistency \nacross all generated outputs.\n\nThe Tailored Generation APIs allow you to manage and train tailored models that maintain the \nintegrity of your visual IP. You can train models through our Console or implement training \ndirectly via API.\n\n**Fully Automated Training Mode**\nBria supports users in training high-quality finetuned models without the guesswork. Based on the selected IP type & dataset, Bria automatically selects the right training parameters. \nThis means that the user only needs to spend time curating their dataset.\n\n**Advanced Customization and Access:** Bria offers 2 types of advanced training customization: Expert training mode and source-code & weights.\n  - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets.\n  - **Source-code & Weights** is for developers seeking deeper customization and access to Bria's source-available GenAI models via [Hugging Face](https://huggingface.co/briaai).  \n\nAll methods allow full control over fine-tuning, pipeline creation, and integration into proprietary workflows—empowering AI teams to develop and optimize their own generative AI solutions.\n\nThe Tailored Generation Training API provides a set of endpoints to manage the entire lifecycle \nof a tailored generation project:\n\n1. **Project Management**: Create and manage projects that define IP characteristics:\n  - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or \n    retrieve existing projects that belong to your organization.\n  - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character, \n    stylized_scene) and medium.\n  - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete \n    specific projects.\n\n2. **Dataset Management**: Organize and refine datasets within your projects:\n  - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or \n    retrieve existing ones.\n  - **Generate a Visual Schema**\n    - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images.\n  - **Refine Structured Data**\n    - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions.\n    - *Example:* You can send your generated schema with the instruction \"Character's name is Lucy\" to improve the training metadata programmatically.\n  - **Upload and Manage Images**: \n    - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually.\n    - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced).\n  - **Clone Datasets**: Create variations of existing datasets using the clone functionality.\n\n3. **Model Management**: Train and optimize tailored models based on your datasets:\n  - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list \n    existing ones.\n  - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria's recipes) and Expert mode (for training parameter tweaking).\n  - **Monitor and Control**: Manage the model lifecycle, including training start/stop, \n    status monitoring, and version control over the training parameters.\n\n4. **Generation Capabilities**:\n  - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation.\n  - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation.\n  - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images.\n\n### **Training Process**\n\nTo train a tailored model:\n\n1. **Create a Project**: Use the `/projects` endpoint to define your IP type and medium.\n2. **Create a Dataset**: Use the `/datasets` endpoint to create a dataset within your project.\n3. **Define Visual Identity**:\n   - **Step A (Generate):** Call `/tailored-gen/generate_visual_schema`, sampling 5-10 images from your input set.\n   - **Step B (Refine - Optional):** Call `/tailored-gen/refine_structured_prompt` with the generated schema and instructions to tweak the definitions (e.g., \"Remove references to blue background\").\n   - **Step C (Apply):** Update the dataset with the final schema using `/datasets/{dataset_id}`.\n4. **Upload Images**: Upload images using the `/datasets/{dataset_id}/images` or `/datasets/{dataset_id}/images/bulk` endpoints \n  (minimum resolution: 1024x1024px). note: if you upload images before updating the visual schema, use the Regenerate All Captions endpoint to caption the images.\n5. **Prepare Dataset**: Review auto-generated captions (you can also use `refine_structured_prompt` to fix specific image captions) and update the dataset status to 'completed'.\n6. **Create Model**: Use the `/models` endpoint to create a model, which requires a training mode.\n7. **Start Training**: Initiate training via the `/models/{id}/start_training` endpoint. \n  Training typically takes 4-6 hours.\n8. **Monitor Progress**: Check the training status using the `/models/{id}` endpoint until \n  training is 'Completed'.\n9. **Generate Images**: \n  - Use `v2/image/generate/tailored` for text-to-image generation.\n"
+servers:
+- url: https://engine.prod.bria-api.com/v2/
+tags:
+- name: Project
+  description: Manage your projects
+paths:
+  /tailored-gen/projects:
+    post:
+      summary: Create Project
+      tags:
+      - Project
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: 'Create a new project within the organization.
+
+
+        The following IP types are supported:
+
+
+        **Defined Character**
+
+        A specific character that maintains consistent identity and unique traits while being reproduced in different poses, situations, and actions.
+
+
+        Medium: Photography
+
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/photogrpahy_dog.png" alt="Example of defined character in different poses, photography medium" />
+
+
+        Medium: Illustration
+
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/defined_character.png" alt="Example of defined character in different poses, illustrative medium" />
+
+
+        **Stylized Scene**
+
+        Complete environments or scenes created with a consistent visual style, look, and feel.
+
+
+        Medium: Photography
+
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/photogrpahy_scene.png" alt="Example of stylized scene, photography medium" />
+
+
+        Medium: Illustration
+
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/stylized_scene.png" alt="Example of stylized scene, illustrative medium" />
+
+
+        **Multi-Object Set**
+
+        A collection of different objects sharing a common style, design language, or color scheme. Objects are typically isolated on solid backgrounds.
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/multi_object_set.png" alt="Example of multi-object set" />
+
+
+        **Object Variants**
+
+        Multiple variations of the same object type, maintaining consistent style and structure while showing different interpretations. Objects are typically isolated on solid backgrounds.
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/object_variants.png" alt="Example of object variants" />
+
+
+        **Icons**
+
+        A collection of cohesive, small-scale illustrations or symbols designed to represent concepts, actions, or objects in interfaces and applications.
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/icons.png" alt="Example of icon set" />
+
+
+        **Character Variants**
+
+        Multiple characters sharing the same fundamental structure, style, and color palette, allowing creation of new characters that fit within the established design system.
+
+        <img src="https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/tailored_gen/character_variants.png" alt="Example of character variants" />
+
+        '
+      operationId: create-project
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_name:
+                  type: string
+                  description: Name of the project (required)
+                project_description:
+                  type: string
+                  description: Description of the project (optional)
+                ip_name:
+                  type: string
+                  description: Required only for defined_character IP type. The name of the character (1-3 words, e.g., "Lora", "Captain Smith").
+                ip_description:
+                  type: string
+                  description: Required only for defined_character and object_variants IP types. A short phrase (up to 6 words) describing the most crucial distinguishing features (e.g., "a female character with purple hair").
+                ip_medium:
+                  type: string
+                  enum:
+                  - photography
+                  - illustration
+                  description: Medium of the IP (required)
+                ip_type:
+                  type: string
+                  enum:
+                  - multi_object_set
+                  - object_variants
+                  - icons
+                  - defined_character
+                  - character_variants
+                  - stylized_scene
+                  - other
+                  description: 'Type of the IP (required):
+
+                    * defined_character: A specific predefined character or person that can be reproduced consistently.
+
+                    * stylized_scene: A complete scene or environment with a cohesive style.
+
+                    * other: For IP types that don''t fit into any of the types.
+
+
+                    The types below are currently available only when ip_medium = illustration:
+
+                    * object_variants: Variations of the same object type with consistent style.
+
+                    * multi_object_set: Multiple distinct objects sharing a mutual style.
+
+                    * icons: A collection of small, visually distinct illustrations or symbols.
+
+                    * character_variants: Multiple characters sharing the same structure, style, and color palette.
+
+                    '
+            example:
+              project_name: Branded Character
+              ip_name: Adventure Series Characters
+              ip_description: A set of adventure game characters with unique personalities
+              ip_medium: illustration
+              ip_type: defined_character
+      responses:
+        '201':
+          description: Project successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Unique identifier for the project
+                  project_name:
+                    type: string
+                    description: Name of the project
+                  project_description:
+                    type: string
+                    description: Description of the project
+                  ip_name:
+                    type: string
+                    description: Name of the IP
+                  ip_description:
+                    type: string
+                    description: Description of the IP
+                  ip_medium:
+                    type: string
+                    description: Medium of the IP
+                  ip_type:
+                    type: string
+                    description: Type of the IP
+                  training_version:
+                    type:
+                    - string
+                    - 'null'
+                    description: The training version family this project is locked to (e.g., 'fibo', 'max', or null if unlocked).
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    description: Status of the project
+                  created_at:
+                    type: string
+                    format: date-time
+                    description: Timestamp when the project was created
+              example:
+                id: 123
+                project_name: Branded Character
+                project_description: ''
+                ip_name: Lora
+                ip_description: A female character with purple hair
+                ip_medium: illustration
+                ip_type: defined_character
+                status: active
+                created_at: '2024-05-26T12:00:00Z'
+        '400':
+          description: Bad request - validation error
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: 'Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.'
+                access_denied:
+                  value: 'Access denied: Your subscription does not include access to this feature/product.'
+        '429':
+          description: Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.
+        '500':
+          description: Internal server error
+    get:
+      summary: Get Projects
+      tags:
+      - Project
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve all projects within the organization. If there are no projects, returns an empty array.
+      operationId: get-projects
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    project_name:
+                      type: string
+                    project_description:
+                      type: string
+                    ip_name:
+                      type: string
+                    ip_description:
+                      type: string
+                    ip_medium:
+                      type: string
+                      enum:
+                      - photography
+                      - illustration
+                    ip_type:
+                      type: string
+                      enum:
+                      - multi_object_set
+                      - object_variants
+                      - icons
+                      - defined_character
+                      - character_variants
+                      - stylized_scene
+                      - other
+                    status:
+                      type: string
+                      enum:
+                      - active
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+              example:
+              - id: 123
+                project_name: Branded Character
+                project_description: ''
+                ip_name: Lora
+                ip_description: A female character with purple hair
+                ip_medium: illustration
+                ip_type: defined_character
+                status: active
+                created_at: '2024-05-26T12:00:00Z'
+                updated_at: '2024-05-26T14:30:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/projects/{project_id}:
+    get:
+      summary: Get Project by ID
+      tags:
+      - Project
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve full project information.
+      operationId: get-project-by-id
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: string
+        required: true
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_name:
+                    type: string
+                  project_description:
+                    type: string
+                  ip_name:
+                    type: string
+                  ip_description:
+                    type: string
+                  ip_medium:
+                    type: string
+                    enum:
+                    - photography
+                    - illustration
+                  ip_type:
+                    type: string
+                    enum:
+                    - multi_object_set
+                    - object_variants
+                    - icons
+                    - defined_character
+                    - character_variants
+                    - stylized_scene
+                    - other
+                  status:
+                    type: string
+                    enum:
+                    - active
+                  created_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 123
+                project_name: Branded Character
+                project_description: ''
+                ip_name: Lora
+                ip_description: A female character with purple hair
+                ip_medium: illustration
+                ip_type: defined_character
+                status: active
+                created_at: '2024-05-26T12:00:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    put:
+      summary: Update Project
+      tags:
+      - Project
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Update a specific project.
+      operationId: update-project
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: string
+        required: true
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_name:
+                  type: string
+                project_description:
+                  type: string
+                ip_name:
+                  type: string
+                ip_description:
+                  type: string
+            example:
+              ip_description: A girl with purple hair
+      responses:
+        '200':
+          description: Project successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  project_name:
+                    type: string
+                  project_description:
+                    type: string
+                  ip_name:
+                    type: string
+                  ip_description:
+                    type: string
+                  ip_medium:
+                    type: string
+                  ip_type:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - active
+                  created_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 123
+                project_name: Branded Character
+                project_description: ''
+                ip_name: Lora
+                ip_description: A girl with purple hair
+                ip_medium: illustration
+                ip_type: defined_character
+                status: active
+                created_at: '2024-05-26T12:00:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete Project
+      tags:
+      - Project
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Permanently delete a project and all its associated resources, including all datasets, images, and models. This action cannot be undone. Training models must be stopped before deletion.
+      operationId: delete-project
+      parameters:
+      - in: path
+        name: project_id
+        schema:
+          type: string
+        required: true
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: Project successfully deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '409':
+          description: Cannot delete project while models are in training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+x-tagGroups:
+- name: Training Endpoints
+  tags:
+  - Project
+  - Dataset
+  - Model
+- name: Generation Endpoints
+  tags:
+  - Image Generation
+  - Video Generation

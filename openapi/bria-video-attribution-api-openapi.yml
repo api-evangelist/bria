@@ -1,0 +1,140 @@
+openapi: 3.2.0
+info:
+  title: Bria Attribution Service API Reference Video Attribution API
+  version: 1.1.0
+  description: "The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs. \n\nThis service supports both **Image** and **Video** assets via two integration architectures: \n\n**Attribution with No Compute Cost**, where assets are sent directly to Bria for processing.\n\n**Attribution with Full Data Privacy**, where the Attribution Model is hosted within your environment and only irreversible vectors (embeddings) are shared with Bria.\n"
+servers:
+- url: https://engine.prod.bria-api.com
+  description: Production
+tags:
+- name: Video Attribution
+paths:
+  /v2/video/attribution/by_video:
+    post:
+      tags:
+      - Video Attribution
+      summary: Attribution via URL
+      operationId: postAttributionByVideo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - video
+              - model
+              properties:
+                video:
+                  type: string
+                  format: uri
+                  description: URL of the video to process
+                model:
+                  $ref: '#/components/schemas/VideoModelVersion'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncInitialResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v2/video/attribution/by_embedding:
+    post:
+      tags:
+      - Video Attribution
+      summary: Attribution By Embedding (self-hosted)
+      description: 'Send irreversible video vectors (stills and motion) for attribution.
+
+        '
+      operationId: postAttributionByVideoEmbedding
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - model
+              - video_seconds
+              - stills_embedding_base64
+              - motion_embedding_base64
+              properties:
+                model:
+                  $ref: '#/components/schemas/VideoModelVersion'
+                video_seconds:
+                  type: integer
+                  description: Total duration of the video in seconds
+                stills_embedding_base64:
+                  type: string
+                  description: Base64-encoded embedding for video stills
+                motion_embedding_base64:
+                  type: string
+                  description: Base64-encoded embedding for video motion
+                unique_id:
+                  type: string
+                  format: uuid
+                  description: Optional unique hex identifier
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncInitialResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
+    VideoModelVersion:
+      type: string
+      description: 'The attribution model used. The value represents the **model name** followed by the **version** after the colon (e.g., `model_name:version`).
+
+        '
+      enum:
+      - video_generation:1
+      - video_rmbg:1
+      - video_eraser:1
+      - video_mask:1
+      - video_increase_res:1
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

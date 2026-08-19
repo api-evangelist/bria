@@ -1,0 +1,4529 @@
+{
+  "item": [
+    {
+      "id": "7f9dfbff-f2a6-44f6-ba34-bded4a68a436",
+      "name": "Model",
+      "description": {
+        "content": "Manage and train models",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e18faf61-af2a-46a8-b375-b5d3e6302f30",
+          "name": "Create Model",
+          "request": {
+            "name": "Create Model",
+            "description": {
+              "content": "Create a new model.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"dataset_id\": \"<integer>\",\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a29a344a-16ba-478a-accb-5e0114d7a8b4",
+              "name": "Model successfully created",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lora Character Model\",\n  \"dataset_id\": 456,\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"A model trained on Lora character illustrations\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 12233,\n  \"name\": \"Test Model\",\n  \"description\": \"Test description\",\n  \"status\": \"Created\",\n  \"dataset_id\": 13748,\n  \"training_mode\": \"fully_automated\",\n  \"project_id\": 12429,\n  \"created_at\": \"2025-08-20T06:06:05.849402\",\n  \"updated_at\": \"2025-08-20T06:06:05.849404\",\n  \"active_model_version\": \"default\",\n  \"training_parameters\": {},\n  \"checkpoint_steps\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e51b4c42-c98b-4687-980f-e0eabe403955",
+              "name": "Bad request - validation error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lora Character Model\",\n  \"dataset_id\": 456,\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"A model trained on Lora character illustrations\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7412ebe4-55dc-4b64-b713-f56aecc908db",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lora Character Model\",\n  \"dataset_id\": 456,\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"A model trained on Lora character illustrations\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "70883c7b-95f5-430d-a5ae-a17c3881dcd6",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lora Character Model\",\n  \"dataset_id\": 456,\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"A model trained on Lora character illustrations\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c3c197ff-73d2-448a-b76f-257477a3b721",
+              "name": "Dataset not found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lora Character Model\",\n  \"dataset_id\": 456,\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"A model trained on Lora character illustrations\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "551db4fb-2c6d-4bba-8494-0b0d5a50d279",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lora Character Model\",\n  \"dataset_id\": 456,\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"A model trained on Lora character illustrations\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "acd3b2d2-1c9f-46ad-8420-7b698fb8acb4",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Lora Character Model\",\n  \"dataset_id\": 456,\n  \"training_mode\": \"fully_automated\",\n  \"description\": \"A model trained on Lora character illustrations\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "10ca65ff-3fad-4f13-9e81-d5b20e25ed22",
+          "name": "Get Models",
+          "request": {
+            "name": "Get Models",
+            "description": {
+              "content": "Retrieve a list of models. If there are no models, an empty array is returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_training_parameters",
+                  "value": "false",
+                  "description": "If true, includes detailed training parameters and checkpoint steps."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f5667150-eebd-4c7a-8a07-cbcfef5c7ca8",
+              "name": "Successfully retrieved models",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 7539,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"status\": \"Failed\",\n    \"training_mode\": \"expert\",\n    \"active_model_version\": \"string\",\n    \"training_parameters\": {\n      \"learning_rate\": 825.5256789134291,\n      \"lr_scheduler\": \"string\",\n      \"rank\": 6880,\n      \"total_training_steps\": 835,\n      \"checkpoint_interval\": 1877,\n      \"lr_warmup_steps\": null\n    },\n    \"checkpoint_steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"project_id\": 1410,\n    \"dataset_id\": 1487,\n    \"created_at\": \"1982-11-26T13:54:44.488Z\"\n  },\n  {\n    \"id\": 6550,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"status\": \"Completed\",\n    \"training_mode\": \"expert\",\n    \"active_model_version\": \"string\",\n    \"training_parameters\": {\n      \"learning_rate\": 2383.4648445392236,\n      \"lr_scheduler\": \"string\",\n      \"rank\": 3832,\n      \"total_training_steps\": 2164,\n      \"checkpoint_interval\": 6074,\n      \"lr_warmup_steps\": 8774\n    },\n    \"checkpoint_steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"project_id\": 7976,\n    \"dataset_id\": 4117,\n    \"created_at\": \"2018-05-23T08:41:42.460Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4f7bb91-f785-441f-aab1-bde608809540",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "67069959-0239-48f6-9be8-7c73c5e96ce4",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "35b44779-5d43-4c18-ae05-59bfc2b97273",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "64395311-431f-41c8-a826-91db0c932fe0",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "337965c0-e3fc-436f-a3b8-3ae6e13da6c3",
+          "name": "Get Models by Project",
+          "request": {
+            "name": "Get Models by Project",
+            "description": {
+              "content": "Retrieve all models for a project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "projects",
+                ":project_id",
+                "models"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_training_parameters",
+                  "value": "false"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f96a0c85-21ef-45c6-ad9d-dd7b6ffcb44a",
+              "name": "Successfully retrieved models",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "projects",
+                    ":project_id",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 4846,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"status\": \"Completed\",\n    \"training_mode\": \"fully_automated\",\n    \"project_id\": 5223,\n    \"dataset_id\": 8781,\n    \"active_model_version\": \"string\",\n    \"training_parameters\": {},\n    \"checkpoint_steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"created_at\": \"1981-12-22T16:24:50.209Z\",\n    \"updated_at\": \"1961-05-01T16:00:26.871Z\"\n  },\n  {\n    \"id\": 3241,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"status\": \"InProgress\",\n    \"training_mode\": \"fully_automated\",\n    \"project_id\": 327,\n    \"dataset_id\": 3952,\n    \"active_model_version\": \"string\",\n    \"training_parameters\": {},\n    \"checkpoint_steps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"created_at\": \"1950-03-09T04:46:34.433Z\",\n    \"updated_at\": \"2001-03-31T00:21:53.669Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d5c17af-d6ec-4c0e-b087-18fffdac34b0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "projects",
+                    ":project_id",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1106aa71-80d2-4966-8b03-54a6ec05d943",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "projects",
+                    ":project_id",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2d2e78c6-1b33-4e2d-a4da-cf026bf2cda0",
+              "name": "Project not found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "projects",
+                    ":project_id",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ae852d0d-eacc-43bd-95f2-594d48265189",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "projects",
+                    ":project_id",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "95633b7d-ed8f-467c-9505-e50ee1b4dffd",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "projects",
+                    ":project_id",
+                    "models"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_training_parameters",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "affe3bd8-cce2-4925-b672-1ff59492e3a8",
+          "name": "Get Model by ID",
+          "request": {
+            "name": "Get Model by ID",
+            "description": {
+              "content": "Retrieve full model information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "884514e4-0129-47bf-a4a7-a4bc669a012e",
+              "name": "Successfully retrieved model",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 789,\n  \"name\": \"Lora Character Model\",\n  \"description\": \"A model trained on Lora character illustrations\",\n  \"status\": \"Completed\",\n  \"training_mode\": \"fully_automated\",\n  \"active_model_version\": \"default\",\n  \"training_parameters\": {},\n  \"checkpoint_steps\": [],\n  \"project_id\": 123,\n  \"dataset_id\": 456,\n  \"created_at\": \"2024-05-26T12:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d26304a-fade-424c-9ef2-92826c064bf8",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "41d7688a-c7bd-42d3-878f-f646430b341f",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "511f4752-f436-4b84-ab51-5a5e10e11f7e",
+              "name": "Model not found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bf0c704f-6ad9-4f1d-9240-1a612a056c6a",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "87796145-c408-4905-b353-3576b15692bb",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79330b9b-8971-4ca7-8ff4-c2bf13719b2b",
+          "name": "Update Model",
+          "request": {
+            "name": "Update Model",
+            "description": {
+              "content": "Update a model's name and description.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "65b51695-8111-4e8c-a981-c32826ca01ea",
+              "name": "Model successfully updated",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Lora Character Model\",\n  \"description\": \"An updated model\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 7984,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"status\": \"string\",\n  \"project_id\": 4046,\n  \"dataset_id\": 1130,\n  \"created_at\": \"1966-06-06T02:49:36.983Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61cfd6f4-9013-4546-87d9-752574ebc9c1",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Lora Character Model\",\n  \"description\": \"An updated model\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fad29caa-0cc9-47de-8424-dc27d98db8a0",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Lora Character Model\",\n  \"description\": \"An updated model\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "11251ddb-59ee-4a3f-b82c-97f9a742ee25",
+              "name": "Model not found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Lora Character Model\",\n  \"description\": \"An updated model\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8249a99b-0ce9-4a19-8739-144310f2cf40",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Lora Character Model\",\n  \"description\": \"An updated model\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "76c3789d-4b13-44bd-82f0-74f3b25ff386",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Updated Lora Character Model\",\n  \"description\": \"An updated model\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1e5fce7c-cab5-474a-8a7a-4a63749b7c62",
+          "name": "Delete Model",
+          "request": {
+            "name": "Delete Model",
+            "description": {
+              "content": "Delete a specific model.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c4c0f546-cd91-4d4e-919a-43ad915d4cf1",
+              "name": "Model successfully deleted",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c72e58c9-d62f-4674-904d-6cec23f9dacb",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e2f0f591-d49f-44d5-87e4-b50ebb4efb73",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6c452e8b-288c-4796-bb19-300ee22c7623",
+              "name": "Model not found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "aa6c7cca-a10f-4c39-a9d0-237c04a1d05d",
+              "name": "Cannot delete a model that is currently in training",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0300e985-0169-42a5-a7a7-ba2a754ce231",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "65ec9d7c-ea64-4d2a-8104-b434c42351c8",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fad48a47-7c0a-45db-9761-959b6e87c9ff",
+          "name": "Start Training",
+          "request": {
+            "name": "Start Training",
+            "description": {
+              "content": "Start model training. Training duration is typically 2-4 hours.\nThe associated dataset must have a status of 'completed' before training can begin.\n\n**Default Training Parameters:**\nIf parameters are not provided, defaults are automatically selected:\n* `rank`: 128\n* `learning_rate`: 0.0001\n* `lr_scheduler`: \"constant_with_warmup\"\n* `total_training_steps`: 750\n* `checkpoint_interval`: 500\n    \n**Constraints:**\nAdvanced training parameters are only supported when the model's `training_mode` is set to 'expert'.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id",
+                "start_training"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f1918f04-fff2-4e2b-8beb-aaaf478c5f69",
+              "name": "Training successfully started",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 12242,\n  \"name\": \"Test Model\",\n  \"description\": \"Test description\",\n  \"status\": \"InProgress\",\n  \"dataset_id\": 13749,\n  \"training_mode\": \"expert\",\n  \"project_id\": 12429,\n  \"created_at\": \"2025-08-20T09:51:58.080018\",\n  \"updated_at\": \"2025-08-20T09:51:58.080020\",\n  \"active_model_version\": \"default\",\n  \"training_parameters\": {\n    \"learning_rate\": 0.0001,\n    \"lr_scheduler\": \"constant_with_warmup\",\n    \"rank\": 128,\n    \"total_training_steps\": 750,\n    \"checkpoint_interval\": 500,\n    \"lr_warmup_steps\": 100\n  },\n  \"checkpoint_steps\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae20ee88-7dd8-4d34-a40f-838552ca611c",
+              "name": "Bad request - validation error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5d0aab27-92b2-4a68-a7d1-2fd3b32d11b4",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "df88da20-b8a5-4e3b-bec6-402a4062b3b0",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "539cb9f0-1ece-492e-8e6c-75530351d0fa",
+              "name": "Model not found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "14aa812e-0744-4c14-886d-a77cde4489fd",
+              "name": "Training already started/cannot be resumed",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "036258b9-0b6f-4dae-80e8-fce99222e84e",
+              "name": "Dataset status must be 'completed' to start training",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "034656b3-5748-4754-b212-20acfed72cac",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a7fc9481-2edd-429b-81c6-2842fc3855f5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "start_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lr_scheduler\": \"<string>\",\n  \"learning_rate\": \"<float>\",\n  \"total_training_steps\": \"<integer>\",\n  \"rank\": \"<integer>\",\n  \"checkpoint_interval\": \"<integer>\",\n  \"lr_warmup_steps\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c342e02-00ee-43aa-946f-68c3d8b45af8",
+          "name": "Stop Training",
+          "request": {
+            "name": "Stop Training",
+            "description": {
+              "content": "Stop an ongoing model training process. Once stopped, training cannot be resumed - a new model would need to be created and trained.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id",
+                "stop_training"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a631d96a-8af7-43d4-80e1-1309ad54d267",
+              "name": "Training job successfully stopped",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "stop_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "efee5d92-3adf-48cb-9ccf-779d240ada90",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "stop_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9164cd3a-9f12-4d45-a8e8-53c7f25708d6",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "stop_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7c2e8483-0a42-46ff-aff8-4d2396debf2a",
+              "name": "Model not found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "stop_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "667eb73c-4ac4-4c06-9ee2-01f7e63b7c39",
+              "name": "Training already stopped/not in training",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "stop_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bf0781d7-7fe2-47b8-a8b5-83a2db0c8987",
+              "name": "Request limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "stop_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bac8b296-ece3-451a-ae48-e6068b2c9b6e",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "stop_training"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dece6f02-93bd-4499-bf6a-46cc42fe62fb",
+          "name": "List Checkpoints",
+          "request": {
+            "name": "List Checkpoints",
+            "description": {
+              "content": "Retrieve a list of all available checkpoints for a model. Only available for models trained in `expert` mode.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id",
+                "checkpoints"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "847986d9-8c7d-4f95-9749-c694d177abb8",
+              "name": "Successfully retrieved list of checkpoints.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"checkpoints\": [\n    {\n      \"checkpoint_step\": 6337,\n      \"training_job_id\": 903,\n      \"created_at\": \"1996-08-03T02:21:32.185Z\"\n    },\n    {\n      \"checkpoint_step\": 5251,\n      \"training_job_id\": 8074,\n      \"created_at\": \"1947-11-18T16:57:48.421Z\"\n    }\n  ],\n  \"active_model_version\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9d431c1-0ace-4d5c-b337-55d1f8aea315",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ff1d45b4-ce4b-43fa-9f90-eab5f4d62ac3",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e777f973-7017-4a90-8225-692a210ae0ea",
+          "name": "Get Specific Checkpoint",
+          "request": {
+            "name": "Get Specific Checkpoint",
+            "description": {
+              "content": "Retrieve details for a specific model checkpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id",
+                "checkpoints",
+                ":checkpoint_step"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "checkpoint_step",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "21876493-03de-40fc-ad5c-a1bf96b2fa0a",
+              "name": "Successfully retrieved checkpoint details.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints",
+                    ":checkpoint_step"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "checkpoint_step",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"checkpoint_step\": 9859,\n  \"training_job_id\": 7129,\n  \"created_at\": \"1981-10-17T03:33:49.067Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e31a4566-6e96-4f02-bd03-884978da233c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints",
+                    ":checkpoint_step"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "checkpoint_step",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "715637cb-80f6-4857-8784-b8bec214ed41",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints",
+                    ":checkpoint_step"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "checkpoint_step",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e434eb0-bd3a-4fa5-a1d9-93d0e54f6481",
+          "name": "Delete Checkpoint",
+          "request": {
+            "name": "Delete Checkpoint",
+            "description": {
+              "content": "Permanently delete a specific model checkpoint. Cannot delete the checkpoint currently selected for inference.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id",
+                "checkpoints",
+                ":checkpoint_step"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "checkpoint_step",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e5d13e18-89cd-4375-9dbf-e17b43993ca6",
+              "name": "Checkpoint successfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints",
+                    ":checkpoint_step"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "checkpoint_step",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a236f0c4-ff9a-4fd4-a271-99caa7f265eb",
+              "name": "Bad Request (cannot delete active checkpoint)",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints",
+                    ":checkpoint_step"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "checkpoint_step",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "93d029ad-a5f4-4302-8317-839b9e69744a",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "checkpoints",
+                    ":checkpoint_step"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "checkpoint_step",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aac3d3aa-6ba1-49ce-a693-27ecf53514a1",
+          "name": "Download Tailored Model",
+          "request": {
+            "name": "Download Tailored Model",
+            "description": {
+              "content": "Download a trained tailored generation model after completing the training process. \nThe response includes a pre-signed URL for downloading the model and details about the base model used.\n\nTo use the tailored model source code, access to the base model source code is required. \nThe base model source code is exclusively available through Bria's **Source Code and Weights** product. \nFor more information, contact us at **info@bria.ai**.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v1",
+                "tailored-gen",
+                "models",
+                ":model_id",
+                "download"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "model_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f275b5e5-715e-46e9-8363-ad22b6e42f12",
+              "name": "Successful retrieval of the tailored model download details.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "download"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"download_url\": \"https://download-url-for-tailored-model.com\",\n  \"base_model_name\": \"BRIA-FIBO\",\n  \"base_model_card\": \"https://huggingface.co/briaai/BRIA-FIBO\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adb37dc0-c162-4582-8935-d061d6f12d04",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "download"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1b83149e-ab5c-44d4-9079-251f2286ecd4",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "download"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2c25fe84-be81-4942-af56-7c7350b5f8b3",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "download"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "301ef95a-26a9-46db-bc22-b3f8c4512600",
+              "name": "Not found.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "download"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "55b92921-fa6f-46b4-bb4e-8fb9833636df",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v1",
+                    "tailored-gen",
+                    "models",
+                    ":model_id",
+                    "download"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6b696da5-cb3f-4a11-aeb6-075cb8f8eaf9",
+    "name": "Tailored Generation API Reference Model API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tailored Generation provides capabilities to generate visuals (photos, illustrations, vectors) \nthat preserve and faithfully reproduce specific IP elements or guidelines, ensuring consistency \nacross all generated outputs.\n\nThe Tailored Generation APIs allow you to manage and train tailored models that maintain the \nintegrity of your visual IP. You can train models through our Console or implement training \ndirectly via API.\n\n**Fully Automated Training Mode**\nBria supports users in training high-quality finetuned models without the guesswork. Based on the selected IP type & dataset, Bria automatically selects the right training parameters. \nThis means that the user only needs to spend time curating their dataset.\n\n**Advanced Customization and Access:** Bria offers 2 types of advanced training customization: Expert training mode and source-code & weights.\n  - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets.\n  - **Source-code & Weights** is for developers seeking deeper customization and access to Bria's source-available GenAI models via [Hugging Face](https://huggingface.co/briaai).  \n\nAll methods allow full control over fine-tuning, pipeline creation, and integration into proprietary workflows—empowering AI teams to develop and optimize their own generative AI solutions.\n\nThe Tailored Generation Training API provides a set of endpoints to manage the entire lifecycle \nof a tailored generation project:\n\n1. **Project Management**: Create and manage projects that define IP characteristics:\n  - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or \n    retrieve existing projects that belong to your organization.\n  - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character, \n    stylized_scene) and medium.\n  - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete \n    specific projects.\n\n2. **Dataset Management**: Organize and refine datasets within your projects:\n  - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or \n    retrieve existing ones.\n  - **Generate a Visual Schema**\n    - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images.\n  - **Refine Structured Data**\n    - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions.\n    - *Example:* You can send your generated schema with the instruction \"Character's name is Lucy\" to improve the training metadata programmatically.\n  - **Upload and Manage Images**: \n    - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually.\n    - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced).\n  - **Clone Datasets**: Create variations of existing datasets using the clone functionality.\n\n3. **Model Management**: Train and optimize tailored models based on your datasets:\n  - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list \n    existing ones.\n  - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria's recipes) and Expert mode (for training parameter tweaking).\n  - **Monitor and Control**: Manage the model lifecycle, including training start/stop, \n    status monitoring, and version control over the training parameters.\n\n4. **Generation Capabilities**:\n  - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation.\n  - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation.\n  - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images.\n\n### **Training Process**\n\nTo train a tailored model:\n\n1. **Create a Project**: Use the `/projects` endpoint to define your IP type and medium.\n2. **Create a Dataset**: Use the `/datasets` endpoint to create a dataset within your project.\n3. **Define Visual Identity**:\n   - **Step A (Generate):** Call `/tailored-gen/generate_visual_schema`, sampling 5-10 images from your input set.\n   - **Step B (Refine - Optional):** Call `/tailored-gen/refine_structured_prompt` with the generated schema and instructions to tweak the definitions (e.g., \"Remove references to blue background\").\n   - **Step C (Apply):** Update the dataset with the final schema using `/datasets/{dataset_id}`.\n4. **Upload Images**: Upload images using the `/datasets/{dataset_id}/images` or `/datasets/{dataset_id}/images/bulk` endpoints \n  (minimum resolution: 1024x1024px). note: if you upload images before updating the visual schema, use the Regenerate All Captions endpoint to caption the images.\n5. **Prepare Dataset**: Review auto-generated captions (you can also use `refine_structured_prompt` to fix specific image captions) and update the dataset status to 'completed'.\n6. **Create Model**: Use the `/models` endpoint to create a model, which requires a training mode.\n7. **Start Training**: Initiate training via the `/models/{id}/start_training` endpoint. \n  Training typically takes 4-6 hours.\n8. **Monitor Progress**: Check the training status using the `/models/{id}` endpoint until \n  training is 'Completed'.\n9. **Generate Images**: \n  - Use `v2/image/generate/tailored` for text-to-image generation.\n",
+      "type": "text/plain"
+    }
+  }
+}

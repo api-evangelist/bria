@@ -1,0 +1,133 @@
+openapi: 3.2.0
+info:
+  title: Bria Attribution Service API Reference Image Attribution API
+  version: 1.1.0
+  description: "The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs. \n\nThis service supports both **Image** and **Video** assets via two integration architectures: \n\n**Attribution with No Compute Cost**, where assets are sent directly to Bria for processing.\n\n**Attribution with Full Data Privacy**, where the Attribution Model is hosted within your environment and only irreversible vectors (embeddings) are shared with Bria.\n"
+servers:
+- url: https://engine.prod.bria-api.com
+  description: Production
+tags:
+- name: Image Attribution
+paths:
+  /v2/image/attribution/by_image:
+    post:
+      tags:
+      - Image Attribution
+      summary: Attribution via Images API
+      operationId: postAttributionByImage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - image
+              - model_version
+              properties:
+                image:
+                  type: string
+                  description: Base64-encoded image
+                model_version:
+                  type: string
+                  enum:
+                  - '2.3'
+                  - '3.0'
+                  - '3.2'
+                  - '4.0'
+                  description: Version of the model to use
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncInitialResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /v2/image/attribution/by_embedding:
+    post:
+      tags:
+      - Image Attribution
+      summary: Attribution By Embedding (irreversible vectors - self-hosted)
+      description: 'Integration for self-hosted image attribution models. See [Bria Attribution GitHub](https://github.com/Bria-AI/bria-attribution).
+
+        '
+      operationId: postAttributionByEmbedding
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - embeddings_base64
+              - model_version
+              properties:
+                embeddings_base64:
+                  type: array
+                  items:
+                    type: string
+                  description: List of base64-encoded embeddings
+                model_version:
+                  type: string
+                  enum:
+                  - '2.3'
+                  - '3.0'
+                  - '3.2'
+                  - '4.0'
+                embeddings_uid:
+                  type: string
+                model_name:
+                  type: string
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncInitialResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

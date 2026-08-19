@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bria Attribution Service API Reference Video Attribution API",
+    "version": "1.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Video Attribution",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Attribution via URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/attribution/by_video",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Attribution via URL"
+        },
+        {
+          "info": {
+            "name": "Attribution By Embedding (self-hosted)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/attribution/by_embedding",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send irreversible video vectors (stills and motion) for attribution.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

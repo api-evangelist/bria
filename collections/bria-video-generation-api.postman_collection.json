@@ -1,0 +1,575 @@
+{
+  "item": [
+    {
+      "id": "2a43814f-6c84-4357-adb9-cee2e8db1866",
+      "name": "Video Generation",
+      "description": {
+        "content": "Image-to-Video capabilities",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e2dd05e5-1446-4520-a4aa-4ef2cea5bf40",
+          "name": "Generate Video from Tailored Image (Beta)",
+          "request": {
+            "name": "Generate Video from Tailored Image (Beta)",
+            "description": {
+              "content": "(Beta)\nInitiates an asynchronous job to generate a 5-second MP4 video file animating a source image created by a tailored model.\n\n**Asynchronous Requests and the Status Service** Bria API endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.  \n\nSee the full guide at [Status Service Documentation](https://docs.bria.ai/status) for complete details and usage examples.\n\nOn successful initiation, this endpoint returns a 202 Accepted response. Poll the `status_url` or use the Status Service with the `request_id` to check for job completion.\nOnce 'Completed', the status response will contain the URL to the generated MP4 video.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "v2",
+                "video",
+                "generate",
+                "tailored",
+                "image-to-video"
+              ],
+              "host": [
+                "engine",
+                "prod",
+                "bria-api",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Your API token.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tailored_model_id\": \"<string>\",\n  \"image\": \"<string>\",\n  \"seed\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3a086553-5938-4f61-8c0d-04f4954ce46f",
+              "name": "Accepted. The video generation job was successfully initiated. You can track the progress and retrieve the final result using the Status Service. For more details, refer to the [Status Service](https://docs.bria.ai/status) section.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"request_id\": \"string\",\n  \"status_url\": \"http://lYtBHDtMsHXAtvIQhKhZjumzoeYwmrb.bncvPlcjWeBeUV,NtWPgsBsVozEBY.uJLGaRgFvvq9iFRsB.WWGzzRAR9B2a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3097ecdb-18a6-4a91-a8cb-6ff066aa87bb",
+              "name": "Bad Request. Invalid request body.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d166619f-2c3f-4f6c-9c17-513e4edec9aa",
+              "name": "Unauthorized. The api_token is missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "042409f8-86cb-4ff1-ad33-a9b92d346874",
+              "name": "Forbidden.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "62298289-77da-4234-a6ca-22fe27e1295c",
+              "name": "Not Found. The specified tailored_model_id does not exist.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "724ee4d0-679f-4d1d-977e-045c9a1a8613",
+              "name": "Unsupported Media Type.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1a9bfa30-2a0b-4749-93fe-1e0b3a0b262f",
+              "name": "Unprocessable Entity. Invalid image data.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "162ab983-9bf1-4fde-a790-9fe14b65a0df",
+              "name": "Too Many Requests. Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "63f91872-22ee-418c-a6b7-0574bfb892f1",
+              "name": "Internal Server Error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "v2",
+                    "video",
+                    "generate",
+                    "tailored",
+                    "image-to-video"
+                  ],
+                  "host": [
+                    "engine",
+                    "prod",
+                    "bria-api",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Your API token.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tailored_model_id\": \"your_tailored_model_id\",\n  \"image\": \"https://example.com/image.png\",\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v2/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "153ed4a8-d32e-413c-8506-356813f8769a",
+    "name": "Tailored Generation API Reference Video Generation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Tailored Generation provides capabilities to generate visuals (photos, illustrations, vectors) \nthat preserve and faithfully reproduce specific IP elements or guidelines, ensuring consistency \nacross all generated outputs.\n\nThe Tailored Generation APIs allow you to manage and train tailored models that maintain the \nintegrity of your visual IP. You can train models through our Console or implement training \ndirectly via API.\n\n**Fully Automated Training Mode**\nBria supports users in training high-quality finetuned models without the guesswork. Based on the selected IP type & dataset, Bria automatically selects the right training parameters. \nThis means that the user only needs to spend time curating their dataset.\n\n**Advanced Customization and Access:** Bria offers 2 types of advanced training customization: Expert training mode and source-code & weights.\n  - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets.\n  - **Source-code & Weights** is for developers seeking deeper customization and access to Bria's source-available GenAI models via [Hugging Face](https://huggingface.co/briaai).  \n\nAll methods allow full control over fine-tuning, pipeline creation, and integration into proprietary workflows—empowering AI teams to develop and optimize their own generative AI solutions.\n\nThe Tailored Generation Training API provides a set of endpoints to manage the entire lifecycle \nof a tailored generation project:\n\n1. **Project Management**: Create and manage projects that define IP characteristics:\n  - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or \n    retrieve existing projects that belong to your organization.\n  - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character, \n    stylized_scene) and medium.\n  - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete \n    specific projects.\n\n2. **Dataset Management**: Organize and refine datasets within your projects:\n  - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or \n    retrieve existing ones.\n  - **Generate a Visual Schema**\n    - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images.\n  - **Refine Structured Data**\n    - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions.\n    - *Example:* You can send your generated schema with the instruction \"Character's name is Lucy\" to improve the training metadata programmatically.\n  - **Upload and Manage Images**: \n    - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually.\n    - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced).\n  - **Clone Datasets**: Create variations of existing datasets using the clone functionality.\n\n3. **Model Management**: Train and optimize tailored models based on your datasets:\n  - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list \n    existing ones.\n  - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria's recipes) and Expert mode (for training parameter tweaking).\n  - **Monitor and Control**: Manage the model lifecycle, including training start/stop, \n    status monitoring, and version control over the training parameters.\n\n4. **Generation Capabilities**:\n  - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation.\n  - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation.\n  - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images.\n\n### **Training Process**\n\nTo train a tailored model:\n\n1. **Create a Project**: Use the `/projects` endpoint to define your IP type and medium.\n2. **Create a Dataset**: Use the `/datasets` endpoint to create a dataset within your project.\n3. **Define Visual Identity**:\n   - **Step A (Generate):** Call `/tailored-gen/generate_visual_schema`, sampling 5-10 images from your input set.\n   - **Step B (Refine - Optional):** Call `/tailored-gen/refine_structured_prompt` with the generated schema and instructions to tweak the definitions (e.g., \"Remove references to blue background\").\n   - **Step C (Apply):** Update the dataset with the final schema using `/datasets/{dataset_id}`.\n4. **Upload Images**: Upload images using the `/datasets/{dataset_id}/images` or `/datasets/{dataset_id}/images/bulk` endpoints \n  (minimum resolution: 1024x1024px). note: if you upload images before updating the visual schema, use the Regenerate All Captions endpoint to caption the images.\n5. **Prepare Dataset**: Review auto-generated captions (you can also use `refine_structured_prompt` to fix specific image captions) and update the dataset status to 'completed'.\n6. **Create Model**: Use the `/models` endpoint to create a model, which requires a training mode.\n7. **Start Training**: Initiate training via the `/models/{id}/start_training` endpoint. \n  Training typically takes 4-6 hours.\n8. **Monitor Progress**: Check the training status using the `/models/{id}` endpoint until \n  training is 'Completed'.\n9. **Generate Images**: \n  - Use `v2/image/generate/tailored` for text-to-image generation.\n",
+      "type": "text/plain"
+    }
+  }
+}

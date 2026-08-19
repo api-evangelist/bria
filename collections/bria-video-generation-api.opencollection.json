@@ -1,0 +1,38 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Tailored Generation API Reference Video Generation API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Video Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate Video from Tailored Image (Beta)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/generate/tailored/image-to-video",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "(Beta)\nInitiates an asynchronous job to generate a 5-second MP4 video file animating a source image created by a tailored model.\n\n**Asynchronous Requests and the Status Service** Bria API endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.  \n\nSee the full guide at [Status Serv"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,409 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Bria Endpoints API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate Ads",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/ads/generate",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bria's Ads Generation API enables builders to create multiple ads (scenes) in various sizes and resolutions, all unified by the same branding, style, and messaging. You can start exploring immediately with our public templates and brands.\nFor creating your own private templates and brands, please [Contact Us](https://bria.ai/contact-us).\n**Getting Started with Public Assets**\nYou can start exploring the API immediately using our public templates and brands, with no setup required.\n* **Public Tem"
+        },
+        {
+          "info": {
+            "name": "Get Brands",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v1/ads/brands",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieves the list of your private brands. For initial testing, you can use our public brand IDs directly in the `/ads/generate` endpoint. To create your own private brands that will appear in this list, please [Contact Us](https://bria.ai/contact-us).\n"
+        },
+        {
+          "info": {
+            "name": "Get Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v1/ads/templates",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieves the list of your private templates. To start experimenting right away, use our public template IDs (**1062**, **1061**) directly in the `/ads/generate` endpoint. To create your own private templates that will appear here, please [Contact Us](https://bria.ai/contact-us).\n"
+        },
+        {
+          "info": {
+            "name": "Get Template info by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v1/ads/templates/:template_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "template_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the template."
+              }
+            ]
+          },
+          "docs": "Retrieve details for a specific private template by its ID.\nPlease note: This endpoint is for inspecting your private templates only and cannot be used to retrieve details for public template IDs.\n"
+        },
+        {
+          "info": {
+            "name": "Get Caption",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/caption",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "\n\n**Description**\n\n\nThe *Caption Route* is used to get a caption that describes the given image."
+        },
+        {
+          "info": {
+            "name": "Search by text",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v1/search",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "the text query for which the user is looking for matching images."
+              },
+              {
+                "name": "num_results_per_page",
+                "value": "",
+                "type": "query",
+                "description": "how many images you would like to receive from the gallery search. The default value is 50. The maximum value is 500. No need to use this parameter when gallery_search=false."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "which batch of images you would like to receive in the current call. Synthetic results will only be included in page no. 1. The default value is 1. For each query, we support 800 results, so if you set num_results_per_page=50, you will have 16 pages of results."
+              },
+              {
+                "name": "gallery_id",
+                "value": "",
+                "type": "query",
+                "description": "Bria will provide you with this parameter which represents your account's image gallery. You must include this parameter."
+              },
+              {
+                "name": "style",
+                "value": "",
+                "type": "query",
+                "description": "Which style you would like to see in your results, this parameter is optional."
+              },
+              {
+                "name": "atmosphere",
+                "value": "",
+                "type": "query",
+                "description": "Which atmosphere you would like to get in your results, this parameter is optional."
+              },
+              {
+                "name": "camera",
+                "value": "",
+                "type": "query",
+                "description": "Which camera angle you would like to see in your results, this parameter is optional."
+              },
+              {
+                "name": "medium",
+                "value": "",
+                "type": "query",
+                "description": "Which medium should be included in your results, this parameter is optional."
+              }
+            ]
+          },
+          "docs": "**Description**\n\nBy using the *Search Route*, you can utilize Bria's generative search capabilities, which don't require labels or keywords. The user can send any text query and receive relevant images that match the query.\n\nThe *Search Route* returns the images, sorted by the match score, from highest match to lowest match. The images are returned in batches, and you can specify how many images to receive in one batch, and which batch to receive in each call.\n\nSearch will only work on images th"
+        },
+        {
+          "info": {
+            "name": "Search by Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v1/search_similar_images",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "vhash",
+                "value": "",
+                "type": "query",
+                "description": "the visual id of the image for which the user is looking for similar images."
+              },
+              {
+                "name": "num_results_per_page",
+                "value": "",
+                "type": "query",
+                "description": "how many images you would like to receive in the current call. The default value is 50. The maximum value is 500."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "which batch of images you would like to receive in the current call. The default value is 1. For each query, we support 800 results, so if you set num_results_per_page=50, you will have 16 pages of results."
+              },
+              {
+                "name": "gallery_id",
+                "value": "",
+                "type": "query",
+                "description": "Bria will provide you with this parameter which represents your account's image gallery. You must include this parameter."
+              },
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "URL of an image, for which you would like to find similar images. When you want to search based on modified images, or images that have not been uploaded or registered to Bria, you can use this parameter. When this parameter is provided, the visual_id parameter can be None. The supported file types are jpg, jpeg and png, up to 12 mb."
+              }
+            ]
+          },
+          "docs": "**Description**\n\nBy using the *Search Route*, you can utilize Bria's generative search capabilities, which don't require labels or keywords. The user can send any text query and receive relevant images that match the query.\n\nThe *Search Route* returns the images, sorted by the match score, from highest match to lowest match. The images are returned in batches, and you can specify how many images to receive in one batch, and which batch to receive in each call.\n\nSearch will only work on images th"
+        },
+        {
+          "info": {
+            "name": "Generate Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/image/generate",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-generation/fibo-generate/sandbox)\n\n**Description**\n\nGenerates a new image based on your inputs.\n\nThis all-in-one endpoint first translates your input (`prompt` and/or `images`) into a structured JSON prompt using the state-of-the-art **Gemini 2.5 Flash** VLM bridge. It then *internally* uses that JSON to generate the final, deterministic image.\n\nUse this endpoint for professional workflows that demand the highest-fide"
+        },
+        {
+          "info": {
+            "name": "Generate Image - Lite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/image/generate/lite",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-generation/fibo-lite-generate/sandbox)\n\n\n**Description**\n\nGenerates a new image based on your inputs using the **fast and efficient Fibo Lite Pipeline**.\n\nThis all-in-one endpoint utilizes a two-step local-compatible process:\n1. **FIBO-VLM Bridge:** Translates your input (`prompt` and/or `images`) into a structured JSON prompt using Bria's efficient open-source VLM, optimized for rapid inference.\n2. **Fibo Lite Model:"
+        },
+        {
+          "info": {
+            "name": "Generate Structured Prompt",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/structured_prompt/generate",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new detailed, machine-readable structured prompt in JSON format or refines an existing one using text or image inputs.\n\nThis endpoint uses the state-of-the-art **Gemini 2.5 Flash** VLM bridge to generate the prompt, providing superior understanding of nuanced or complex inputs. It **only returns the JSON string** and does not generate an image.\n\n**Why use this endpoint?**\n\nThis endpoint decouples the \"intent translation\" step from the \"image generation\" step, giving you maximum flexibi"
+        },
+        {
+          "info": {
+            "name": "Generate Structured Prompt from Diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/structured_prompt/generate_from_diff",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generates a new, optimized `structured_prompt` by analyzing the semantic difference between an original structred_prompt and a user-edited version. This endpoint is relevant for applications that allow for manual inline structured_prompt editing.\n"
+        },
+        {
+          "info": {
+            "name": "Generate Structured Prompt - Lite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/structured_prompt/generate/lite",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new detailed, machine-readable structured prompt in JSON format for the **speed-optimized Fibo Lite Pipeline**.\n\nThis endpoint uses Bria's standard **FIBO-VLM** bridge (open-source, available on Hugging Face) to generate the prompt. It **only returns the JSON string** and does not generate an image.\n\n**Why use this endpoint?**\n\nThis endpoint decouples the \"intent translation\" step from the \"image generation\" step, giving you maximum flexibility.\n\n* **It's Optional:** The same structure"
+        },
+        {
+          "info": {
+            "name": "Register Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/register",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "\n**Description**\n\nA new visual can be registered to Bria without being uploaded to the database using the *Register Route*.\nThis route returns a visual identification to the user. This is the recommended method to onboard images to Bria, when needed.\n\nIt's the first step for consuming the Bria API for new visuals (instead of using the /upload route).\n\n**Response**\n\n  \n  The visual id in the response of the *Register Route* must be kept by the\nuser in order to query image info, modify the image a"
+        },
+        {
+          "info": {
+            "name": "Remove Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/:visual_id/remove_image",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "visual_id",
+                "value": "b3cecc33cc31cc31",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "\n**Description**\n\nWith this route, you can remove an image from the gallery of your organization. The image won't be removed from Bria."
+        },
+        {
+          "info": {
+            "name": "Get Request Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://engine.prod.bria-api.com/v1/status/:request_id",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the request."
+              }
+            ]
+          },
+          "docs": "Retrieves the current status of an asynchronous request.\n\n  **Behavior**\n- Under normal operation, this endpoint returns **`200 OK`**, regardless of whether the request is in progress, completed, or has failed at the job level.  \n- The `status` field in the response (`IN_PROGRESS`, `COMPLETED`, `ERROR`, `UNKNOWN`) indicates the state of the job.  \n- When the job fails (status=`ERROR`), details of the failure are provided in the `error` object, but the HTTP status remains `200`.\n- When `status=CO"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

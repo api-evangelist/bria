@@ -1,0 +1,3546 @@
+{
+  "item": [
+    {
+      "id": "07c6657e-e855-41a9-a4bd-962c661d4cc0",
+      "name": "Automotive Endpoints",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4ea2f55c-c245-40fd-ab00-7fa90c25ec57",
+          "name": "Vehicle Shot by text",
+          "request": {
+            "name": "Vehicle Shot by text",
+            "description": {
+              "content": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nCreates enriched automotive product shots by placing vehicles in realistic environments using textual descriptions.  \n\n\nThis endpoint includes vehicle-specific enhancements that adapt the background scene to match automotive contexts, specifically - snow, sand, and grass. It embeds the vehicle into the environment for a natural, grounded appearance.  \n\n\nThis endpoint also allows adjusting the position of the product and the size of the final product shot.\nThis enables the creation of new and unique variations of your original product image while maintaining control over layout and format.\n\n\nTo control product positioning and shot dimensions, use the `placement_type` parameter, which offers several control modes:\n\n\n- `original`: preserves the original position and size of the product from the input image.\n\n- `automatic`: generates results with 7 recommended placements, while the shot_size is defined by the 'shot_size' parameter.\n\n- `manual_placement`: allows choosing from predefined positions using `manual_placement_selection`. The shot_size is defined by the 'shot_size' parameter.\n\n- `custom_coordinates`: provides full control over the product's size and location using `foreground_image_size` and `foreground_image_location`. The shot_size is defined by the 'shot_size' parameter.\n\n- `manual_padding`: lets you define padding in pixels around the product to control both size and placement.\n\n- `automatic_aspect_ratio`: centers the product and resizes the canvas automatically to match the specified `aspect_ratio`.\n\n\nThe parameters used for positioning and sizing depend on the selected `placement_type`. Refer to the documentation for each mode to understand the supported fields and behaviors.\n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content, and filters out unsafe modified images — the first blocked input image will fail the entire request.  ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "vehicle",
+                "shot_by_text"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sync\": false,\n  \"mode\": \"high_control\",\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"scene_description\": \"<string>\",\n  \"optimize_description\": true,\n  \"num_results\": 4,\n  \"exclude_elements\": \"<string>\",\n  \"placement_type\": \"<string>\",\n  \"original_quality\": false,\n  \"aspect_ratio\": \"<string>\",\n  \"shot_size\": [\n    1000,\n    1000\n  ],\n  \"foreground_image_size\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"foreground_image_location\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"manual_placement_selection\": [\n    \"upper_left\"\n  ],\n  \"padding_values\": [\n    0,\n    0,\n    0,\n    0\n  ],\n  \"force_rmbg\": false,\n  \"content_moderation\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5eb4e984-a42b-4499-b362-320874a77320",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"result\": [\n    [\n      \"https://storage.server/outputs/valid_output_1.jpeg\",\n      \"123111\",\n      \"valid_output_1.jpeg\"\n    ],\n    [\n      \"https://storage.server/outputs/valid_output_2.jpeg\",\n      \"123222\",\n      \"valid_output_2.jpeg\"\n    ]\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff758578-322a-427b-8e37-11bd42b1233b",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "24249387-2b83-4b08-bb6c-b189d926e1fc",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ca65662e-880a-475e-a3b6-2cdb561b1ae7",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ec427cd4-4041-4705-a687-b55ca7fc7b7d",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "60b83568-986e-4304-85b2-8eaba211eaa8",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e200093d-d78d-4050-9fe3-4790650f41c5",
+              "name": "Unsupported media type. Invalid file type. Supported file types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "79f38355-146a-4fd1-9791-159c84ba25ae",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"The request could not be completed because the visual in the '{parameter_name}' parameter did not pass content moderation.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "642213eb-d0c2-447e-81d1-814708d16c7c",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "aa57d929-ae93-4e08-9e49-107a2c7a8ad8",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "80f4f6b4-58dd-4a93-a53c-e5678891ff7a",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "shot_by_text"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"URL\",\n  \"mode\": \"high_control\",\n  \"scene_description\": \"A vehicle on a coastal road at sunset\",\n  \"placement_type\": \"original\",\n  \"num_results\": 2,\n  \"original_quality\": true,\n  \"optimize_description\": true,\n  \"sync\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "332c4284-2e6e-40bd-8ff2-fc71d4dcd24b",
+          "name": "Vehicle Shot by Image (Coming soon)",
+          "request": {
+            "name": "Vehicle Shot by Image (Coming soon)",
+            "description": {
+              "content": "Coming soon\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "vehicle",
+                "shot_by_image"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2183c32f-72e9-42a3-a674-5faafaaec1da",
+          "name": "Segmentation",
+          "request": {
+            "name": "Segmentation",
+            "description": {
+              "content": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nGenerates segmentation masks for specific vehicle parts from an input image, enabling further enhancements such as reflection generation or wheel refinement.  \n\n\nThis endpoint returns separate binary masks for each segmented region, including windows, wheels, and body parts. If a specific part is not detected in the image, it will be returned with an empty URL.  \n\n\nThe API supports input via image URL or base64-encoded image file, and also includes optional content moderation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "vehicle",
+                "segment"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization.",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f30b14de-4db3-4973-8c23-7683ed707584",
+              "name": "Segmentation masks successfully generated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"windshield\": \"https://example.com/masks/windshield.png\",\n  \"rear_window\": \"\",\n  \"side_windows\": \"https://example.com/masks/side_windows.png\",\n  \"body\": \"https://example.com/masks/body.png\",\n  \"wheels\": \"https://example.com/masks/wheels.png\",\n  \"hubcap\": \"https://example.com/masks/hubcap.png\",\n  \"tires\": \"https://example.com/masks/tires.png\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ce128b3-4a8d-46c7-9ca5-132ba9957d64",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a9ed8855-63e6-4ca5-906d-eb91a2b8e65a",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3295ff38-d30b-4124-a436-4d2b7bf299e5",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58f64b19-80d2-478b-bc4c-6332e0ffdb90",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "79033ce1-4a56-4368-992a-ccf87d535b10",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "144e82c9-fafa-42cf-bb1d-e2b482ee0398",
+              "name": "Unsupported media type. Supported types - jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "58107653-6625-4877-87f6-5abc5dd33843",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "60474bbb-1635-4994-a54f-a29862982e9d",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a00db43d-e691-4a52-a2e9-a32f70dc017f",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "88864413-8c6b-4952-95c3-49977f980845",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "segment"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization.",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpeg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b796234c-b0ac-416e-b187-dea7ec1e6bae",
+          "name": "Reflections",
+          "request": {
+            "name": "Reflections",
+            "description": {
+              "content": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nGenerates realistic reflections on relevant surfaces of a product image, such as glass, metal, or glossy materials.\n\n\nReflection masks can be provided manually or generated automatically using our segmentation tools.\n\n\nThe output includes an updated image with applied reflections and optional reflection layers per region.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "vehicle",
+                "generate_reflections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"masks\": \"<object>\",\n  \"layers\": \"<boolean>\",\n  \"seed\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "18b608c7-e75b-4ca7-8525-1e65322719b0",
+              "name": "Reflections successfully applied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://example.com/results/full_image_with_reflections.png\",\n  \"seed\": 123\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37bc6919-2ae2-4bec-9b94-48d21befdd2d",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "66647358-95dd-4bf8-82a5-2f4f772d8c73",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "98db1ce9-9a36-47a0-bca6-4b6b8afc51e1",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf2328de-3e74-4b70-80ae-95dd6dea6fdf",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "db9592b5-2948-4900-853c-80036f7413d9",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "011506f4-d9a9-45f9-8654-0b2818ed8ce1",
+              "name": "Unsupported media type. Supported types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "48f0bb8c-eb38-47e8-a5f4-b7864b51db94",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8548a1fe-3a62-428a-972a-14beb23939ce",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "757d13b2-c43f-49dc-bc37-f54b6a383957",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a4c8beab-0e0b-4b51-a3a4-2eca8e356659",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "generate_reflections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"windshield\": \"https://example.com/masks/windshield.png\",\n    \"side_windows\": \"https://example.com/masks/side_windows.png\",\n    \"body\": \"https://example.com/masks/body.png\",\n    \"wheels\": \"https://example.com/masks/wheels.png\"\n  },\n  \"layers\": true,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60eab7bb-617b-4e03-81e4-d1749e7f86ea",
+          "name": "Tires Refinement",
+          "request": {
+            "name": "Tires Refinement",
+            "description": {
+              "content": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nEnhances the appearance of the vehicle tires by adding realistic textures that match specific surfaces - snow, mud, grass.  \n\n\nThis endpoint accepts a binary mask of all tires and returns the image with refined tires. You can optionally receive the refined wheels as a separate layer.  ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "vehicle",
+                "refine_tires"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"masks\": {\n    \"tires\": \"<string>\"\n  },\n  \"layers\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7dd0dfb3-6aeb-4797-aa5b-f7076d6f3e99",
+              "name": "Wheel refinement successfully applied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://example.com/results/full_image_refined_1.png\",\n  \"seed\": 123\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6437fea6-bbfc-4600-8561-e209c9884ae8",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6210545d-48c1-4e40-a6a5-8b6603f338c4",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "90ca561e-6f0c-47ad-9e7a-137933303a44",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3df10f77-b47a-4371-a772-d29c6d1d43ca",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dd6c326a-9c18-46ce-be6d-d7a93524b021",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "24d7b02f-9bc8-4daa-bdea-443ca120d457",
+              "name": "Unsupported media type. Supported types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ca4ec480-e5d2-409b-b4c3-a70f7ef65736",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4e533cf8-9dd3-4274-ac58-0649171f086d",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0e8333f9-c683-4c65-b161-1d872ed95719",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "93876332-4987-4582-98a1-8938cc91051f",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "refine_tires"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/car.jpg\",\n  \"masks\": {\n    \"tires\": \"https://example.com/masks/tires.png\"\n  },\n  \"layers\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f6b4599c-1b51-4ff3-9f1c-fed6d19ce8c2",
+          "name": "Apply Effects",
+          "request": {
+            "name": "Apply Effects",
+            "description": {
+              "content": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nAdds visual overlays such as dust, snow, fog, light leaks, and lens flare to enhance the realism and atmosphere of a product image.\n\n\nEach effect includes multiple variations to ensure visually unique results. Effects can be applied directly to the image or delivered as separate layers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "vehicle",
+                "apply_effect"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"effect\": \"<string>\",\n  \"layers\": false,\n  \"seed\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4e3cef0b-8b43-4b6a-a6d9-4aef9abf3c64",
+              "name": "Effect applied successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://example.com/results/full_image_refined_1.png\",\n  \"seed\": 123\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a198f32-edbd-423c-888a-f817adb07eb6",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e2f2a062-7e28-4bd4-8c1b-4e30afef6fac",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7ff2f1aa-5363-4b02-9f48-01ed1783f145",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93829ff5-8bdc-4607-9c78-07ed916a3da9",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "90a16163-208f-4137-8cc5-2314190b8e12",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b61e70b1-ddb7-492c-b671-0a933db3806b",
+              "name": "Unsupported media type. Supported types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "be8d5ba5-6a53-4c35-b5dd-b00cb9ff27f1",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5db6d98f-87d4-43f8-8f39-ce7e9bec7b21",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a0e2a442-67bb-41af-9184-74cb91a0ad09",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b16454f3-6478-4f1e-a543-566a56580ce1",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "apply_effect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/vehicle.jpg\",\n  \"effect\": \"fog\",\n  \"layers\": false,\n  \"seed\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4b3bb4fe-5e25-40ef-9098-73c8ff6918d2",
+          "name": "Harmonization",
+          "request": {
+            "name": "Harmonization",
+            "description": {
+              "content": "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nApplies predefined lighting and tone presets to match the product image with a desired environmental context.\n\n\nAvailable presets include hot-day, cold-day, hot-night, and cold-night. These harmonization styles help unify the subject with its background for a consistent and visually appealing result.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "product",
+                "vehicle",
+                "harmonize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API token associated with the organization",
+                "key": "api_token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image_url\": \"<string>\",\n  \"file\": \"<string>\",\n  \"preset\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "18eaa78e-6528-495c-bcfc-9de1d40f02aa",
+              "name": "Preset applied successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"url\": \"https://example.com/results/full_image_refined_1.png\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b699706-de01-454c-8a5a-709815fae957",
+              "name": "Bad request. Missing or invalid parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9c8278b0-cd63-4842-a621-fc3fcb360483",
+              "name": "Unauthorized. Invalid API key or authentication token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fc0fd496-aff9-405f-b854-013d4ddd4c02",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aca986f3-ddc6-4210-9132-aee659f323fb",
+              "name": "Not found. Image could not be found at the provided URL.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0e99885e-24d3-45d3-bda8-d84da4d235c2",
+              "name": "Payload too large. Image file size exceeds the 12MB limit.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cf7718d0-ae0d-46d7-b9cb-1e5f567c96dc",
+              "name": "Unsupported media type. Supported types are jpeg, jpg, png, webp.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a3daed6a-6814-458b-bde0-73abd182db83",
+              "name": "Unprocessable Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "080b616e-5823-4c54-8cda-558f11094a62",
+              "name": "Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "118b8c6b-f24e-48b9-b6d3-8df49bd90345",
+              "name": "Failed to download image.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "code": 460,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9f63a836-bd8f-4bea-a371-e339fe3000f6",
+              "name": "Internal server error. An error occurred on the server.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "product",
+                    "vehicle",
+                    "harmonize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) API token associated with the organization",
+                    "key": "api_token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"image_url\": \"https://example.com/images/car_side_view.png\",\n  \"preset\": \"cold-day\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://engine.prod.bria-api.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f45edc9e-bb3e-4a02-a4bd-3f1ff6c69bd1",
+    "name": "Product Shot API Reference Automotive Endpoints API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Below you will find the technical specifications, request schemas, and response models for our endpoints. \n \nChoose an endpoint from the sidebar to view code samples and run test requests. \n",
+      "type": "text/plain"
+    }
+  }
+}

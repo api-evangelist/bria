@@ -1,0 +1,500 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Image Editing API Reference v2 endpoints API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "v2 endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Image Edit by Text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/image/edit",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/fibo-image-edit)\n\n\n**Description**\n\nPowered by the **FIBO models family**, Bria’s Image Editing by Text API equips builders with the ability to modify existing images using natural language instructions or structured JSON instructions.\n\nFIBO Edit features **native masking support** for precise, localized editing. You can supply a binary mask to restrict changes to specific regions while preserving the rest of "
+        },
+        {
+          "info": {
+            "name": "Generate Structured Instruction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/structured_instruction/generate",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Description**\n\nTranslates a user's text-based edit instruction and source image/mask into a detailed, machine-readable structured edit instruction in JSON format.\n\nThis endpoint uses the state-of-the-art Gemini 2.5 Flash VLM bridge to understand the edit context. **It only returns the JSON string and does not generate an image.**\n\n**Context-Aware Masking**\n\nWhen a `mask` is provided, the VLM analyzes the specific region of interest in relation to the rest of the image. It generates a `structur"
+        },
+        {
+          "info": {
+            "name": "Add Object by Text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/add_object_by_text",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/add-object-by-text)\n\n**Description**\n\nInsert new objects into an image using natural language to describe the object and its position.\n\n**Example:** Instruction: \"Place a red vase with flowers on the table\"\n\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img s"
+        },
+        {
+          "info": {
+            "name": "Replace Object by Text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/replace_object_by_text",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/replace-object-by-text)\n**Description**\n\nSwap an existing object in an image with a new one using a natural language command.\n\n**Example:** Instruction: \"Replace the red apple with a green pear\"\n\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://"
+        },
+        {
+          "info": {
+            "name": "Erase Object by Text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/erase_by_text",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/erase-object-by-text)\n**Description**\n\nRemove specific objects or unwanted elements from an image using natural language descriptions.\n\n**Example:** object_name: \"table\"\n\n\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.us-east"
+        },
+        {
+          "info": {
+            "name": "Image Blending",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/blend",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Description**\n\nMerge objects, apply textures, or rearrange items within an image using natural language.\n\n**Example:** Instruction: \"Place the art on the shirt, keep the art exactly the same\"\n\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/Liza/shirt.png\" width=\"300\" style=\"border-radiu"
+        },
+        {
+          "info": {
+            "name": "Reseason Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/reseason",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/image-reseason)\n\n**Description**\n\nChange the season or weather atmosphere of an image.\n\n**Example:** Season: \"winter\"\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/Liza/create_a_realistic_image_of_a_gr"
+        },
+        {
+          "info": {
+            "name": "Rewrite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/rewrite_text",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/rewrite)\n\n**Description**\n\nChange existing text within an image to new specific text.\n\n**Example:** new_text: \"FIBO Edit!\"\n\n\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/Liza/create_an_image_of_cake__"
+        },
+        {
+          "info": {
+            "name": "Sketch to Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/sketch_to_colored_image",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/sketch-to-image)\n\n**Description**\n\nConvert a line drawing or sketch into a photorealistic colored image.\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/Liza/create_a_b_w_sketch_of_a_cat.png\" width=\"300\""
+        },
+        {
+          "info": {
+            "name": "Restore Old Images",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/restore",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/restore-old-images)\n\n**Description**\n\nRenew old photos by removing noise, scratches, and blur.\n\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/Liza/png+-+2026-01-13T134151.337.png\" width=\"300\" style=\"bo"
+        },
+        {
+          "info": {
+            "name": "Colorize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/colorize",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/colorize)\n\n**Description**\n\nAdd vivid colors to B&W photos or convert color to B&W.\n**Example:** style: \"color_contemporary\"\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/Liza/png+-+2026-01-13T083840.1"
+        },
+        {
+          "info": {
+            "name": "Restyle Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/restyle",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/restyle-image)\n\n**Description**\n\nTransform the artistic style of an image. Accepts either a preset Style ID or a custom description.\n\n**Supported Enum IDs:** \n- render_3d\n- cubism\n- oil_painting\n- anime\n- cartoon\n- coloring_book\n- retro_ad\n- pop_art_halftone\n- vector_art\n- story_board\n- art_nouveau\n- cross_etching\n- wood_cut\n\n**Example:** Style: \"oil_painting\"\n\n<table>\n  <tr>\n    <th style=\"text-align: center;"
+        },
+        {
+          "info": {
+            "name": "Relight Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/relight",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/relight-image)\n\n**Description**\n\nModify the lighting setup (direction and atmosphere) of an image.\n\n**Example:**\n\n* Light Type: \"spotlight on subject, keep background settings\"\n\n<table>\n  <tr>\n    <th style=\"text-align: center;\">Input Image</th>\n    <th style=\"text-align: center;\">Output Image</th>\n  </tr>\n  <tr>\n    <td align=\"center\" style=\"vertical-align: middle;\">\n      <img src=\"https://bria-datasets.s3.u"
+        },
+        {
+          "info": {
+            "name": "Eraser",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/erase",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/eraser)\n\n**Description**\n\n\nThe *Eraser Route* enables the removal of elements or specific areas from a given image.\n\n\nYou can define the area to be removed by providing a mask that outlines the region to be erased. There are two main ways recommended to generate these masks:\n\n1. Masks can be created by allowing users to draw directly on the image with a brush, for example. To access the SDK that demonstrates h"
+        },
+        {
+          "info": {
+            "name": "Generative Fill",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/gen_fill",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/generative-fill)\n\n**Description**\n\nThe *GenFill Route* enables the generation of objects by prompt in a specific region of an image.\n\nYou can define the area for object generation by using a mask that outlines the region where the object will be created. Our model is optimized to work seamlessly with blob-shaped masks.\n\nMasks can be created by allowing users to draw directly on the image with a brush, for exam"
+        },
+        {
+          "info": {
+            "name": "Remove Background",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/remove_background",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/remove-background)\n\n**Description**\n\n\nThe *Remove BG* Route can be used to remove the background of an image. This route leverages Bria's newest model, RMBG 2.0. For more details and to explore the model, check out the [Hugging Face demo](https://huggingface.co/spaces/briaai/BRIA-RMBG-2.0).\n\n\n**Content Moderation**\n\nThis endpoint includes granular content moderation controls to ensure safe usage across all sta"
+        },
+        {
+          "info": {
+            "name": "Replace Background",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/replace_background",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/replace-background)\n\n\n**Description**\n\n\n\nThe *Replace BG Route* is used to replace the background of any image.\n\n\nWe offer 3 different background generation modes when generating by text: base, high contol and fast.\n\n  - **Base** - clean, high quality backgrounds.\n  - **High_control** - Stronger prompt adherence and scene context, finer control over layout and details - **we recommend using this mode.**\n  - **"
+        },
+        {
+          "info": {
+            "name": "Erase Foreground",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/erase_foreground",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/erase-foreground)\n\n\n\n**Description**\n\n\n\nThe **Erase Foreground** endpoint removes the primary subject (foreground) from the input image and intelligently generates the background to fill the erased area.  \n\n**Output Characteristics**  \n- Returns the edited image at its original resolution, ensuring full visual fidelity without any automatic resizing or downscaling.  \n- Only the foreground is removed; all other"
+        },
+        {
+          "info": {
+            "name": "Blur Background",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/blur_background",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "\n\n**Description**\n\n\n\nThe *background/blur Route* is used to create a blur effect on the background of an image. \n\n**Content Moderation**\n\nThis endpoint includes granular content moderation controls to ensure safe usage across all stages of processing:\n\n- **Input Image Moderation** – Scans the uploaded image and stops processing if inappropriate or restricted content is detected.\n- **Output Image Moderation** – Evaluates the generated image and blocks the response if it violates safety guidelines"
+        },
+        {
+          "info": {
+            "name": "Expand Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/expand",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/exapnd-image)\n\n\n**Description**\n\n\n\nThe *Image Expension Route* can be used to expand an image, by utilizing generative AI.\n\n\nYou can decide on the image size of the final result as well as the position and size of the original image compared to the final result.\n\n\nAlternatively, you can define a desired aspect_ratio, and the service will automatically place the input image in the center and expand the canvas t"
+        },
+        {
+          "info": {
+            "name": "Enhance Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/enhance",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/enhance-image)\n\n**Description**\n\nRegenerate an image with sharper textures and richer details while doubling resolution, up to 10 megapixels output.\n\nNote: this endpoint only supports async response mode - the API immediately returns a status URL to track progress.\n\n**Content Moderation**\n\nThis endpoint includes granular content moderation controls to ensure safe usage across all stages of processing:\n\n- **Inp"
+        },
+        {
+          "info": {
+            "name": "Increase Resolution",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/increase_resolution",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-editing/increase-resolution)\n\n\n**Description**\n\n\n\nThe *Increase Resolution Route* is used to upscale the resolution of any image.\n\n\n**Content Moderation**\n\nThis endpoint includes granular content moderation controls to ensure safe usage across all stages of processing:\n\n- **Input Image Moderation** – Scans the uploaded image and stops processing if inappropriate or restricted content is detected.\n- **Output Image Mode"
+        },
+        {
+          "info": {
+            "name": "Crop out foreground",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/image/edit/crop_foreground",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "\n\n**Description**\n\n\n\nThe Crop Route is used to remove the background from an image and crop tightly around the foreground or remaining region of interest. It supports both images with and without a background.\n\n**Content Moderation**\n\nThis endpoint includes granular content moderation controls to ensure safe usage across all stages of processing:\n\n- **Input Image Moderation** – Scans the uploaded image and stops processing if inappropriate or restricted content is detected.\n- **Output Image Mode"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

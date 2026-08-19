@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Video API Reference Editing Endpoints API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Editing Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Eraser",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/erase",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/eraser-video)\n\n\n**Description**\nInitiates an asynchronous object erasure job. Removes objects defined by the mask input and reconstructs the background.\n\n\n**Mask Input**\n\n\nThis endpoint requires a mask definition object. You can provide a direct `mask_url`, or use one of our masking endpoints (`mask_by_prompt`, `mask_by_key_points`) to define the mask area.\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `reques"
+        },
+        {
+          "info": {
+            "name": "Increase Resolution - up to 8K",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/increase_resolution",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-increase-resolution)\n\n\n**Description**\nInitiates an asynchronous resolution upscaling job for a video.\n\n**Upscales up to 8K output!**\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned\n\n\nSupported input containers:\n\n"
+        },
+        {
+          "info": {
+            "name": "Remove Background",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/remove_background",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-remove-background)\n\n\n**Description**\nInitiates an asynchronous background removal job for a video.\n\n> **Need real-time / low-latency background removal?** See [Streaming Background Removal](#tag/Streaming-Endpoints) for the WebSocket-based variant.\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](htt"
+        },
+        {
+          "info": {
+            "name": "Replace Background",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/replace_background",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-replace-background)\n\n\n**Description**\n\nan asynchronous job that detects the video background and composites a user-provided image or video asset behind the subject. Size and duration mismatches between the input video and the background asset are handled automatically.\n\n\n\n**behavior:**\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [St"
+        },
+        {
+          "info": {
+            "name": "Green Screen",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v2/video/edit/green_screen",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/video-editing/video-green-screen)\n\n\n**Description**\nInitiates an asynchronous job that detects the video background and replaces it with a solid green (or blue) screen, producing a chroma-key-ready output for downstream compositing tools.\n\n\nResponse behavior:\n\n- Returns HTTP 202 with `request_id` and `status_url`\n\n- Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status/endpo"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

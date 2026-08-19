@@ -1,0 +1,857 @@
+openapi: 3.2.0
+info:
+  title: Tailored Generation API Reference Model API
+  version: ''
+  description: "Tailored Generation provides capabilities to generate visuals (photos, illustrations, vectors) \nthat preserve and faithfully reproduce specific IP elements or guidelines, ensuring consistency \nacross all generated outputs.\n\nThe Tailored Generation APIs allow you to manage and train tailored models that maintain the \nintegrity of your visual IP. You can train models through our Console or implement training \ndirectly via API.\n\n**Fully Automated Training Mode**\nBria supports users in training high-quality finetuned models without the guesswork. Based on the selected IP type & dataset, Bria automatically selects the right training parameters. \nThis means that the user only needs to spend time curating their dataset.\n\n**Advanced Customization and Access:** Bria offers 2 types of advanced training customization: Expert training mode and source-code & weights.\n  - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets.\n  - **Source-code & Weights** is for developers seeking deeper customization and access to Bria's source-available GenAI models via [Hugging Face](https://huggingface.co/briaai).  \n\nAll methods allow full control over fine-tuning, pipeline creation, and integration into proprietary workflows—empowering AI teams to develop and optimize their own generative AI solutions.\n\nThe Tailored Generation Training API provides a set of endpoints to manage the entire lifecycle \nof a tailored generation project:\n\n1. **Project Management**: Create and manage projects that define IP characteristics:\n  - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or \n    retrieve existing projects that belong to your organization.\n  - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character, \n    stylized_scene) and medium.\n  - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete \n    specific projects.\n\n2. **Dataset Management**: Organize and refine datasets within your projects:\n  - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or \n    retrieve existing ones.\n  - **Generate a Visual Schema**\n    - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images.\n  - **Refine Structured Data**\n    - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions.\n    - *Example:* You can send your generated schema with the instruction \"Character's name is Lucy\" to improve the training metadata programmatically.\n  - **Upload and Manage Images**: \n    - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually.\n    - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced).\n  - **Clone Datasets**: Create variations of existing datasets using the clone functionality.\n\n3. **Model Management**: Train and optimize tailored models based on your datasets:\n  - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list \n    existing ones.\n  - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria's recipes) and Expert mode (for training parameter tweaking).\n  - **Monitor and Control**: Manage the model lifecycle, including training start/stop, \n    status monitoring, and version control over the training parameters.\n\n4. **Generation Capabilities**:\n  - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation.\n  - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation.\n  - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images.\n\n### **Training Process**\n\nTo train a tailored model:\n\n1. **Create a Project**: Use the `/projects` endpoint to define your IP type and medium.\n2. **Create a Dataset**: Use the `/datasets` endpoint to create a dataset within your project.\n3. **Define Visual Identity**:\n   - **Step A (Generate):** Call `/tailored-gen/generate_visual_schema`, sampling 5-10 images from your input set.\n   - **Step B (Refine - Optional):** Call `/tailored-gen/refine_structured_prompt` with the generated schema and instructions to tweak the definitions (e.g., \"Remove references to blue background\").\n   - **Step C (Apply):** Update the dataset with the final schema using `/datasets/{dataset_id}`.\n4. **Upload Images**: Upload images using the `/datasets/{dataset_id}/images` or `/datasets/{dataset_id}/images/bulk` endpoints \n  (minimum resolution: 1024x1024px). note: if you upload images before updating the visual schema, use the Regenerate All Captions endpoint to caption the images.\n5. **Prepare Dataset**: Review auto-generated captions (you can also use `refine_structured_prompt` to fix specific image captions) and update the dataset status to 'completed'.\n6. **Create Model**: Use the `/models` endpoint to create a model, which requires a training mode.\n7. **Start Training**: Initiate training via the `/models/{id}/start_training` endpoint. \n  Training typically takes 4-6 hours.\n8. **Monitor Progress**: Check the training status using the `/models/{id}` endpoint until \n  training is 'Completed'.\n9. **Generate Images**: \n  - Use `v2/image/generate/tailored` for text-to-image generation.\n"
+servers:
+- url: https://engine.prod.bria-api.com/v2/
+tags:
+- name: Model
+  description: Manage and train models
+paths:
+  /tailored-gen/models:
+    post:
+      summary: Create Model
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Create a new model.
+      operationId: create-model
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the model (required)
+                dataset_id:
+                  type: integer
+                  description: ID of the dataset to use (required)
+                training_mode:
+                  type: string
+                  enum:
+                  - fully_automated
+                  - expert
+                  default: fully_automated
+                  description: 'Defines the training configuration strategy.
+
+                    * `fully_automated`: Automatically configures the training recipe based on dataset size and IP medium/type.
+
+                    * `expert`: For experienced users needing control over training parameters.
+
+                    '
+                description:
+                  type: string
+                  description: Description of the model (optional)
+            example:
+              name: Lora Character Model
+              dataset_id: 456
+              training_mode: fully_automated
+              description: A model trained on Lora character illustrations
+      responses:
+        '201':
+          description: Model successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - Created
+                  training_mode:
+                    type: string
+                    enum:
+                    - fully_automated
+                    - expert
+                  project_id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  active_model_version:
+                    type: string
+                  training_parameters:
+                    type: object
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+              example:
+                id: 12233
+                name: Test Model
+                description: Test description
+                status: Created
+                dataset_id: 13748
+                training_mode: fully_automated
+                project_id: 12429
+                created_at: '2025-08-20T06:06:05.849402'
+                updated_at: '2025-08-20T06:06:05.849404'
+                active_model_version: default
+                training_parameters: {}
+                checkpoint_steps: []
+        '400':
+          description: Bad request - validation error
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Dataset not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    get:
+      summary: Get Models
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve a list of models. If there are no models, an empty array is returned.
+      operationId: get-models
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: include_training_parameters
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: If true, includes detailed training parameters and checkpoint steps.
+      responses:
+        '200':
+          description: Successfully retrieved models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - Created
+                      - InProgress
+                      - Completed
+                      - Failed
+                      - Stopping
+                      - Stopped
+                    training_mode:
+                      type: string
+                      enum:
+                      - fully_automated
+                      - expert
+                    active_model_version:
+                      type: string
+                    training_parameters:
+                      type: object
+                      properties:
+                        learning_rate:
+                          type: number
+                          format: float
+                        lr_scheduler:
+                          type: string
+                        rank:
+                          type: integer
+                        total_training_steps:
+                          type: integer
+                        checkpoint_interval:
+                          type: integer
+                        lr_warmup_steps:
+                          type:
+                          - integer
+                          - 'null'
+                    checkpoint_steps:
+                      type: array
+                      items:
+                        type: string
+                    project_id:
+                      type: integer
+                    dataset_id:
+                      type: integer
+                    created_at:
+                      type: string
+                      format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/projects/{project_id}/models:
+    get:
+      summary: Get Models by Project
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve all models for a project.
+      operationId: get-models-by-project
+      parameters:
+      - in: path
+        name: project_id
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: include_training_parameters
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved models
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - Created
+                      - InProgress
+                      - Completed
+                      - Failed
+                      - Stopping
+                      - Stopped
+                    training_mode:
+                      type: string
+                      enum:
+                      - fully_automated
+                      - expert
+                    project_id:
+                      type: integer
+                    dataset_id:
+                      type: integer
+                    active_model_version:
+                      type: string
+                    training_parameters:
+                      type: object
+                    checkpoint_steps:
+                      type: array
+                      items:
+                        type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Project not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}:
+    get:
+      summary: Get Model by ID
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve full model information.
+      operationId: get-model
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Successfully retrieved model
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - Created
+                    - InProgress
+                    - Completed
+                    - Failed
+                    - Stopping
+                    - Stopped
+                  training_mode:
+                    type: string
+                    enum:
+                    - fully_automated
+                    - expert
+                  active_model_version:
+                    type: string
+                  training_parameters:
+                    type: object
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+                  project_id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+              example:
+                id: 789
+                name: Lora Character Model
+                description: A model trained on Lora character illustrations
+                status: Completed
+                training_mode: fully_automated
+                active_model_version: default
+                training_parameters: {}
+                checkpoint_steps: []
+                project_id: 123
+                dataset_id: 456
+                created_at: '2024-05-26T12:00:00Z'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    put:
+      summary: Update Model
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Update a model's name and description.
+      operationId: update-model
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+            example:
+              name: Updated Lora Character Model
+              description: An updated model
+      responses:
+        '200':
+          description: Model successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                  project_id:
+                    type: integer
+                  dataset_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete Model
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Delete a specific model.
+      operationId: delete-model
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      responses:
+        '204':
+          description: Model successfully deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '409':
+          description: Cannot delete a model that is currently in training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}/start_training:
+    post:
+      summary: Start Training
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: "Start model training. Training duration is typically 2-4 hours.\nThe associated dataset must have a status of 'completed' before training can begin.\n\n**Default Training Parameters:**\nIf parameters are not provided, defaults are automatically selected:\n* `rank`: 128\n* `learning_rate`: 0.0001\n* `lr_scheduler`: \"constant_with_warmup\"\n* `total_training_steps`: 750\n* `checkpoint_interval`: 500\n    \n**Constraints:**\nAdvanced training parameters are only supported when the model's `training_mode` is set to 'expert'.\n"
+      operationId: start-training
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lr_scheduler:
+                  type: string
+                  description: The learning rate scheduler.
+                  enum:
+                  - linear
+                  - cosine
+                  - cosine_with_restarts
+                  - polynomial
+                  - constant
+                  - constant_with_warmup
+                learning_rate:
+                  type: number
+                  format: float
+                  minimum: 1.0e-06
+                  maximum: 0.001
+                  description: The initial learning rate. Default is 0.0001.
+                total_training_steps:
+                  type: integer
+                  minimum: 1
+                  maximum: 5000
+                  description: Total number of training optimization steps. Default is 750.
+                rank:
+                  type: integer
+                  minimum: 4
+                  maximum: 256
+                  description: The rank (latent dimension). Default is 128.
+                checkpoint_interval:
+                  type: integer
+                  minimum: 100
+                  description: Interval (in steps) at which checkpoints are saved. Default is 500.
+                lr_warmup_steps:
+                  type: integer
+                  minimum: 0
+                  maximum: 1000
+                  default: 100
+                  description: Number of warmup steps. Relevant only when `lr_scheduler` is `constant_with_warmup`.
+      responses:
+        '200':
+          description: Training successfully started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - InProgress
+                  dataset_id:
+                    type: integer
+                  training_mode:
+                    type: string
+                  project_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+                  updated_at:
+                    type: string
+                    format: date-time
+                  active_model_version:
+                    type: string
+                  training_parameters:
+                    type: object
+                    properties:
+                      learning_rate:
+                        type: number
+                        format: float
+                      lr_scheduler:
+                        type: string
+                      rank:
+                        type: integer
+                      total_training_steps:
+                        type: integer
+                      checkpoint_interval:
+                        type: integer
+                      lr_warmup_steps:
+                        type:
+                        - integer
+                        - 'null'
+                  checkpoint_steps:
+                    type: array
+                    items:
+                      type: string
+              example:
+                id: 12242
+                name: Test Model
+                description: Test description
+                status: InProgress
+                dataset_id: 13749
+                training_mode: expert
+                project_id: 12429
+                created_at: '2025-08-20T09:51:58.080018'
+                updated_at: '2025-08-20T09:51:58.080020'
+                active_model_version: default
+                training_parameters:
+                  learning_rate: 0.0001
+                  lr_scheduler: constant_with_warmup
+                  rank: 128
+                  total_training_steps: 750
+                  checkpoint_interval: 500
+                  lr_warmup_steps: 100
+                checkpoint_steps: []
+        '400':
+          description: Bad request - validation error
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '409':
+          description: Training already started/cannot be resumed
+        '412':
+          description: Dataset status must be 'completed' to start training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}/stop_training:
+    post:
+      summary: Stop Training
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Stop an ongoing model training process. Once stopped, training cannot be resumed - a new model would need to be created and trained.
+      operationId: stop-training
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: Training job successfully stopped
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Model not found
+        '409':
+          description: Training already stopped/not in training
+        '429':
+          description: Request limit exceeded.
+        '500':
+          description: Internal server error
+  /tailored-gen/models/{model_id}/checkpoints:
+    get:
+      summary: List Checkpoints
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve a list of all available checkpoints for a model. Only available for models trained in `expert` mode.
+      operationId: list-checkpoints
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved list of checkpoints.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkpoints:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        checkpoint_step:
+                          type: integer
+                        training_job_id:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date-time
+                  active_model_version:
+                    type: string
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+  /tailored-gen/models/{model_id}/checkpoints/{checkpoint_step}:
+    get:
+      summary: Get Specific Checkpoint
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Retrieve details for a specific model checkpoint.
+      operationId: get-checkpoint
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: checkpoint_step
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved checkpoint details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  checkpoint_step:
+                    type: integer
+                  training_job_id:
+                    type: integer
+                  created_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+    delete:
+      summary: Delete Checkpoint
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: Permanently delete a specific model checkpoint. Cannot delete the checkpoint currently selected for inference.
+      operationId: delete-checkpoint
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: checkpoint_step
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Checkpoint successfully deleted.
+        '400':
+          description: Bad Request (cannot delete active checkpoint)
+        '404':
+          description: Not Found
+  /tailored-gen/models/{model_id}/download:
+    get:
+      summary: Download Tailored Model
+      tags:
+      - Model
+      servers:
+      - url: https://engine.prod.bria-api.com/v1
+      description: "Download a trained tailored generation model after completing the training process. \nThe response includes a pre-signed URL for downloading the model and details about the base model used.\n\nTo use the tailored model source code, access to the base model source code is required. \nThe base model source code is exclusively available through Bria's **Source Code and Weights** product. \nFor more information, contact us at **info@bria.ai**.\n"
+      operationId: download-tailored-model
+      parameters:
+      - in: path
+        name: model_id
+        required: true
+        schema:
+          type: string
+      - in: header
+        name: api_token
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful retrieval of the tailored model download details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  download_url:
+                    type: string
+                    description: A pre-signed URL for downloading the tailored model.
+                  base_model_name:
+                    type: string
+                    description: The name of the base model used for training.
+                  base_model_card:
+                    type: string
+                    description: URL to the Hugging Face model card.
+              example:
+                download_url: https://download-url-for-tailored-model.com
+                base_model_name: BRIA-FIBO
+                base_model_card: https://huggingface.co/briaai/BRIA-FIBO
+        '400':
+          description: Bad request.
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+x-tagGroups:
+- name: Training Endpoints
+  tags:
+  - Project
+  - Dataset
+  - Model
+- name: Generation Endpoints
+  tags:
+  - Image Generation
+  - Video Generation

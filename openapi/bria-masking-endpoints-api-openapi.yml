@@ -1,0 +1,471 @@
+openapi: 3.2.0
+info:
+  title: Video API Reference Masking Endpoints API
+  version: ''
+  description: "Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.\n\nThe Video API is organized into two transport paradigms:\n\n- **REST API (Async)** — Standard HTTP request/response. You submit a job, receive a `request_id` and `status_url`, and poll the [Status Service](https://docs.bria.ai/status) until the job completes. Use this for editing, masking, and most batch-style workflows.\n- **Streaming API (WebSocket)** — Persistent bidirectional connection for low-latency, frame-by-frame processing. Use this when you need real-time output (e.g., live video feeds, interactive previews).\n\n**Asynchronous Requests and the Status Service**  \nBria API v2 REST endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.\n\nSee the full guide at [Status Service Documentation](https://docs.bria.ai/status) for complete details and usage examples.\n"
+servers:
+- url: https://engine.prod.bria-api.com/v2/video/edit
+- url: https://engine.prod.bria-api.com/v2/video/generate
+- url: https://engine.prod.bria-api.com/v2/video/segment
+tags:
+- name: Masking Endpoints
+  description: Tools for generating segmentation masks (by prompt, by key points, foreground). REST async.
+paths:
+  /mask_by_prompt:
+    servers:
+    - url: https://engine.prod.bria-api.com/v2/video/segment
+    post:
+      summary: Generate Mask by Prompt
+      tags:
+      - Masking Endpoints
+      description: 'Generates a segmentation mask video based on a text prompt.
+
+
+        Response behavior:
+
+        - Returns HTTP 202 with `request_id` and `status_url`
+
+        - The final result (via Status Service) will contain a `mask_url`.
+
+
+        Constraints:
+
+        - Max Duration: 5 seconds (Truncated if `auto_trim`=true).
+
+        - Max Resolution: 750p.'
+      operationId: mask-by-prompt
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                video:
+                  type: string
+                  description: Publicly accessible URL for the input video file.
+                prompt:
+                  type: string
+                  description: The text instruction describing the object to be masked.
+                auto_trim:
+                  type: boolean
+                  default: false
+                  description: If true, trims the video to the 5s limit.
+                output_container_and_codec:
+                  type: string
+                  default: mp4_h264
+                  enum:
+                  - mp4_h264
+                  - mp4_h265
+                  - webm_vp9
+                  - mov_h265
+                  - mov_proresks
+                  - mkv_h264
+                  - mkv_h265
+                  - mkv_vp9
+                  - gif
+                webhook_url:
+                  type: string
+                  format: uri
+                  description: Optional URL for receiving the result via webhook when the async job completes. See [Webhooks](https://docs.bria.ai/webhooks).
+              required:
+              - video
+              - prompt
+            example:
+              video: example
+              prompt: example
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncInitialResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                NoObjectDetected:
+                  summary: Prompt Detection Failed
+                  value:
+                    error:
+                      code: 400
+                      message: No objects detected for prompt in image
+                      details: 'Object detection failed. We could not find a match for your description. Please refine your prompt: ''XXXX'''
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '415':
+          description: Unsupported input container or codec
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /mask_by_key_points:
+    servers:
+    - url: https://engine.prod.bria-api.com/v2/video/segment
+    post:
+      summary: Generate Mask by Key Points
+      tags:
+      - Masking Endpoints
+      description: 'Generates a segmentation mask video based on coordinate key points.
+
+
+        Response behavior:
+
+        - Returns HTTP 202 with `request_id` and `status_url`
+
+        - The final result (via Status Service) will contain a `mask_url`.
+
+
+        Constraints:
+
+        - Max Duration: 5 seconds (Truncated if `auto_trim`=true).
+
+        - Max Resolution: 750p.'
+      operationId: mask-by-key-points
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                video:
+                  type: string
+                  description: Publicly accessible URL for the input video file.
+                frame_index:
+                  type: integer
+                  description: The frame number to apply key points to.
+                key_points:
+                  type: array
+                  description: 'An array of coordinate objects defining the mask hints.
+
+                    - **positive**: Inclusion points. These coordinates identify areas that SHOULD be part of the mask.
+
+                    - **negative**: Exclusion points. These coordinates identify areas that SHOULD NOT be part of the mask.
+
+                    '
+                  items:
+                    type: object
+                    properties:
+                      x:
+                        type: integer
+                      y:
+                        type: integer
+                      type:
+                        type: string
+                        enum:
+                        - positive
+                        - negative
+                auto_trim:
+                  type: boolean
+                  default: false
+                  description: If true, trims the video to the 5s limit.
+                output_container_and_codec:
+                  type: string
+                  default: mp4_h264
+                  enum:
+                  - mp4_h264
+                  - mp4_h265
+                  - webm_vp9
+                  - mov_h265
+                  - mov_proresks
+                  - mkv_h264
+                  - mkv_h265
+                  - mkv_vp9
+                  - gif
+                webhook_url:
+                  type: string
+                  format: uri
+                  description: Optional URL for receiving the result via webhook when the async job completes. See [Webhooks](https://docs.bria.ai/webhooks).
+              required:
+              - video
+              - key_points
+            example:
+              video: example
+              frame_index: 88
+              key_points:
+              - x: 650
+                y: 400
+                type: positive
+              - x: 655
+                y: 405
+                type: positive
+              - x: 50
+                y: 100
+                type: negative
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncInitialResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '415':
+          description: Unsupported input container or codec
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /foreground_mask:
+    servers:
+    - url: https://engine.prod.bria-api.com/v2/video/generate
+    post:
+      summary: Foreground Mask
+      tags:
+      - Masking Endpoints
+      description: 'Initiates an asynchronous foreground mask generation job for a video.
+
+
+        Response behavior:
+
+        - Returns HTTP 202 with `request_id` and `status_url`
+
+        - Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned
+
+
+        Supported input containers:
+
+        - .mp4, .mov, .webm, .avi, .gif
+
+
+        Supported input codecs:
+
+        - H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG
+
+
+        Input attributes preserved in output:
+
+        - Aspect Ratio and resolution
+
+        - Frame Rate
+
+        - Audio if present
+
+
+        Limits:
+
+        - Max input duration: 60 seconds
+
+        - Resolutions: Input resolution up to 16000x16000 (16K). Inputs larger than this return 413 Payload Too Large. Output resolution matches the input resolution.'
+      operationId: foreground-mask
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                video:
+                  type: string
+                  description: Publicly accessible URL of the input video. Input resolution supported up to 16000x16000 (16K)
+                output_container_and_codec:
+                  type: string
+                  description: Output container and codec preset
+                  enum:
+                  - mp4_h264
+                  - mp4_h265
+                  - webm_vp9
+                  - mov_h265
+                  - mov_proresks
+                  - mkv_h264
+                  - mkv_h265
+                  - mkv_vp9
+                  - gif
+                  default: mp4_h264
+                webhook_url:
+                  type: string
+                  format: uri
+                  description: Optional URL for receiving the result via webhook when the async job completes. See [Webhooks](https://docs.bria.ai/webhooks).
+              required:
+              - video
+            example:
+              video: example
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncInitialResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Payload Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '415':
+          description: Unsupported input container or codec
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
+x-tagGroups:
+- name: REST API (Async)
+  tags:
+  - Editing Endpoints
+  - Masking Endpoints
+- name: Streaming API

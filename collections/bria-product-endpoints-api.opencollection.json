@@ -1,0 +1,186 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Product Shot API Reference Product Endpoints API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Product Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Product Cutout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/cutout",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-cutout)\n\n**Description**\n\nThis capability allows you to create a precise cutout of a product from any given image. This feature is especially valuable for eCommerce platforms and applications, serving as a fundamental building block for crafting a user-friendly interface. \n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contai"
+        },
+        {
+          "info": {
+            "name": "Product Packshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/packshot",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-packshot)\n\n**Description**\n\nThe Product Pack Shot feature is designed to create professional standard pack shots. The output is a 2000x2000 px image, with the product size and location according to best practices. This feature can allow users to take any photo of a product and transform it into a professional pack shot, placing the product on a clean, seamless background, typically white but cus"
+        },
+        {
+          "info": {
+            "name": "Product Shadow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/shadow",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-shadow)\n\n**Description**\n\n\nThe Product Shadow API allows you to add consistent and customizable shadow to a product cutout. This feature is designed to work in combination with other capabilities like product cutout,  product packshot and product lifestyle shots, enhancing the visual appeal of e-commerce and product imagery.\n\n\nIf the product image isn't a product cutout, you should use the produ"
+        },
+        {
+          "info": {
+            "name": "Lifestyle Product Shot by Text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/lifestyle_shot_by_text",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/lifestyle-product-shot-by-text)\n\n**Description**\n\nCreates enriched product shots by placing them in various environments using textual descriptions.\n\n\nIn addition, you can adjust the background of the product by replacing it with a solid color. \n\nTo do this, specify a hex color code (e.g., #FF5733) in the `scene_description`. \n\n\nThis feature is only available when generating a single result (`num_result"
+        },
+        {
+          "info": {
+            "name": "Lifestyle Product Shot by Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/lifestyle_shot_by_image",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/lifestyle-product-shot-by-image)\n\n**Description**\n\nGenerates enriched product shots by placing them in visually compelling environments, guided by a reference image. \n\n\nThis endpoint also allows adjusting the position of the product and the size of the final product shot.\nThis enables the creation of new and unique variations of your original product image while maintaining control over layout and forma"
+        },
+        {
+          "info": {
+            "name": "Embed products into a scene",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/image/edit/product/integrate",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/product-shot-editing/product-embedding)\n\n**Description**\n\nIntegrate and embed one or more products into a predefined scene at precise user-defined coordinates. \nThis endpoint ensures the product matches the scene's lighting, perspective, and aesthetics.\n\n**Note on Product Cutout & Scaling:** Please use Product Cutput endpoint first, to create a presice cutout of your product. **Crucially, the provided `coordinates` (x, y, w"
+        },
+        {
+          "info": {
+            "name": "Product Cutout (v2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/image/edit/product/cutout",
+            "headers": [
+              {
+                "name": "api_token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Description**\n\nCreates a clean product cutout from any image by removing the background and cropping the image tightly around the product. This capability is especially valuable for eCommerce platforms and applications, and serves as a fundamental building block for product imagery pipelines such as Product Packshot, Product Shadow, and Embed products into a scene.\n\nThis is the v2 version of the Product Cutout capability, replacing the legacy v1 endpoint (POST /v1/product/cutout). Both version"
+        },
+        {
+          "info": {
+            "name": "Consistent Product Shots (Coming Soon)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/products/consistent_shots"
+          },
+          "docs": "**Description**\nThis feature allows users to create consistent product shots by providing either a textual description of a scene or an image, along with a group of product images. The resulting consistent product shots are ideal for use on social media, eCommerce websites, product catalogs, and other marketing materials, ensuring a uniform and professional appearance across all platforms."
+        },
+        {
+          "info": {
+            "name": "Contextual Keyword Extraction (Coming Soon)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://engine.prod.bria-api.com/v1/product/contextual_keyword_extraction"
+          },
+          "docs": "**Description**\nThis feature allows users to extract relevant keywords from an image and its context, focusing on the primary product rather than secondary elements. This capability enhances search optimization in eCommerce by ensuring that the keywords accurately represent the product being sold. It can be particularly useful for improving product searchability on eCommerce websites, enhancing SEO for product listings, automating content management, and optimizing social media marketing efforts"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

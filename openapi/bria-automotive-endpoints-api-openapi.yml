@@ -1,0 +1,783 @@
+openapi: 3.2.0
+info:
+  title: Product Shot API Reference Automotive Endpoints API
+  version: ''
+  description: "Below you will find the technical specifications, request schemas, and response models for our endpoints. \n \nChoose an endpoint from the sidebar to view code samples and run test requests. \n"
+servers:
+- url: https://engine.prod.bria-api.com/v1
+tags:
+- name: Automotive Endpoints
+paths:
+  /product/vehicle/shot_by_text:
+    post:
+      summary: Vehicle Shot by text
+      tags:
+      - Automotive Endpoints
+      description: "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nCreates enriched automotive product shots by placing vehicles in realistic environments using textual descriptions.  \n\n\nThis endpoint includes vehicle-specific enhancements that adapt the background scene to match automotive contexts, specifically - snow, sand, and grass. It embeds the vehicle into the environment for a natural, grounded appearance.  \n\n\nThis endpoint also allows adjusting the position of the product and the size of the final product shot.\nThis enables the creation of new and unique variations of your original product image while maintaining control over layout and format.\n\n\nTo control product positioning and shot dimensions, use the `placement_type` parameter, which offers several control modes:\n\n\n- `original`: preserves the original position and size of the product from the input image.\n\n- `automatic`: generates results with 7 recommended placements, while the shot_size is defined by the 'shot_size' parameter.\n\n- `manual_placement`: allows choosing from predefined positions using `manual_placement_selection`. The shot_size is defined by the 'shot_size' parameter.\n\n- `custom_coordinates`: provides full control over the product's size and location using `foreground_image_size` and `foreground_image_location`. The shot_size is defined by the 'shot_size' parameter.\n\n- `manual_padding`: lets you define padding in pixels around the product to control both size and placement.\n\n- `automatic_aspect_ratio`: centers the product and resizes the canvas automatically to match the specified `aspect_ratio`.\n\n\nThe parameters used for positioning and sizing depend on the selected `placement_type`. Refer to the documentation for each mode to understand the supported fields and behaviors.\n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content, and filters out unsafe modified images — the first blocked input image will fail the entire request.  "
+      operationId: vehicle-shot-by-text
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sync:
+                  type: boolean
+                  default: false
+                  description: Determines the response mode. When true, responses are synchronous. With false, responses are asynchronous, immediately providing URLs for images that are generated in the background. It is recommended to use sync=false for optimal performance. When generating more than 1 result, you should use the value false. When placement_type is automatic, sync has to be false.
+                mode:
+                  type: string
+                  enum:
+                  - base
+                  - high_control
+                  - fast
+                  default: high_control
+                  description: 'Selects the background-generation mode.
+
+
+                    - **Base** - clean, high quality backgrounds.
+
+                    - **High_control** - stronger prompt adherence and scene context, finer control over layout and details.
+
+                    - **Fast** - same core capabilities as base, optimal speed and quality balace.
+
+                    '
+                image_url:
+                  type: string
+                  description: The URL of the vehicle to be placed in the shot. If both image_url and file are provided, image_url will be used. Accepted formats are jpeg, jpg, png, webp. Maximum file size 12MB.
+                file:
+                  type: string
+                  description: The vehicle file to be placed in the shot, in base64 format. Used if image_url is not provided. Accepted formats are jpeg, jpg, png, webp. Maximum file size 12MB.
+                scene_description:
+                  type: string
+                  description: 'Text description of the new scene or background for the provided vehicle shot. Bria currently supports prompts in English only, excluding special characters.
+
+
+                    **Prompt length guidelines per mode:**
+
+                    - base / fast: ~50–60 words
+
+                    - high_control: ~90–110 words
+
+                    '
+                optimize_description:
+                  type: boolean
+                  default: true
+                  description: When true, an additional logic takes the scene_description that was included and adjusts it to achieve optimal results. Built with Meta Llama 3.
+                num_results:
+                  type: integer
+                  default: 4
+                  description: The number of vehicle shots you would like to generate. You will get num_results x 10 results when placement_type=automatic and according to the number of required placements x num_results if placement_type=manual_placement.
+                exclude_elements:
+                  type: string
+                  description: Elements or features that should be excluded from the generated scene. This parameter is optional and is available only when fast=false. Bria currently supports descriptions in English only, excluding special characters.
+                placement_type:
+                  type: string
+                  description: 'This parameter allows you to select the control mode for determining both the product''s positioning and the final shot size.
+
+                    - "original" will preserve the original position of the product in the image. The parameters `original_quality`, `aspect_ratio`, `foreground_image_size`, `foreground_image_location`, `manual_placement_selection`, `padding_values`, and `shot_size` will be ignored when this mode is used.
+
+                    - "automatic" will generate results with 7 of the recommended product positions. The shot_size is defined by the ''shot_size'' parameter.
+
+                    - "manual_placement" will allow you to select predefined positions, using the parameter "manual_placement_selection". The shot_size is defined by the ''shot_size'' parameter.
+
+                    - "custom_coordinates" Provides precise control over the size and position of the image using the parameters "foreground_image_size" and "foreground_image_location". This includes positions outside the canvas, which may result in cropping. The shot_size is defined by the ''shot_size'' parameter.
+
+                    - "manual_padding" will allow you to control the position and size of the image by defining the desired padding (using ''padding_values'') in pixels around the product.
+
+                    - "automatic_aspect_ratio" will automatically center the product within the canvas and resize the canvas to match the provided `aspect_ratio`. The parameters `original_quality`, `foreground_image_size`, `foreground_image_location`, `manual_placement_selection`, `padding_values`, and `shot_size` will be ignored when this mode is used.'
+                  enum:
+                  - original
+                  - automatic
+                  - manual_placement
+                  - manual_padding
+                  - custom_coordinates
+                  - automatic_aspect_ratio
+                original_quality:
+                  type: boolean
+                  default: false
+                  description: This flag is only relevant when placement_type=original. If true, the output image retains the original input image's size; otherwise, the image is scaled to 1 megapixel (1MP) while preserving its aspect ratio.
+                aspect_ratio:
+                  type: string
+                  enum:
+                  - '1:1'
+                  - '2:3'
+                  - '3:2'
+                  - '3:4'
+                  - '4:3'
+                  - '4:5'
+                  - '5:4'
+                  - '9:16'
+                  - '16:9'
+                  description: 'Defines the aspect ratio of the output product shot when `placement_type` is set to `automatic_aspect_ratio`.
+
+                    The original image will be automatically positioned and scaled to fit this aspect ratio.
+
+                    Ignored for all other placement types.
+
+                    '
+                shot_size:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                  - 1000
+                  - 1000
+                  description: The desired size of the final product shot. For optimal results, the total number of pixels should be around 1,000,000. This parameter is only relevant when placement_type is automatic,manual_placement or custom_coordinates.
+                foreground_image_size:
+                  type: array
+                  items:
+                    type: integer
+                  description: Specifies the desired dimensions of the foreground image within the generated output. The size is defined as an array of integers representing [width, height] in pixels. This parameter is only relevant when placement_type is custom_coordinates.
+                foreground_image_location:
+                  type: array
+                  items:
+                    type: integer
+                  description: Specifies the desired [x, y] coordinates for positioning the foreground image within the full shot. The coordinates represent the upper-left corner of the foreground image. Values can extend outside the shot, in which case the input image will be cropped accordingly. This parameter is only relevant when placement_type is custom_coordinates.
+                manual_placement_selection:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - upper_left
+                    - upper_right
+                    - bottom_left
+                    - bottom_right
+                    - right_center
+                    - left_center
+                    - upper_center
+                    - bottom_center
+                    - center_vertical
+                    - center_horizontal
+                  default:
+                  - upper_left
+                  description: If you've selected placement_type=manual_placement, you should use this parameter to specify which placements/positions you would like to use from the list. You can select more than one placement in one request.
+                padding_values:
+                  type: array
+                  items:
+                    type: integer
+                  default:
+                  - 0
+                  - 0
+                  - 0
+                  - 0
+                  description: The desired padding in pixels around the product, when using placement_type=manual_padding. The order of the values is [left, right, top, bottom]. For optimal results, the total number of pixels, including padding, should be around 1,000,000. It is recommended to first use the product cutout API, get the cutout and understand the size of the result, and then define the required padding and use the cutout as an input for this API.
+                force_rmbg:
+                  type: boolean
+                  default: false
+                  description: Forces background removal, even if the original image already contains an alpha channel. Useful for refining existing foreground/background separation or ignoring unnecessary alpha channels.
+                content_moderation:
+                  type: boolean
+                  default: false
+                  description: "When enabled, applies content moderation to both input visuals and modified outputs.\n\nFor input images:\n- Processing stops at the first image that fails moderation\n- Returns a 422 error with details about which parameter failed\n\nFor synchronous requests (sync=true):\n- If all modified images fail moderation, returns a 422 error\n- If some images pass and others fail, returns a 200 response with successful outputs and \"blocked\" objects for failed ones\n\nFor asynchronous requests (sync=false):\n- Failed images are replaced with zero-byte files at their placeholder URLs\n- Successful images are stored at their original placeholder URLs   \n"
+            example:
+              image_url: URL
+              mode: high_control
+              scene_description: A vehicle on a coastal road at sunset
+              placement_type: original
+              num_results: 2
+              original_quality: true
+              optimize_description: true
+              sync: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    description: 'The array contains the results created in the request. In each result, the first value represents the URL of the result, the second value represents the seed, and the third value represents the session id of the result. It will take a few seconds for the image to become available via the URL if sync=false. You can recreate the same result in the future by using the seed as part of the request.
+
+
+                      When content_moderation is true:
+
+                      - For synchronous requests (sync=true): Results array will contain both successful generations and "blocked" objects for images that failed moderation
+
+                      - For asynchronous requests (sync=false): Failed images will be replaced with zero-byte files at their placeholder URLs
+
+                      '
+                    items:
+                      type: array
+                      items:
+                        type: string
+              examples:
+                success:
+                  value:
+                    result:
+                    - - https://storage.server/outputs/valid_output_1.jpeg
+                      - '123111'
+                      - valid_output_1.jpeg
+                    - - https://storage.server/outputs/valid_output_2.jpeg
+                      - '123222'
+                      - valid_output_2.jpeg
+                partial_success:
+                  value:
+                    result:
+                    - - https://storage.server/outputs/valid_output_1.jpeg
+                      - '123111'
+                      - valid_output_1.jpeg
+                    - - blocked:true
+                      - error_code:422
+                      - description:The request could not be completed because the modified visual did not pass content moderation.
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: 'Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.'
+                access_denied:
+                  value: 'Access denied: Your subscription does not include access to this feature/product.'
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Invalid file type. Supported file types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                input_violation:
+                  value: The request could not be completed because the visual in the '{parameter_name}' parameter did not pass content moderation.
+                all_outputs_blocked:
+                  value: The request could not be completed because all modified visuals failed content moderation.
+        '429':
+          description: Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/shot_by_image:
+    post:
+      summary: Vehicle Shot by Image (Coming soon)
+      tags:
+      - Automotive Endpoints
+      description: 'Coming soon
+
+        '
+      operationId: vehicle-shot-by-image
+  /product/vehicle/segment:
+    post:
+      summary: Segmentation
+      tags:
+      - Automotive Endpoints
+      description: "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nGenerates segmentation masks for specific vehicle parts from an input image, enabling further enhancements such as reflection generation or wheel refinement.  \n\n\nThis endpoint returns separate binary masks for each segmented region, including windows, wheels, and body parts. If a specific part is not detected in the image, it will be returned with an empty URL.  \n\n\nThe API supports input via image URL or base64-encoded image file, and also includes optional content moderation."
+      operationId: vehicle-segmentation
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: API token associated with the organization.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: The URL of the image containing the vehicle to segment. If both image_url and file are provided, image_url will be used. Accepted formats are jpeg, jpg, png, webp. Max file size 12MB.
+                file:
+                  type: string
+                  description: Base64-encoded image containing the vehicle to segment. Used only if image_url is not provided. Accepted formats are jpeg, jpg, png, webp. Max file size 12MB.
+            example:
+              image_url: https://example.com/car.jpeg
+      responses:
+        '200':
+          description: Segmentation masks successfully generated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  windshield:
+                    type: string
+                    description: URL to the PNG mask of the windshield. Empty string if not detected.
+                  rear_window:
+                    type: string
+                    description: URL to the PNG mask of the rear window. Empty string if not detected.
+                  side_windows:
+                    type: string
+                    description: URL to the PNG mask of the side windows. Empty string if not detected.
+                  body:
+                    type: string
+                    description: URL to the PNG mask of the vehicle body. Empty string if not detected.
+                  wheels:
+                    type: string
+                    description: URL to the PNG mask of all visible wheels. Empty string if not detected.
+                  hubcap:
+                    type: string
+                    description: URL to the PNG mask of all visible hubcaps. Empty string if not detected.
+                  tires:
+                    type: string
+                    description: URL to the PNG mask of all visible hubcaps. Empty string if not detected.
+              examples:
+                success:
+                  value:
+                    windshield: https://example.com/masks/windshield.png
+                    rear_window: ''
+                    side_windows: https://example.com/masks/side_windows.png
+                    body: https://example.com/masks/body.png
+                    wheels: https://example.com/masks/wheels.png
+                    hubcap: https://example.com/masks/hubcap.png
+                    tires: https://example.com/masks/tires.png
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: 'Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.'
+                access_denied:
+                  value: 'Access denied: Your subscription does not include access to this feature/product.'
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types - jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/generate_reflections:
+    post:
+      summary: Reflections
+      tags:
+      - Automotive Endpoints
+      description: '[**Try out this capability in Bria''s Automobile Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Generates realistic reflections on relevant surfaces of a product image, such as glass, metal, or glossy materials.
+
+
+
+        Reflection masks can be provided manually or generated automatically using our segmentation tools.
+
+
+
+        The output includes an updated image with applied reflections and optional reflection layers per region.'
+      operationId: vehicle-generate-reflections
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: The URL of the vehicle shot. If both image_url and file are provided, image_url will be used. Accepted formats are jpeg, jpg, png, webp. Max file size 12MB.
+                file:
+                  type: string
+                  description: The vehicle shot file in base64 format. Used only if image_url is not provided. Accepted formats are jpeg, jpg, png, webp. Max file size 12MB.
+                masks:
+                  type: object
+                  description: An object containing URLs to binary masks for each region to apply reflections on. Accepted keys are `windshield`, `rear_window`, `side_windows`, `body`, `wheels`.
+                layers:
+                  type: boolean
+                  description: If true, returns separate images per region along with the full composite. If false, only the full image is returned.
+                seed:
+                  type: integer
+                  description: Optional seed for consistent reflection results.
+            example:
+              image_url: https://example.com/car.jpg
+              masks:
+                windshield: https://example.com/masks/windshield.png
+                side_windows: https://example.com/masks/side_windows.png
+                body: https://example.com/masks/body.png
+                wheels: https://example.com/masks/wheels.png
+              layers: true
+              seed: 42
+      responses:
+        '200':
+          description: Reflections successfully applied.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL of the image with reflections applied.
+                  seed:
+                    type: integer
+                    description: The seed used to generate the reflections.
+                  layers:
+                    type: object
+                    description: Returned only when layers=true. Contains region-specific reflection images.
+                    additionalProperties:
+                      type: string
+              examples:
+                layers_false:
+                  value:
+                    url: https://example.com/results/full_image_with_reflections.png
+                    seed: 123
+                layers_true:
+                  value:
+                    url: https://example.com/results/full_image_with_reflections.png
+                    seed: 123
+                    layers:
+                      windshield: https://example.com/reflections/windshield.png
+                      rear_window: null
+                      side_windows: https://example.com/reflections/side_windows.png
+                      body: https://example.com/reflections/body.png
+                      wheels: https://example.com/reflections/wheels.png
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: 'Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.'
+                access_denied:
+                  value: 'Access denied: Your subscription does not include access to this feature/product.'
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/refine_tires:
+    post:
+      summary: Tires Refinement
+      tags:
+      - Automotive Endpoints
+      description: "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nEnhances the appearance of the vehicle tires by adding realistic textures that match specific surfaces - snow, mud, grass.  \n\n\nThis endpoint accepts a binary mask of all tires and returns the image with refined tires. You can optionally receive the refined wheels as a separate layer.  "
+      operationId: vehicle-refine-tires
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: The URL of the image containing the vehicle. If both image_url and file are provided, image_url takes precedence. Accepted formats are jpeg, jpg, png, webp.
+                file:
+                  type: string
+                  description: The image file in base64 format. Used only if image_url is not provided. Accepted formats are jpeg, jpg, png, webp.
+                masks:
+                  type: object
+                  description: An object containing the URLs of binary masks for the wheels and hubcaps.
+                  properties:
+                    tires:
+                      type: string
+                      description: Binary mask URL for the tires.
+                layers:
+                  type: boolean
+                  description: If true, returns only the refined wheels layer. If false, returns the full image with refined wheels.
+            example:
+              image_url: https://example.com/car.jpg
+              masks:
+                tires: https://example.com/masks/tires.png
+              layers: true
+      responses:
+        '200':
+          description: Wheel refinement successfully applied.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL of the full image with refined wheels.
+                  layer_url:
+                    type: string
+                    description: URL of the separate refined wheels layer. Only returned if layers=true.
+                  seed:
+                    type: integer
+                    description: Optional seed used for generation.
+              examples:
+                layers_false:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    seed: 123
+                layers_true:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    layer_url: https://example.com/results/wheels_layer.png
+                    seed: 123
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: 'Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.'
+                access_denied:
+                  value: 'Access denied: Your subscription does not include access to this feature/product.'
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/apply_effect:
+    post:
+      summary: Apply Effects
+      tags:
+      - Automotive Endpoints
+      description: '[**Try out this capability in Bria''s Automobile Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Adds visual overlays such as dust, snow, fog, light leaks, and lens flare to enhance the realism and atmosphere of a product image.
+
+
+
+        Each effect includes multiple variations to ensure visually unique results. Effects can be applied directly to the image or delivered as separate layers.'
+      operationId: vehicle-apply-effect
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: The URL of the vehicle image. If both image_url and file are provided, image_url is used. Accepted formats are jpeg, jpg, png, webp.
+                file:
+                  type: string
+                  description: The vehicle image in base64 format. Used if image_url is not provided. Accepted formats are jpeg, jpg, png, webp.
+                effect:
+                  type: string
+                  description: The visual effect to apply to the image. Supported values are dust, snow, fog, light leaks, lens flare.
+                layers:
+                  type: boolean
+                  default: false
+                  description: If true, returns only the effect layer. If false, returns the full image with the effect composited.
+                seed:
+                  type: integer
+                  description: Optional seed for generating consistent effect variations.
+            example:
+              image_url: https://example.com/vehicle.jpg
+              effect: fog
+              layers: false
+              seed: 42
+      responses:
+        '200':
+          description: Effect applied successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL of the image with the effect applied.
+                  layer_url:
+                    type: string
+                    description: URL of the effect layer. Only returned if layers=true.
+                  seed:
+                    type: integer
+                    description: Seed used for effect generation.
+              examples:
+                layers_false:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    seed: 123
+                layers_true:
+                  value:
+                    url: https://example.com/results/full_image_refined_1.png
+                    layer_url: https://example.com/results/effect_layer.png
+                    seed: 123
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: 'Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.'
+                access_denied:
+                  value: 'Access denied: Your subscription does not include access to this feature/product.'
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+  /product/vehicle/harmonize:
+    post:
+      summary: Harmonization
+      tags:
+      - Automotive Endpoints
+      description: '[**Try out this capability in Bria''s Automobile Playground**](https://console.bria.ai/automotive)
+
+
+        **Description**
+
+        Applies predefined lighting and tone presets to match the product image with a desired environmental context.
+
+
+
+        Available presets include hot-day, cold-day, hot-night, and cold-night. These harmonization styles help unify the subject with its background for a consistent and visually appealing result.'
+      operationId: vehicle-harmonize
+      parameters:
+      - in: header
+        name: api_token
+        schema:
+          type: string
+        required: true
+        description: API token associated with the organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image_url:
+                  type: string
+                  description: The URL of the vehicle image. If both image_url and file are provided, image_url takes precedence. Accepted formats are jpeg, jpg, png, webp.
+                file:
+                  type: string
+                  description: The vehicle image in base64 format. Used only if image_url is not provided. Accepted formats are jpeg, jpg, png, webp.
+                preset:
+                  type: string
+                  description: The preset to apply. Supported values are warm-day, cold-day, warm-night, cold-night.
+            example:
+              image_url: https://example.com/images/car_side_view.png
+              preset: cold-day
+      responses:
+        '200':
+          description: Preset applied successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: URL of the image with the preset applied.
+              example:
+                url: https://example.com/results/full_image_refined_1.png
+        '400':
+          description: Bad request. Missing or invalid parameters.
+        '401':
+          description: Unauthorized. Invalid API key or authentication token.
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                quota_exceeded:
+                  value: 'Quota exceeded: Free users can make up to 1000 requests in total. Please upgrade your plan to continue using the service.'
+                access_denied:
+                  value: 'Access denied: Your subscription does not include access to this feature/product.'
+        '404':
+          description: Not found. Image could not be found at the provided URL.
+        '413':
+          description: Payload too large. Image file size exceeds the 12MB limit.
+        '415':
+          description: Unsupported media type. Supported types are jpeg, jpg, png, webp.
+        '422':
+          description: Unprocessable Content
+        '429':
+          description: Request limit exceeded. Your account has reached its maximum allowed requests. Please upgrade your plan or try again later.
+        '460':
+          description: Failed to download image.
+        '500':
+          description: Internal server error. An error occurred on the server.
+externalDocs:
+  description: Register and get API Access
+  url: https://platform.bria.ai/organization-management/api-keys
