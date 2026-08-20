@@ -21,6 +21,18 @@ modified: '2026-08-08'
 tags:
 - Artificial Intelligence
 - Generative AI
+- Image
+- Image-Generation
+- Image Editing
+- Video
+- Machine-Learning
+- Media
+- Content
+- Agents
+- MCP
+tags_raw:
+- Artificial Intelligence
+- Generative AI
 - Images
 - Image Generation
 - Image Editing
@@ -151,7 +163,8 @@ apis:
   description: The Endpoints API from Bria — 15 operation(s) for endpoints.
   humanURL: https://docs.bria.ai/image-generation
   baseURL: https://engine.prod.bria-api.com/v2
-  tags:
+  tags: []
+  tags_raw:
   - Endpoints
   properties:
   - type: OpenAPI
@@ -212,6 +225,8 @@ apis:
   humanURL: https://docs.bria.ai/image-generation
   baseURL: https://engine.prod.bria-api.com/v2
   tags:
+  - Image-Generation
+  tags_raw:
   - Image Generation
   properties:
   - type: OpenAPI
