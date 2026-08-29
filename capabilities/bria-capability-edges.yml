@@ -1,0 +1,35 @@
+slug: bria
+provider: Bria
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Media, Entertainment & Telecom Content
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Model
+  spec_file: bria-model-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.85
+  evidence: POST /tailored-gen/models/{model_id}/start_training "Start Training", "List Checkpoints",
+    "Download Tailored Model"
+  reason: Full fine-tuned model lifecycle — create, train, stop, checkpoint, download. This is AI/ML model
+    lifecycle management (MLOps), unambiguously.
+- tag: Dataset
+  spec_file: bria-dataset-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.8
+  evidence: POST /tailored-gen/datasets "Create Dataset", "Upload Image Files", "Regenerate All Captions"
+    within "train tailored models"
+  reason: Training-dataset curation for fine-tuning generative models — squarely AI/ML model lifecycle
+    (MLOps) tooling rather than any media or marketing business process.

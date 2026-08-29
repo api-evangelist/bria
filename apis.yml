@@ -475,6 +475,9 @@ apis:
   - type: Documentation
     url: https://docs.bria.ai/ai-search-deperecated
 common:
+- type: CapabilityMap
+  url: capabilities/bria-capability-edges.yml
+  name: Bria Business Capability Map
 - type: Overlay
   url: overlays/bria-ad-generation-overlay.yaml
 - type: Website
