@@ -129,6 +129,8 @@ apis:
   humanURL: https://docs.bria.ai/image-generation
   baseURL: https://engine.prod.bria-api.com/v2
   tags:
+  - Datasets
+  tags_raw:
   - Dataset
   properties:
   - type: OpenAPI
