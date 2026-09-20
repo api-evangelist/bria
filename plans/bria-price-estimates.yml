@@ -9,7 +9,8 @@ note: ESTIMATES, not quotes. Computed by API Evangelist from the prices this pro
 audience_of_source_pricing: developer-api
 pricing_basis: per-call
 delivery: managed+licensed
-delivery_method: keyword
+delivery_method: page
+delivery_evidence: On-prem or bring-your-own-cloud deployment
 estimate_count: 1
 estimates:
 - kind: marginal_cost
