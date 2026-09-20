@@ -492,6 +492,8 @@ apis:
   - type: Documentation
     url: https://docs.bria.ai/ai-search-deperecated
 common:
+- type: RateLimits
+  url: rate-limits/bria-rate-limits.yml
 - type: Plans
   url: plans/bria-plans-pricing.yml
 - type: CapabilityMap

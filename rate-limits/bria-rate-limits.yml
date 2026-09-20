@@ -1,0 +1,34 @@
+# Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://docs.bria.ai/
+sources:
+- https://docs.bria.ai/
+provenance:
+  tool: planning/api-economics/harvest_ratelimits.py
+  run: 20260920T133210
+  grounding: every limit_text was found verbatim in the fetched page text
+published: true
+note: Rate limits stated per plan, per endpoint; 429 Too Many Requests on exceed; no rate-limit headers
+  documented.
+limit_count: 3
+limits:
+- name: Free Trial rate limit
+  limit_text: 10 requests per minute, per endpoint
+  limit: 10
+  window: minute
+  scope: endpoint
+  plan: Free Trial
+- name: Starter rate limit
+  limit_text: 60 requests per minute, per endpoint
+  limit: 60
+  window: minute
+  scope: endpoint
+  plan: Starter
+- name: Pro & Enterprise rate limit
+  limit_text: 1000 requests per minute, per endpoint
+  limit: 1000
+  window: minute
+  scope: endpoint
+  plan: Pro & Enterprise
+exceeded_status: 429
