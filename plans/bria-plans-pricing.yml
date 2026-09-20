@@ -10,6 +10,12 @@ provenance:
   grounding: every price_text was found verbatim in the fetched page text
 audience: developer-api
 pricing_basis: per-call
+delivery:
+  delivery: managed+licensed
+  method: page
+  read: '2026-09-20'
+  evidence: On-prem or bring-your-own-cloud deployment
+  managed_tier: Pay-as-you-go
 published: true
 note: Three plan tiers plus a detailed per-image/per-call/per-second API price list; Enterprise is custom
   pricing.
