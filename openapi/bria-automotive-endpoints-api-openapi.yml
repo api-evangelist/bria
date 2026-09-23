@@ -2,7 +2,10 @@ openapi: 3.2.0
 info:
   title: Product Shot API Reference Automotive Endpoints API
   version: ''
-  description: "Below you will find the technical specifications, request schemas, and response models for our endpoints. \n \nChoose an endpoint from the sidebar to view code samples and run test requests. \n"
+  description: 'Below you will find the technical specifications, request schemas, and response models for our endpoints.
+
+
+    Choose an endpoint from the sidebar to view code samples and run test requests.'
 servers:
 - url: https://engine.prod.bria-api.com/v1
 tags:
@@ -13,7 +16,47 @@ paths:
       summary: Vehicle Shot by text
       tags:
       - Automotive Endpoints
-      description: "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nCreates enriched automotive product shots by placing vehicles in realistic environments using textual descriptions.  \n\n\nThis endpoint includes vehicle-specific enhancements that adapt the background scene to match automotive contexts, specifically - snow, sand, and grass. It embeds the vehicle into the environment for a natural, grounded appearance.  \n\n\nThis endpoint also allows adjusting the position of the product and the size of the final product shot.\nThis enables the creation of new and unique variations of your original product image while maintaining control over layout and format.\n\n\nTo control product positioning and shot dimensions, use the `placement_type` parameter, which offers several control modes:\n\n\n- `original`: preserves the original position and size of the product from the input image.\n\n- `automatic`: generates results with 7 recommended placements, while the shot_size is defined by the 'shot_size' parameter.\n\n- `manual_placement`: allows choosing from predefined positions using `manual_placement_selection`. The shot_size is defined by the 'shot_size' parameter.\n\n- `custom_coordinates`: provides full control over the product's size and location using `foreground_image_size` and `foreground_image_location`. The shot_size is defined by the 'shot_size' parameter.\n\n- `manual_padding`: lets you define padding in pixels around the product to control both size and placement.\n\n- `automatic_aspect_ratio`: centers the product and resizes the canvas automatically to match the specified `aspect_ratio`.\n\n\nThe parameters used for positioning and sizing depend on the selected `placement_type`. Refer to the documentation for each mode to understand the supported fields and behaviors.\n\n\nThis API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content, and filters out unsafe modified images — the first blocked input image will fail the entire request.  "
+      description: '**Try out this capability in Bria''s Automobile Playground**
+
+
+        **Description**
+
+        Creates enriched automotive product shots by placing vehicles in realistic environments using textual descriptions.
+
+
+        This endpoint includes vehicle-specific enhancements that adapt the background scene to match automotive contexts, specifically - snow, sand, and grass. It embeds the vehicle into the environment for a natural, grounded appearance.
+
+
+        This endpoint also allows adjusting the position of the product and the size of the final product shot.
+
+        This enables the creation of new and unique variations of your original product image while maintaining control over layout and format.
+
+
+        To control product positioning and shot dimensions, use the `placement_type` parameter, which offers several control modes:
+
+
+        - `original`: preserves the original position and size of the product from the input image.
+
+
+        - `automatic`: generates results with 7 recommended placements, while the shot_size is defined by the ''shot_size'' parameter.
+
+
+        - `manual_placement`: allows choosing from predefined positions using `manual_placement_selection`. The shot_size is defined by the ''shot_size'' parameter.
+
+
+        - `custom_coordinates`: provides full control over the product''s size and location using `foreground_image_size` and `foreground_image_location`. The shot_size is defined by the ''shot_size'' parameter.
+
+
+        - `manual_padding`: lets you define padding in pixels around the product to control both size and placement.
+
+
+        - `automatic_aspect_ratio`: centers the product and resizes the canvas automatically to match the specified `aspect_ratio`.
+
+
+        The parameters used for positioning and sizing depend on the selected `placement_type`. Refer to the documentation for each mode to understand the supported fields and behaviors.
+
+
+        This API endpoint supports content moderation via an optional parameter that can prevent processing if input images contain inappropriate content, and filters out unsafe modified images — the first blocked input image will fail the entire request.'
       operationId: vehicle-shot-by-text
       parameters:
       - in: header
@@ -272,16 +315,25 @@ paths:
       summary: Vehicle Shot by Image (Coming soon)
       tags:
       - Automotive Endpoints
-      description: 'Coming soon
-
-        '
+      description: Coming soon
       operationId: vehicle-shot-by-image
   /product/vehicle/segment:
     post:
       summary: Segmentation
       tags:
       - Automotive Endpoints
-      description: "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nGenerates segmentation masks for specific vehicle parts from an input image, enabling further enhancements such as reflection generation or wheel refinement.  \n\n\nThis endpoint returns separate binary masks for each segmented region, including windows, wheels, and body parts. If a specific part is not detected in the image, it will be returned with an empty URL.  \n\n\nThe API supports input via image URL or base64-encoded image file, and also includes optional content moderation."
+      description: '**Try out this capability in Bria''s Automobile Playground**
+
+
+        **Description**
+
+        Generates segmentation masks for specific vehicle parts from an input image, enabling further enhancements such as reflection generation or wheel refinement.
+
+
+        This endpoint returns separate binary masks for each segmented region, including windows, wheels, and body parts. If a specific part is not detected in the image, it will be returned with an empty URL.
+
+
+        The API supports input via image URL or base64-encoded image file, and also includes optional content moderation.'
       operationId: vehicle-segmentation
       parameters:
       - in: header
@@ -377,7 +429,7 @@ paths:
       summary: Reflections
       tags:
       - Automotive Endpoints
-      description: '[**Try out this capability in Bria''s Automobile Playground**](https://console.bria.ai/automotive)
+      description: '**Try out this capability in Bria''s Automobile Playground**
 
 
         **Description**
@@ -385,9 +437,7 @@ paths:
         Generates realistic reflections on relevant surfaces of a product image, such as glass, metal, or glossy materials.
 
 
-
         Reflection masks can be provided manually or generated automatically using our segmentation tools.
-
 
 
         The output includes an updated image with applied reflections and optional reflection layers per region.'
@@ -497,7 +547,15 @@ paths:
       summary: Tires Refinement
       tags:
       - Automotive Endpoints
-      description: "[**Try out this capability in Bria's Automobile Playground**](https://console.bria.ai/automotive)\n\n**Description**\nEnhances the appearance of the vehicle tires by adding realistic textures that match specific surfaces - snow, mud, grass.  \n\n\nThis endpoint accepts a binary mask of all tires and returns the image with refined tires. You can optionally receive the refined wheels as a separate layer.  "
+      description: '**Try out this capability in Bria''s Automobile Playground**
+
+
+        **Description**
+
+        Enhances the appearance of the vehicle tires by adding realistic textures that match specific surfaces - snow, mud, grass.
+
+
+        This endpoint accepts a binary mask of all tires and returns the image with refined tires. You can optionally receive the refined wheels as a separate layer.'
       operationId: vehicle-refine-tires
       parameters:
       - in: header
@@ -594,13 +652,12 @@ paths:
       summary: Apply Effects
       tags:
       - Automotive Endpoints
-      description: '[**Try out this capability in Bria''s Automobile Playground**](https://console.bria.ai/automotive)
+      description: '**Try out this capability in Bria''s Automobile Playground**
 
 
         **Description**
 
         Adds visual overlays such as dust, snow, fog, light leaks, and lens flare to enhance the realism and atmosphere of a product image.
-
 
 
         Each effect includes multiple variations to ensure visually unique results. Effects can be applied directly to the image or delivered as separate layers.'
@@ -700,13 +757,12 @@ paths:
       summary: Harmonization
       tags:
       - Automotive Endpoints
-      description: '[**Try out this capability in Bria''s Automobile Playground**](https://console.bria.ai/automotive)
+      description: '**Try out this capability in Bria''s Automobile Playground**
 
 
         **Description**
 
         Applies predefined lighting and tone presets to match the product image with a desired environmental context.
-
 
 
         Available presets include hot-day, cold-day, hot-night, and cold-night. These harmonization styles help unify the subject with its background for a consistent and visually appealing result.'

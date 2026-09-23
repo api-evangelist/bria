@@ -10,13 +10,49 @@ tags:
 - name: Endpoints
 paths:
   /ads/generate:
-    servers:
-    - url: https://engine.prod.bria-api.com/v1
     post:
       summary: Generate Ads
       tags:
       - Endpoints
-      description: "Bria's Ads Generation API enables builders to create multiple ads (scenes) in various sizes and resolutions, all unified by the same branding, style, and messaging. You can start exploring immediately with our public templates and brands.\nFor creating your own private templates and brands, please [Contact Us](https://bria.ai/contact-us).\n**Getting Started with Public Assets**\nYou can start exploring the API immediately using our public templates and brands, with no setup required.\n* **Public Template IDs**: \n    * **`1062`**: A template that requires a brand ID.\n    * **`1061`**: A brand-independent template (does not require a brand ID).\n* **Public Brand IDs**: **`167`**, **`166`**, **`122`**, **`121`**, **`120`**. These can be used for testing with compatible templates like **`1062`**. * **Important**: Public templates and brands can only be used with each other and cannot be mixed with private assets.\n\n    \n<img src=\"https://bria-datasets.s3.us-east-1.amazonaws.com/temp_exp_or/Campaign.jpg\" width=\"400\"/>\n\n**Template**  \nTemplates enable to repurpose and reuse well-design ads that share the same style, content and branded elements.It consists of multiple ads (“scenes”) and includes configurations for customizing the content at scale.\n\n**Smart Image Feature**  \nA standout feature of BRIA's Ads Generation API is its ability to seamlessly embed objects, products, and presenter images into another image (a \"smart image\"). This AI-powered capability allows for generating diverse backgrounds for the embedded image or extending the background to fit the ad's design perfectly.\n\n**How It Works**  \nThe Ads Generation API works by sending a template ID along with inputs such as text, images, the main object with its background definition, and a brand ID (including logos, colors, and fonts). In response, the API generates a set of ad images.\n\nIn thie endpoint, responses are asynchronous, immediately providing URLs for ads that are generated in the background. Use polling for the URLs to retrieve ads once ready.\n\nTemplates can be easily created using BRIA’s Ads Editor. Once a template is ready, it can be used to produce multiple ad versions with varying messaging, branding, and images.\n\nThis API endpoint supports content moderation via an optional parameter that can prevent generation if input images contain inappropriate content, and filters out unsafe generated images - the first blocked input image will fail the entire request.\n"
+      description: 'Bria''s Ads Generation API enables builders to create multiple ads (scenes) in various sizes and resolutions, all unified by the same branding, style, and messaging. You can start exploring immediately with our public templates and brands.
+
+        For creating your own private templates and brands, please Contact Us.
+
+        **Getting Started with Public Assets**
+
+        You can start exploring the API immediately using our public templates and brands, with no setup required.
+
+        * **Public Template IDs**:
+
+        * **`1062`**: A template that requires a brand ID.
+
+        * **`1061`**: A brand-independent template (does not require a brand ID).
+
+        * **Public Brand IDs**: **`167`**, **`166`**, **`122`**, **`121`**, **`120`**. These can be used for testing with compatible templates like **`1062`**. * **Important**: Public templates and brands can only be used with each other and cannot be mixed with private assets.
+
+
+        **Template**
+
+        Templates enable to repurpose and reuse well-design ads that share the same style, content and branded elements.It consists of multiple ads (“scenes”) and includes configurations for customizing the content at scale.
+
+
+        **Smart Image Feature**
+
+        A standout feature of BRIA''s Ads Generation API is its ability to seamlessly embed objects, products, and presenter images into another image (a "smart image"). This AI-powered capability allows for generating diverse backgrounds for the embedded image or extending the background to fit the ad''s design perfectly.
+
+
+        **How It Works**
+
+        The Ads Generation API works by sending a template ID along with inputs such as text, images, the main object with its background definition, and a brand ID (including logos, colors, and fonts). In response, the API generates a set of ad images.
+
+
+        In thie endpoint, responses are asynchronous, immediately providing URLs for ads that are generated in the background. Use polling for the URLs to retrieve ads once ready.
+
+
+        Templates can be easily created using BRIA’s Ads Editor. Once a template is ready, it can be used to produce multiple ad versions with varying messaging, branding, and images.
+
+
+        This API endpoint supports content moderation via an optional parameter that can prevent generation if input images contain inappropriate content, and filters out unsafe generated images - the first blocked input image will fail the entire request.'
       operationId: generate-ads
       parameters:
       - in: header
@@ -188,16 +224,14 @@ paths:
                   value: Unprocessable Entity. The URL does not point to a valid image or is inaccessible.
         '500':
           description: Internal server error.
-  /ads/brands:
     servers:
     - url: https://engine.prod.bria-api.com/v1
+  /ads/brands:
     get:
       summary: Get Brands
       tags:
       - Endpoints
-      description: 'Retrieves the list of your private brands. For initial testing, you can use our public brand IDs directly in the `/ads/generate` endpoint. To create your own private brands that will appear in this list, please [Contact Us](https://bria.ai/contact-us).
-
-        '
+      description: Retrieves the list of your private brands. For initial testing, you can use our public brand IDs directly in the `/ads/generate` endpoint. To create your own private brands that will appear in this list, please Contact Us.
       operationId: get-brands
       parameters:
       - in: header
@@ -227,16 +261,14 @@ paths:
                       type: string
         '401':
           description: Unauthorized. Invalid API key or authentication token.
-  /ads/templates:
     servers:
     - url: https://engine.prod.bria-api.com/v1
+  /ads/templates:
     get:
       summary: Get Templates
       tags:
       - Endpoints
-      description: 'Retrieves the list of your private templates. To start experimenting right away, use our public template IDs (**1062**, **1061**) directly in the `/ads/generate` endpoint. To create your own private templates that will appear here, please [Contact Us](https://bria.ai/contact-us).
-
-        '
+      description: Retrieves the list of your private templates. To start experimenting right away, use our public template IDs (**1062**, **1061**) directly in the `/ads/generate` endpoint. To create your own private templates that will appear here, please Contact Us.
       operationId: get-templates
       parameters:
       - in: header
@@ -270,18 +302,16 @@ paths:
                       type: string
         '401':
           description: Unauthorized. Invalid API key or authentication token.
-  /ads/templates/{template_id}:
     servers:
     - url: https://engine.prod.bria-api.com/v1
+  /ads/templates/{template_id}:
     get:
       summary: Get Template info by ID
       tags:
       - Endpoints
       description: 'Retrieve details for a specific private template by its ID.
 
-        Please note: This endpoint is for inspecting your private templates only and cannot be used to retrieve details for public template IDs.
-
-        '
+        Please note: This endpoint is for inspecting your private templates only and cannot be used to retrieve details for public template IDs.'
       parameters:
       - in: header
         name: api_token
@@ -381,18 +411,16 @@ paths:
           description: Unauthorized. Invalid API key or authentication token.
         '404':
           description: Template not found for the provided template ID.
-  /caption:
+      operationId: getAdsTemplatesByTemplateId
+      x-operation-id-source: derived
     servers:
     - url: https://engine.prod.bria-api.com/v1
+  /caption:
     post:
       summary: Get Caption
       tags:
       - Endpoints
-      description: '
-
-
-        **Description**
-
+      description: '**Description**
 
 
         The *Caption Route* is used to get a caption that describes the given image.'
@@ -448,9 +476,9 @@ paths:
           description: Failed to download image.
         '500':
           description: Internal server error. An error occurred on the server.
-  /search:
     servers:
     - url: https://engine.prod.bria-api.com/v1
+  /search:
     get:
       summary: Search by text
       tags:
@@ -466,7 +494,7 @@ paths:
 
         Search will only work on images that have been onboarded using the `register` endpoint.
 
-        **Note:** To use this endpoint, please [Contact Us](https://bria.ai/contact-us).'
+        **Note:** To use this endpoint, please Contact Us.'
       operationId: search
       parameters:
       - in: header
@@ -588,9 +616,9 @@ paths:
           description: Internal server error.
         '506':
           description: Insufficient data. The given input is not supported by the Bria API.
-  /search_similar_images:
     servers:
     - url: https://engine.prod.bria-api.com/v1
+  /search_similar_images:
     get:
       summary: Search by Image
       tags:
@@ -607,7 +635,7 @@ paths:
         Search will only work on images that have been onboarded using the `register` endpoint.
 
 
-        **Note:** To use this endpoint, please [Contact Us](https://bria.ai/contact-us).'
+        **Note:** To use this endpoint, please Contact Us.'
       operationId: search-similar-images
       parameters:
       - in: header
@@ -683,16 +711,22 @@ paths:
           description: Internal server error.
         '506':
           description: Insufficient data. The given input is not supported by the Bria API.
-  /image/generate:
     servers:
-    - url: https://engine.prod.bria-api.com/v2
+    - url: https://engine.prod.bria-api.com/v1
+  /image/generate:
     post:
       summary: Generate Image
       tags:
       - Endpoints
       servers:
       - url: https://engine.prod.bria-api.com/v2
-      description: "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-generation/fibo-generate/sandbox)\n\n**Description**\n\nGenerates a new image based on your inputs.\n\nThis all-in-one endpoint first translates your input (`prompt` and/or `images`) into a structured JSON prompt using the state-of-the-art **Gemini 2.5 Flash** VLM bridge. It then *internally* uses that JSON to generate the final, deterministic image.\n\nUse this endpoint for professional workflows that demand the highest-fidelity interpretation of your creative vision. The response includes both the final `image_url` and the `structured_prompt` (JSON).\n\nFor advanced, programmatic control, you can also pass in your own `structured_prompt` (e.g., from a previous response or the `/v2/structured_prompt/generate` endpoint) to bypass the internal VLM bridge. This allows for precise, auditable refinement or recreation of an image, or to generate multiple variations from the same structured prompt.\n\n---\n\n**Input Combination Rules**\n\nThe request body must include **one** of the following mutually exclusive combinations:\n\n* `prompt` (Generates a new image from text)\n* `images` (Generates a new image inspired by a reference image)\n* `images` + `prompt` (Generates a new image inspired by an image and guided by text)\n* `structured_prompt` (Recreates a previous image exactly, combined with a seed)\n* `structured_prompt` + `prompt` (Refines a previous image using new text instructions, combined with a seed)\n\n---\n**API Access**\n\nYou can register and access the API Token through Bria's platform <a href=\"https://platform.bria.ai/console/account/api-keys\" target=\"_blank\">by clicking here</a>.\n\n---\n***Examples***\n\n**Use Case 1: Using a textual prompt**\n\n* **Input Prompt:** `photorealistic, high resolution rendering, balloon of lettering, \"HAPPY NEW YEAR 2026\", used color is Pantone Bran, Crocus, Deja vu blue, perfect composition and alignment, natural light set, white backdrop, ultra realistic, rich detail`\n* **Output Image:** ![Example of text-to-image output](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo/new_year_2026.png)\n* **Output `structured_prompt`:**\n    ```json\n    \n    {\n      \"short_description\": \"A photorealistic, high-resolution rendering of balloon lettering spelling out \\\"HAPPY NEW YEAR 2026\\\" against a pristine white backdrop. The balloons are meticulously crafted with a metallic, reflective surface, showcasing a vibrant color palette of Pantone Bran, Crocus, and Deja vu blue. The composition is perfectly aligned and balanced, emphasizing the celebratory message with natural, soft lighting that creates subtle, elegant reflections and shadows.\",\n      \"objects\": [\n        {\n          \"description\": \"A cluster of individual balloon letters forming the word \\\"HAPPY\\\". Each letter is inflated and has a smooth, highly reflective metallic surface, catching and distorting the ambient light. The letters are arranged horizontally, slightly overlapping to create a cohesive word.\",\n          \"location\": \"top-left to center\",\n          \"relationship\": \"Part of the main textual display, positioned above 'NEW YEAR'.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Irregular letter shapes, primarily Pantone Bran (a rich, deep orange-brown) with hints of Crocus (a vibrant purple) and Deja vu blue (a muted, dusty blue) in the reflections.\",\n          \"texture\": \"Smooth, highly reflective metallic foil.\",\n          \"appearance_details\": \"Slightly rounded edges, showing subtle seams where the foil is joined. The surface exhibits a high degree of realism with minor imperfections and creases visible upon close inspection.\",\n          \"number_of_objects\": 5,\n          \"orientation\": \"Horizontal\"\n        },\n        {\n          \"description\": \"A cluster of individual balloon letters forming the phrase \\\"NEW YEAR\\\". These letters are also inflated and possess the same metallic, reflective quality as the 'HAPPY' balloons. They are arranged horizontally, directly below 'HAPPY', maintaining a consistent visual style.\",\n          \"location\": \"center\",\n          \"relationship\": \"Part of the main textual display, positioned below 'HAPPY' and above '2026'.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Irregular letter shapes, primarily Crocus (a vibrant purple) with reflections of Pantone Bran and Deja vu blue.\",\n          \"texture\": \"Smooth, highly reflective metallic foil.\",\n          \"appearance_details\": \"Each letter is distinct, with a slightly inflated, three-dimensional appearance. The metallic sheen creates a dynamic interplay of light and color across their surfaces.\",\n          \"number_of_objects\": 7,\n          \"orientation\": \"Horizontal\"\n        },\n        {\n          \"description\": \"A cluster of individual balloon numbers forming \\\"2026\\\". These numbers are crafted from the same metallic balloon material, maintaining visual continuity with the words above. They are positioned centrally below 'NEW YEAR'.\",\n          \"location\": \"bottom-center\",\n          \"relationship\": \"Part of the main textual display, positioned below 'NEW YEAR'.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Numerical shapes, primarily Deja vu blue (a muted, dusty blue) with reflections of Pantone Bran and Crocus.\",\n          \"texture\": \"Smooth, highly reflective metallic foil.\",\n          \"appearance_details\": \"The numbers appear robust and fully inflated, with crisp edges and a flawless metallic finish that reflects the surrounding light sources.\",\n          \"number_of_objects\": 4,\n          \"orientation\": \"Horizontal\"\n        },\n        {\n          \"description\": \"Several small, spherical balloons scattered around the main lettering, acting as decorative accents. These balloons are also metallic and share the same color palette, adding depth and a festive touch to the scene.\",\n          \"location\": \"scattered around the main lettering\",\n          \"relationship\": \"Complementary decorative elements to the main balloon lettering.\",\n          \"relative_size\": \"small\",\n          \"shape_and_color\": \"Spherical, in Pantone Bran, Crocus, and Deja vu blue.\",\n          \"texture\": \"Smooth, reflective metallic.\",\n          \"appearance_details\": \"Perfectly round and shiny, reflecting miniature versions of the light sources and the main lettering.\",\n          \"number_of_objects\": 5,\n          \"orientation\": \"Various, floating\"\n        }\n      ],\n      \"background_setting\": \"A clean, seamless white studio backdrop, providing a stark contrast that makes the colorful balloons pop. The backdrop extends smoothly from the floor to the wall, creating an infinite white space that eliminates distractions and emphasizes the subject.\",\n      \"lighting\": {\n        \"conditions\": \"Bright, natural light, simulating a well-lit studio environment.\",\n        \"direction\": \"Soft, diffused light coming from slightly above and in front of the balloons, with secondary fill light from the sides.\",\n        \"shadows\": \"Soft, subtle, and elongated shadows cast behind and beneath the balloons, indicating depth and dimension without being harsh or distracting. The shadows are light gray against the white background.\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"Centered and perfectly aligned, with the balloon lettering arranged in a clear, readable hierarchy. The overall composition is balanced and symmetrical, drawing the viewer's eye directly to the celebratory message.\",\n        \"color_scheme\": \"A vibrant, harmonious palette of Pantone Bran (orange-brown), Crocus (purple), and Deja vu blue, creating a festive yet sophisticated feel against the neutral white background.\",\n        \"mood_atmosphere\": \"Joyful, celebratory, optimistic, and clean.\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"Shallow, with the balloons in sharp focus and the background subtly blurred to emphasize the subject, though the white backdrop inherently provides minimal blur.\",\n        \"focus\": \"Sharp focus on the balloon lettering, highlighting the intricate details and reflective surfaces.\",\n        \"camera_angle\": \"Eye-level, providing a direct and engaging view of the balloon arrangement.\",\n        \"lens_focal_length\": \"Standard lens (e.g., 50mm), ensuring a natural perspective without distortion, ideal for capturing the full arrangement clearly.\"\n      },\n      \"style_medium\": \"photograph\",\n      \"text_render\": [\n        {\n          \"text\": \"HAPPY NEW YEAR 2026\",\n          \"location\": \"center\",\n          \"size\": \"large within frame\",\n          \"color\": \"Pantone Bran, Crocus, Deja vu blue (as balloon colors)\",\n          \"font\": \"inflated balloon lettering\",\n          \"appearance_details\": \"Metallic, reflective, three-dimensional balloon letters.\"\n        }\n      ],\n      \"context\": \"This is a concept for a high-resolution, ultra-realistic promotional image or greeting card for a New Year's celebration, intended for digital display or print media.\",\n      \"artistic_style\": \"realistic, detailed, vibrant\"\n    }\n    ```\n---\n\n**Use Case 2: Drawing inspiration from a reference image**\n\n* **Input Image:** ![Example of reference image input](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo/ref_1.jpg)\n* **Input Prompt:** `a ring inspired by the image`\n* **Output Image:** ![Example of image-to-image output](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo/a_ring_inspired_by_the_image.png)\n* **Output `structured_prompt`:**\n    ```json\n    {\n      \"short_description\": \"A close-up shot of an elegant ring featuring a prominent, teardrop-shaped red gemstone set in a thick, golden chain-link band. The ring is displayed on a smooth, light-colored surface, with soft, diffused lighting highlighting its intricate details and the vibrant color of the stone. The overall impression is one of luxury and sophisticated design, emphasizing the jewelry's craftsmanship.\",\n      \"objects\": [\n        {\n          \"description\": \"A luxurious ring with a thick, golden chain-link band. The band is composed of interlocking oval links, giving it a substantial and modern feel. The gold has a polished, reflective finish.\",\n          \"location\": \"center\",\n          \"relationship\": \"The band holds the red gemstone securely.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Curved, interlocking golden links\",\n          \"texture\": \"smooth, metallic\",\n          \"appearance_details\": \"The links are uniform in size and have a high-shine finish, suggesting quality craftsmanship.\",\n          \"orientation\": \"circular, with the gemstone facing upwards\"\n        },\n        {\n          \"description\": \"A vibrant, translucent red gemstone, cut into a teardrop or pear shape. It is set securely within a golden bezel at the top of the chain-link band. The stone catches and reflects light, showcasing its deep red hue.\",\n          \"location\": \"top-center of the ring\",\n          \"relationship\": \"It is the focal point of the ring, contrasting with the golden band.\",\n          \"relative_size\": \"medium within the ring\",\n          \"shape_and_color\": \"Teardrop-shaped, deep red\",\n          \"texture\": \"smooth, glassy\",\n          \"appearance_details\": \"The gemstone has multiple facets that contribute to its sparkle and depth of color.\",\n          \"orientation\": \"vertical, with the pointed end facing downwards\"\n        }\n      ],\n      \"background_setting\": \"A clean, minimalist background consisting of a smooth, light beige or off-white surface, providing a neutral canvas that allows the jewelry to stand out without distraction. There are no other discernible objects or textures in the background.\",\n      \"lighting\": {\n        \"conditions\": \"soft, diffused studio lighting\",\n        \"direction\": \"overhead and slightly front-lit\",\n        \"shadows\": \"minimal, very soft, and subtle shadows cast directly beneath the ring, indicating a gentle light source\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"centered, close-up shot\",\n        \"color_scheme\": \"warm complementary colors (gold and red against a neutral background)\",\n        \"mood_atmosphere\": \"elegant, luxurious, sophisticated\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"shallow, with the ring in sharp focus and the background softly blurred\",\n        \"focus\": \"sharp focus on subject\",\n        \"camera_angle\": \"eye-level, slightly overhead\",\n        \"lens_focal_length\": \"macro\"\n      },\n      \"style_medium\": \"photograph\",\n      \"context\": \"This is a product photograph for a high-end jewelry brand, intended for e-commerce, catalog, or editorial use, showcasing the design and quality of the ring.\"\n    }\n    ```\n\n---\n\n**Use Case 3: Refining a previously generated image**\n\n* **Input Image (from previous response - shouldn't be part of the refine request):** ![Example of input image](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo/A_hyper_detailed__ultra_fluffy_owl_sitting_in_the_trees_at_night__looking_direct.png)\n* **Input `structured_prompt` (from previous response - should be part of the refine request, toegther with the seed of the visual result):**\n    ```json\n    {\n      \"short_description\": \"A close-up, photorealistic image of an ultra-fluffy owl perched on a tree branch at night. The owl's large, expressive eyes gaze directly at the viewer, conveying curiosity and charm. Its voluminous feathers, a mix of soft browns and creams, are subtly illuminated by cool moonlight, revealing delicate silver highlights. The background is a soft blur of dark, leafy trees, enhancing the owl's prominence and creating a whimsical, storybook-like atmosphere.\",\n      \"objects\": [\n        {\n          \"description\": \"A hyper-detailed, ultra-fluffy owl with soft, voluminous feathers. Its head is slightly tilted, and its body is plump and rounded, emphasizing its fluffiness. The feathers are a blend of warm browns, creams, and grays, with individual strands visible and catching subtle silver highlights from the moonlight.\",\n          \"location\": \"center\",\n          \"relationship\": \"The primary subject, perched on a tree branch, looking directly at the viewer.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Rounded, plump body with a distinct head; mottled browns, creams, and grays with silver highlights.\",\n          \"texture\": \"Extremely soft, downy, and voluminous feathers.\",\n          \"appearance_details\": \"Large, round, dark eyes with a bright, curious, and charming expression. The eyes reflect a tiny pinpoint of moonlight, adding to their expressiveness. Small, dark beak partially hidden by feathers.\",\n          \"expression\": \"Curious, charming, and adorable with wide, expressive eyes.\",\n          \"orientation\": \"Facing directly forward, head slightly tilted to its right.\"\n        },\n        {\n          \"description\": \"A sturdy, dark tree branch, partially visible, providing a perch for the owl. Its surface is rough and textured, suggesting aged bark.\",\n          \"location\": \"bottom-center\",\n          \"relationship\": \"Supports the owl, providing its perch.\",\n          \"relative_size\": \"medium\",\n          \"shape_and_color\": \"Irregular, horizontal shape; dark brown to black.\",\n          \"texture\": \"Rough, gnarled bark.\",\n          \"appearance_details\": \"Some moss or lichen might be subtly visible on its surface.\",\n          \"orientation\": \"Horizontal, extending from left to right across the lower part of the frame.\"\n        }\n      ],\n      \"background_setting\": \"A dense, dark forest at night. The background consists of blurred, indistinct shapes of tree trunks and foliage, suggesting depth and a natural, nocturnal environment. A faint, ethereal glow from the moon filters through the canopy.\",\n      \"lighting\": {\n        \"conditions\": \"Cool moonlight, nighttime.\",\n        \"direction\": \"Softly diffused from above and slightly to the front, highlighting the owl's features.\",\n        \"shadows\": \"Soft, subtle shadows on the owl's underside and within the tree branches, adding depth without obscuring details. The background is largely in deep shadow.\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"Centered, close-up portrait composition, with the owl filling a significant portion of the frame.\",\n        \"color_scheme\": \"Cool blues, grays, and dark greens in the background, contrasting with the warm browns and creams of the owl, accented by silver highlights.\",\n        \"mood_atmosphere\": \"Whimsical, enchanting, serene, and slightly mysterious.\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"Shallow, with the owl in sharp focus and the background softly blurred (bokeh).\",\n        \"focus\": \"Sharp focus on the owl's eyes and face, with a gradual fall-off of focus towards its body and the branch.\",\n        \"camera_angle\": \"Eye-level, as if directly encountering the owl.\",\n        \"lens_focal_length\": \"Portrait lens (e.g., 85mm-100mm) to achieve a tight crop and shallow depth of field.\"\n      },\n      \"style_medium\": \"photograph\",\n      \"context\": \"This is a concept for a high-quality, photorealistic image intended for nature photography, children's book illustrations, or a whimsical art print.\",\n      \"artistic_style\": \"realistic, detailed, ethereal\"\n    }\n    ```\n* **Input Refinement Prompt:** `add sunlight`\n* **Output Image:** ![Example of refinement output](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo/add_sunlight.png)\n* **Output `structured_prompt` (refined):**\n    ```json\n    {\n      \"short_description\": \"A close-up, photorealistic image of an ultra-fluffy owl perched on a tree branch, bathed in warm sunlight. The owl's large, expressive eyes gaze directly at the viewer, conveying curiosity and charm. Its voluminous feathers, a mix of soft browns and creams, are brightly illuminated by golden sunlight, revealing delicate golden highlights. The background is a soft blur of sun-dappled, leafy trees, enhancing the owl's prominence and creating a whimsical, storybook-like atmosphere.\",\n      \"objects\": [\n        {\n          \"description\": \"A hyper-detailed, ultra-fluffy owl with soft, voluminous feathers. Its head is slightly tilted, and its body is plump and rounded, emphasizing its fluffiness. The feathers are a blend of warm browns, creams, and grays, with individual strands visible and catching bright golden highlights from the sunlight.\",\n          \"location\": \"center\",\n          \"relationship\": \"The primary subject, perched on a tree branch, looking directly at the viewer.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Rounded, plump body with a distinct head; mottled browns, creams, and grays with golden highlights.\",\n          \"texture\": \"Extremely soft, downy, and voluminous feathers.\",\n          \"appearance_details\": \"Large, round, dark eyes with a bright, curious, and charming expression. The eyes reflect a tiny pinpoint of sunlight, adding to their expressiveness. Small, dark beak partially hidden by feathers.\",\n          \"expression\": \"Curious, charming, and adorable with wide, expressive eyes.\",\n          \"orientation\": \"Facing directly forward, head slightly tilted to its right.\"\n        },\n        {\n          \"description\": \"A sturdy, dark tree branch, partially visible, providing a perch for the owl. Its surface is rough and textured, suggesting aged bark, with patches illuminated by sunlight.\",\n          \"location\": \"bottom-center\",\n          \"relationship\": \"Supports the owl, providing its perch.\",\n          \"relative_size\": \"medium\",\n          \"shape_and_color\": \"Irregular, horizontal shape; dark brown to black.\",\n          \"texture\": \"Rough, gnarled bark.\",\n          \"appearance_details\": \"Some moss or lichen might be subtly visible on its surface, highlighted by the sun.\",\n          \"orientation\": \"Horizontal, extending from left to right across the lower part of the frame.\"\n        }\n      ],\n      \"background_setting\": \"A dense forest during the day, with sunlight filtering through the canopy. The background consists of blurred, indistinct shapes of tree trunks and foliage, with dappled light and shadow, suggesting depth and a natural, daytime environment.\",\n      \"lighting\": {\n        \"conditions\": \"Bright, warm sunlight, daytime.\",\n        \"direction\": \"Strongly from above and slightly to the front, creating clear highlights on the owl's features.\",\n        \"shadows\": \"Defined, yet soft shadows on the owl's underside and within the tree branches, adding depth. The background features dappled light and shadow.\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"Centered, close-up portrait composition, with the owl filling a significant portion of the frame.\",\n        \"color_scheme\": \"Warm yellows, greens, and browns in the background, complementing the warm browns and creams of the owl, accented by golden highlights.\",\n        \"mood_atmosphere\": \"Whimsical, enchanting, serene, and joyful.\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"Shallow, with the owl in sharp focus and the background softly blurred (bokeh).\",\n        \"focus\": \"Sharp focus on the owl's eyes and face, with a gradual fall-off of focus towards its body and the branch.\",\n        \"camera_angle\": \"Eye-level, as if directly encountering the owl.\",\n        \"lens_focal_length\": \"Portrait lens (e.g., 85mm-100mm) to achieve a tight crop and shallow depth of field.\"\n      },\n      \"style_medium\": \"photograph\",\n      \"context\": \"This is a concept for a high-quality, photorealistic image intended for nature photography, children's book illustrations, or a whimsical art print.\",\n      \"artistic_style\": \"realistic, detailed, ethereal\"\n    }\n    ```"
+      description: '**Try out this capability in Bria''s sandbox**
+
+
+        **Description**
+
+
+        Generates a new image based on your inputs.'
       operationId: image-generate
       parameters:
       - in: header
@@ -875,16 +909,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /image/generate/lite:
     servers:
     - url: https://engine.prod.bria-api.com/v2
+  /image/generate/lite:
     post:
       summary: Generate Image - Lite
       tags:
       - Endpoints
       servers:
       - url: https://engine.prod.bria-api.com/v2
-      description: "[**Try out this capability in Bria's sandbox**](https://platform.bria.ai/image-generation/fibo-lite-generate/sandbox)\n\n\n**Description**\n\nGenerates a new image based on your inputs using the **fast and efficient Fibo Lite Pipeline**.\n\nThis all-in-one endpoint utilizes a two-step local-compatible process:\n1. **FIBO-VLM Bridge:** Translates your input (`prompt` and/or `images`) into a structured JSON prompt using Bria's efficient open-source VLM, optimized for rapid inference.\n2. **Fibo Lite Model:** Internally uses the distilled Fibo Lite text-to-image model to generate the final visual. This model is engineered for **low latency**, ensuring faster generation times.\n\n**Fibo Lite's Benefits**\n\nThis pipeline is designed for **speed and privacy**. It delivers significantly faster generation times suitable for high-throughput workflows. \n\nAdditionally, by pairing the distilled Fibo Lite text-to-image model with the FIBO-VLM bridge, the entire pipeline is capable of **fully local, on-prem deployment**.\n\nTo access the local deployment package, please contact us at <a href=\"mailto:support@bria.ai\">support@bria.ai</a>.\n\nFor advanced, programmatic control, you can also pass in your own `structured_prompt` (e.g., from a previous response or the `/v2/structured_prompt/generate/lite` endpoint) to bypass the internal VLM bridge. This allows for precise, auditable refinement or recreation of an image, or to generate multiple variations from the same structured prompt.\n\n---\n\n**Input Combination Rules**\n\nThe request body must include **one** of the following mutually exclusive combinations:\n\n* `prompt` (Generates a new image from text)\n* `images` (Generates a new image inspired by a reference image)\n* `images` + `prompt` (Generates a new image inspired by an image and guided by text)\n* `structured_prompt` (Recreates a previous image exactly, combined with a seed)\n* `structured_prompt` + `prompt` (Refines a previous image using new text instructions, combined with a seed)\n\n---\n** API Access **\n\nYou can register and access the API Token through Bria's platform <a href=\"https://platform.bria.ai/console/account/api-keys\" target=\"_blank\">by clicking here</a>.\n\n---\n***Examples***\n\n**Use Case 1: Using a textual prompt**\n\n* **Input Prompt:** `photorealistic, high resolution rendering, balloon of lettering, \"HAPPY NEW YEAR 2026\", used color is Pantone Bran, Crocus, Deja vu blue, perfect composition and alignment, natural light set, white backdrop, ultra realistic, rich detail`\n* **Output Image:** ![Example of text-to-image output](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo-lite/new_year_2026.png)\n* **Output `structured_prompt`:**\n    ```json\n    \n    {\n      \"short_description\": \"A photorealistic, high-resolution rendering of balloon lettering spelling out \\\"HAPPY NEW YEAR 2026\\\" against a pristine white background. The balloons are meticulously crafted with a metallic, reflective surface, showcasing a vibrant color palette of Pantone Bran, Crocus, and Deja vu blue. The composition is perfectly aligned and balanced, emphasizing the celebratory message with natural, soft lighting that creates subtle, elegant reflections and shadows.\",\n      \"objects\": [\n        {\n          \"description\": \"A cluster of inflated balloons forming the letters \\\"HAPPY NEW YEAR 2026\\\". Each balloon is individually rendered with realistic inflation, knot, and metallic sheen.\",\n          \"location\": \"center\",\n          \"relationship\": \"The balloons are arranged in two lines: the upper line spelling \\\"HAPPY NEW YEAR\\\" and the lower line spelling \\\"2026\\\".\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Spherical and teardrop shapes, in metallic shades of Pantone Bran (yellow-orange), Crocus (pink), and Deja vu blue (deep blue).\",\n          \"texture\": \"smooth, glossy, metallic, reflective\",\n          \"appearance_details\": \"Each balloon has a visible knot at the bottom, and their surfaces reflect light with a subtle, iridescent quality, mimicking real foil balloons.\",\n          \"number_of_objects\": 20,\n          \"orientation\": \"upright\"\n        }\n      ],\n      \"background_setting\": \"A clean, bright, and uniform white background, providing stark contrast to the colorful balloons and ensuring maximum readability and visual impact.\",\n      \"lighting\": {\n        \"conditions\": \"bright, even studio lighting\",\n        \"direction\": \"soft, diffused lighting from multiple sources\",\n        \"shadows\": \"subtle, soft, and elongated shadows cast by the balloons onto the white background, indicating a light source from above and slightly to the front, adding depth without distraction.\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"centered, symmetrical, and balanced composition, with the text arranged in two horizontal lines\",\n        \"color_scheme\": \"A harmonious blend of warm (Pantone Bran, Crocus) and cool (Deja vu blue) metallic colors against a neutral white, creating a festive yet sophisticated palette.\",\n        \"mood_atmosphere\": \"festive, celebratory, elegant, joyful, optimistic\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"deep\",\n        \"focus\": \"sharp focus on all balloons and text\",\n        \"camera_angle\": \"eye-level\",\n        \"lens_focal_length\": \"standard lens (e.g., 50mm)\"\n      },\n      \"style_medium\": \"3D render\",\n      \"text_render\": [\n        {\n          \"text\": \"HAPPY NEW YEAR\",\n          \"location\": \"top-center\",\n          \"size\": \"large\",\n          \"color\": \"metallic (Pantone Bran, Crocus, Deja vu blue)\",\n          \"font\": \"rounded, sans-serif balloon letters\",\n          \"appearance_details\": \"Each letter is formed by multiple inflated balloons, with the colors cycling through the palette.\"\n        },\n        {\n          \"text\": \"2026\",\n          \"location\": \"bottom-center\",\n          \"size\": \"large\",\n          \"color\": \"metallic (Pantone Bran, Crocus, Deja vu blue)\",\n          \"font\": \"rounded, sans-serif balloon numbers\",\n          \"appearance_details\": \"Each number is formed by multiple inflated balloons, with the colors cycling through the palette.\"\n        }\n      ],\n      \"context\": \"This is a graphic design asset or a celebratory greeting card, likely intended for New Year's Eve promotions, digital greetings, or print media for the year 2026.\",\n      \"artistic_style\": \"photorealistic, festive, clean\"\n    }\n    ```\n---\n\n**Use Case 2: Drawing inspiration from a reference image**\n\n* **Input Image:** ![Example of reference image input](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo-lite/ref_1.jpg)\n* **Input Prompt:** `generate a couple in this style`\n* **Output Image:** ![Example of image-to-image output](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo-lite/generate_a_couple_in_this_style.png)\n* **Output `structured_prompt`:**\n    ```json\n    {\n      \"short_description\": \"A vibrant and dynamic painting in the style of Vincent van Gogh, depicting a couple standing in a landscape under a swirling, star-filled night sky. The scene features rolling hills, a small village with a church steeple, and cypress trees, all rendered with thick impasto brushstrokes and a rich, saturated color palette dominated by blues and yellows.\",\n      \"objects\": [\n        {\n          \"description\": \"A man with short, dark hair and a light-colored shirt, standing with his left arm around a woman.\",\n          \"location\": \"center-left foreground\",\n          \"relationship\": \"The man is embracing the woman, standing together in the landscape.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Human figures, with earthy tones for clothing and skin.\",\n          \"texture\": \"Thick, impasto brushstrokes, giving a textured, painterly feel.\",\n          \"appearance_details\": \"Their faces are turned slightly towards each other, with soft, warm expressions.\",\n          \"pose\": \"Standing upright, with the man's left arm around the woman's waist.\",\n          \"expression\": \"Calm and affectionate.\",\n          \"clothing\": \"The man wears a light-colored, possibly blue or white, shirt. The woman wears a dark dress.\",\n          \"action\": \"Embracing.\",\n          \"gender\": \"male\",\n          \"skin_tone_and_texture\": \"Fair skin tones, rendered with visible brushstrokes.\",\n          \"orientation\": \"vertical\"\n        },\n        {\n          \"description\": \"A woman with long, dark hair and a dark dress, standing next to a man.\",\n          \"location\": \"center-left foreground\",\n          \"relationship\": \"The woman is embraced by the man, standing together in the landscape.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Human figures, with earthy tones for clothing and skin.\",\n          \"texture\": \"Thick, impasto brushstrokes, giving a textured, painterly feel.\",\n          \"appearance_details\": \"Her face is turned slightly towards the man, with soft, warm expressions.\",\n          \"pose\": \"Standing upright, with her right arm gently resting on the man's arm.\",\n          \"expression\": \"Calm and affectionate.\",\n          \"clothing\": \"The woman wears a dark, possibly blue or green, dress.\",\n          \"action\": \"Embracing.\",\n          \"gender\": \"female\",\n          \"skin_tone_and_texture\": \"Fair skin tones, rendered with visible brushstrokes.\",\n          \"orientation\": \"vertical\"\n        },\n        {\n          \"description\": \"A tall, slender cypress tree with dark green foliage.\",\n          \"location\": \"mid-left foreground\",\n          \"relationship\": \"It stands prominently in the foreground, partially obscuring the village and providing a vertical element against the swirling sky.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Conical shape, dark green with hints of brown and black.\",\n          \"texture\": \"Rough, textured surface created by thick paint application.\",\n          \"appearance_details\": \"The brushstrokes are visible, giving it a sense of movement and depth.\",\n          \"orientation\": \"vertical\"\n        },\n        {\n          \"description\": \"A small village with several houses and a prominent church steeple.\",\n          \"location\": \"mid-ground, spanning from left to right\",\n          \"relationship\": \"The village is nestled in the valley below the hills and beneath the starry sky, providing a sense of scale and human presence.\",\n          \"relative_size\": \"medium\",\n          \"shape_and_color\": \"Various rectangular and triangular shapes for houses, with a tall, slender steeple. Colors are predominantly blues, browns, and whites.\",\n          \"texture\": \"Painterly texture with visible brushstrokes, suggesting architectural forms.\",\n          \"appearance_details\": \"Some windows of the houses appear lit, adding warmth to the scene. The church steeple is light-colored and stands out against the darker hills.\",\n          \"number_of_objects\": 1,\n          \"orientation\": \"horizontal\"\n        },\n        {\n          \"description\": \"A bright yellow full moon, surrounded by a soft glow.\",\n          \"location\": \"top-right\",\n          \"relationship\": \"The moon is a central celestial body in the dramatic sky, illuminating the scene.\",\n          \"relative_size\": \"large\",\n          \"shape_and_color\": \"Circular, bright yellow with lighter highlights.\",\n          \"texture\": \"Smooth yet painterly, with visible brushstrokes creating a luminous effect.\",\n          \"appearance_details\": \"It has a distinct halo effect, radiating light.\",\n          \"orientation\": \"vertical\"\n        }\n      ],\n      \"background_setting\": \"A vast, swirling night sky filled with numerous bright yellow stars and dynamic blue and white clouds. The sky transitions from deep indigo at the top to lighter blues and greens closer to the horizon. Below the sky, there are undulating hills and fields, rendered in various shades of blue, purple, and green, suggesting a rural landscape.\",\n      \"lighting\": {\n        \"conditions\": \"moonlight and starlight\",\n        \"direction\": \"diffuse from above and right (from the moon)\",\n        \"shadows\": \"soft, implied shadows on the hills and trees, contributing to depth but not sharply defined.\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"dynamic and asymmetrical, with the couple and cypress trees anchoring the left side, balanced by the moon and village on the right. The swirling sky creates a sense of movement and draws the eye across the canvas.\",\n        \"color_scheme\": \"predominantly cool blues and greens, contrasted with warm yellows of the stars and moon, creating a high-contrast and energetic palette.\",\n        \"mood_atmosphere\": \"dreamlike, romantic, serene yet dramatic, with a sense of wonder and cosmic connection.\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"deep\",\n        \"focus\": \"all elements are in focus, characteristic of a painting, with emphasis on the brushwork.\",\n        \"camera_angle\": \"eye-level, as if observing the landscape and sky from a standing position.\",\n        \"lens_focal_length\": \"standard lens (e.g., 35mm-50mm)\"\n      },\n      \"style_medium\": \"oil painting\",\n      \"context\": \"An artistic interpretation of a romantic landscape, evoking the style and emotional intensity of Van Gogh's post-impressionist works. It could be used as a fine art piece, a book cover, or a romantic illustration.\",\n      \"artistic_style\": \"Post-Impressionist, Van Gogh-esque, expressive.\"\n      }\n    ```\n\n---\n\n**Use Case 3: Refining a previously generated image**\n\n* **Input Image (from previous response - shouldn't be part of the refine request):** ![Example of input image](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo-lite/A_hyper_detailed__ultra_fluffy_owl_sitting_in_the_trees_at_night__looking_direct.png)\n* **Input `structured_prompt` (from previous response - should be part of the refine request, toegther with the seed of the visual result):**\n    ```json\n    {\n      \"short_description\": \"A hyper-detailed, ultra-fluffy owl sitting in the trees at night, looking directly at the camera with wide, adorable, expressive eyes. Its feathers are soft and voluminous, catching the cool moonlight with subtle silver highlights. The owl's gaze is curious and full of charm, giving it a whimsical, storybook-like personality.\",\n      \"objects\": [\n        {\n          \"description\": \"An adorable, fluffy owl with large, expressive eyes and soft, voluminous feathers. It has a round head, small ear tufts, and a slightly downturned beak. Its plumage is a mix of warm browns, grays, and subtle silver highlights from the moonlight.\",\n          \"location\": \"center\",\n          \"relationship\": \"The owl is the sole subject, perched comfortably within its environment.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Round head, oval body, predominantly brown and grey with silver highlights.\",\n          \"texture\": \"Extremely soft, fluffy, and detailed feathers, giving a plush toy-like appearance.\",\n          \"appearance_details\": \"The eyes are wide, dark, and reflective, conveying a sense of wonder and innocence. The beak is small and light-colored, almost blending with the feathers.\",\n          \"number_of_objects\": 1,\n          \"pose\": \"Sitting upright, body facing slightly to the right, head turned to face forward.\",\n          \"expression\": \"Curious, innocent, and charming.\",\n          \"action\": \"Sitting and observing.\",\n          \"gender\": \"unknown\",\n          \"orientation\": \"upright\"\n        }\n      ],\n      \"background_setting\": \"A dark, blurred forest at night, with hints of tree trunks and foliage visible. The background is uniformly dark, emphasizing the owl as the central focus. Moonlight subtly illuminates parts of the background, creating a soft, ethereal glow.\",\n      \"lighting\": {\n        \"conditions\": \"moonlight\",\n        \"direction\": \"top-left, casting subtle highlights\",\n        \"shadows\": \"soft, diffused shadows on the right side of the owl and within the background foliage, indicating a gentle light source.\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"centered, portrait composition, with the owl filling a significant portion of the frame.\",\n        \"color_scheme\": \"cool blues and silvers from the moonlight contrasting with warm browns and grays of the owl's feathers, creating a balanced and enchanting palette.\",\n        \"mood_atmosphere\": \"magical, serene, whimsical, and endearing.\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"shallow\",\n        \"focus\": \"sharp focus on the owl's face and eyes, with a soft blur in the background.\",\n        \"camera_angle\": \"eye-level, as if observing the owl directly.\",\n        \"lens_focal_length\": \"portrait lens (e.g., 50mm-85mm)\"\n      },\n      \"style_medium\": \"digital illustration\",\n      \"context\": \"A whimsical character illustration, likely intended for children's books, animated media, or as a charming decorative art piece.\",\n      \"artistic_style\": \"fantasy, cute, detailed\"\n    }\n    ```\n* **Input Refinement Prompt:** `turn the scene into a daylight scene, with sunlight`\n* **Output Image:** ![Example of refinement output](https://bria-datasets.s3.us-east-1.amazonaws.com/api_doc/fibo-lite/turn_the_scene_into_a_daylight_scene__with_sunlight.png)\n* **Output `structured_prompt` (refined):**\n    ```json\n    {\n      \"short_description\": \"A hyper-detailed, ultra-fluffy owl sitting in the trees during the day, looking directly at the camera with wide, adorable, expressive eyes. Its feathers are soft and voluminous, catching the warm sunlight with subtle golden highlights. The owl's gaze is curious and full of charm, giving it a whimsical, storybook-like personality.\",\n      \"objects\": [\n        {\n          \"description\": \"An adorable, fluffy owl with large, expressive eyes and soft, voluminous feathers. It has a round head, small ear tufts, and a slightly downturned beak. Its plumage is a mix of warm browns, grays, and subtle golden highlights from the sunlight.\",\n          \"location\": \"center\",\n          \"relationship\": \"The owl is the sole subject, perched comfortably within its environment.\",\n          \"relative_size\": \"large within frame\",\n          \"shape_and_color\": \"Round head, oval body, predominantly brown and grey with golden highlights.\",\n          \"texture\": \"Extremely soft, fluffy, and detailed feathers, giving a plush toy-like appearance.\",\n          \"appearance_details\": \"The eyes are wide, dark, and reflective, conveying a sense of wonder and innocence. The beak is small and light-colored, almost blending with the feathers.\",\n          \"number_of_objects\": 1,\n          \"pose\": \"Sitting upright, body facing slightly to the right, head turned to face forward.\",\n          \"expression\": \"Curious, innocent, and charming.\",\n          \"action\": \"Sitting and observing.\",\n          \"gender\": \"unknown\",\n          \"orientation\": \"upright\"\n        }\n      ],\n      \"background_setting\": \"A dark, blurred forest during the day, with hints of tree trunks and foliage visible. The background is uniformly dark, emphasizing the owl as the central focus. Sunlight subtly illuminates parts of the background, creating a soft, ethereal glow.\",\n      \"lighting\": {\n        \"conditions\": \"sunlight\",\n        \"direction\": \"top-left, casting subtle highlights\",\n        \"shadows\": \"soft, diffused shadows on the right side of the owl and within the background foliage, indicating a gentle light source.\"\n      },\n      \"aesthetics\": {\n        \"composition\": \"centered, portrait composition, with the owl filling a significant portion of the frame.\",\n        \"color_scheme\": \"warm yellows and oranges from the sunlight contrasting with warm browns and grays of the owl's feathers, creating a balanced and enchanting palette.\",\n        \"mood_atmosphere\": \"magical, serene, whimsical, and endearing.\",\n        \"preference_score\": \"very high\",\n        \"aesthetic_score\": \"very high\"\n      },\n      \"photographic_characteristics\": {\n        \"depth_of_field\": \"shallow\",\n        \"focus\": \"sharp focus on the owl's face and eyes, with a soft blur in the background.\",\n        \"camera_angle\": \"eye-level, as if observing the owl directly.\",\n        \"lens_focal_length\": \"portrait lens (e.g., 50mm-85mm)\"\n      },\n      \"style_medium\": \"digital illustration\",\n      \"context\": \"A whimsical character illustration, likely intended for children's books, animated media, or as a charming decorative art piece.\",\n      \"artistic_style\": \"fantasy, cute, detailed\"\n    }\n    ```"
+      description: '**Try out this capability in Bria''s sandbox**
+
+
+        **Description**
+
+
+        Generates a new image based on your inputs using the **fast and efficient Fibo Lite Pipeline**.'
       operationId: image-generate-lite
       parameters:
       - in: header
@@ -1051,9 +1091,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /structured_prompt/generate:
     servers:
     - url: https://engine.prod.bria-api.com/v2
+  /structured_prompt/generate:
     post:
       summary: Generate Structured Prompt
       tags:
@@ -1103,9 +1143,7 @@ paths:
         ** API Access **
 
 
-        You can register and access the API Token through Bria''s platform <a href="https://platform.bria.ai/console/account/api-keys" target="_blank">by clicking here</a>.
-
-        '
+        You can register and access the API Token through Bria''s platform by clicking here.'
       operationId: structured-prompt-generate
       parameters:
       - in: header
@@ -1230,18 +1268,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /structured_prompt/generate_from_diff:
     servers:
     - url: https://engine.prod.bria-api.com/v2
+  /structured_prompt/generate_from_diff:
     post:
       summary: Generate Structured Prompt from Diff
       tags:
       - Endpoints
       servers:
       - url: https://engine.prod.bria-api.com/v2
-      description: 'Generates a new, optimized `structured_prompt` by analyzing the semantic difference between an original structred_prompt and a user-edited version. This endpoint is relevant for applications that allow for manual inline structured_prompt editing.
-
-        '
+      description: Generates a new, optimized `structured_prompt` by analyzing the semantic difference between an original structred_prompt and a user-edited version. This endpoint is relevant for applications that allow for manual inline structured_prompt editing.
       operationId: structured-prompt-generate-from-diff
       parameters:
       - in: header
@@ -1323,9 +1359,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /structured_prompt/generate/lite:
     servers:
     - url: https://engine.prod.bria-api.com/v2
+  /structured_prompt/generate/lite:
     post:
       summary: Generate Structured Prompt - Lite
       tags:
@@ -1350,7 +1386,7 @@ paths:
 
         * **Consistency & Automation:** Generate one `structured_prompt` and pass it to `/v2/image/generate/lite` multiple times to create consistent, auditable variations.
 
-        * **Local Deployment Support:** This bridge is designed to pair seamlessly with the Fibo Lite text-to-image model. This combination enables **fully local, on-prem deployment** and unlocks Fibo Lite''s **faster inference speeds**. Contact <a href="mailto:support@bria.ai">support@bria.ai</a> for more information.
+        * **Local Deployment Support:** This bridge is designed to pair seamlessly with the Fibo Lite text-to-image model. This combination enables **fully local, on-prem deployment** and unlocks Fibo Lite''s **faster inference speeds**. Contact support@bria.ai for more information.
 
 
         The resulting `structured_prompt` can be used as input for the `/v2/image/generate/lite` endpoint.
@@ -1375,9 +1411,7 @@ paths:
         ** API Access **
 
 
-        You can register and access the API Token through Bria''s platform <a href="https://platform.bria.ai/console/account/api-keys" target="_blank">by clicking here</a>.
-
-        '
+        You can register and access the API Token through Bria''s platform by clicking here.'
       operationId: structured-prompt-generate-lite
       parameters:
       - in: header
@@ -1502,14 +1536,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  /register:
     servers:
-    - url: https://engine.prod.bria-api.com/v1
+    - url: https://engine.prod.bria-api.com/v2
+  /register:
     post:
       summary: Register Image
       tags:
       - Endpoints
-      description: "\n**Description**\n\nA new visual can be registered to Bria without being uploaded to the database using the *Register Route*.\nThis route returns a visual identification to the user. This is the recommended method to onboard images to Bria, when needed.\n\nIt's the first step for consuming the Bria API for new visuals (instead of using the /upload route).\n\n**Response**\n\n  \n  The visual id in the response of the *Register Route* must be kept by the\nuser in order to query image info, modify the image and use the search routes.\n\n```{ \"visual_id\": \"9ea9a4d2d19977a7c\" }```\n\nThe *visual_id* in the response of the /upload route will be used for all other routes. Store the visual_id in your database and map it to your image identification method for easy reference\n\n**Constraints**\n\nFiles should not be larger than 12MB. The status code 413 will be returned if the file exceeds its maximum size.\n\nThe Bria API currently supports only JPEG and PNG files in RGB, RGBA, or CMYK color modes. When the file is of a different type or color mode, the status code 415 will be returned."
+      description: '**Description**
+
+
+        A new visual can be registered to Bria without being uploaded to the database using the *Register Route*.
+
+        This route returns a visual identification to the user. This is the recommended method to onboard images to Bria, when needed.
+
+
+        It''s the first step for consuming the Bria API for new visuals (instead of using the /upload route).
+
+
+        **Response**
+
+
+        The visual id in the response of the *Register Route* must be kept by the
+
+        user in order to query image info, modify the image and use the search routes.
+
+
+        ```{ "visual_id": "9ea9a4d2d19977a7c" }```
+
+
+        The *visual_id* in the response of the /upload route will be used for all other routes. Store the visual_id in your database and map it to your image identification method for easy reference
+
+
+        **Constraints**
+
+
+        Files should not be larger than 12MB. The status code 413 will be returned if the file exceeds its maximum size.
+
+
+        The Bria API currently supports only JPEG and PNG files in RGB, RGBA, or CMYK color modes. When the file is of a different type or color mode, the status code 415 will be returned.'
       operationId: register-image
       parameters:
       - in: header
@@ -1576,16 +1641,14 @@ paths:
           description: Internal server error.
         '506':
           description: Insufficient data. The given input is not supported by the Bria API.
-  /{visual_id}/remove_image:
     servers:
     - url: https://engine.prod.bria-api.com/v1
+  /{visual_id}/remove_image:
     post:
       summary: Remove Image
       tags:
       - Endpoints
-      description: '
-
-        **Description**
+      description: '**Description**
 
 
         With this route, you can remove an image from the gallery of your organization. The image won''t be removed from Bria.'
@@ -1615,16 +1678,47 @@ paths:
           description: Internal server error.
         '506':
           description: Insufficient data. The given input is not supported by the Bria API.
-  /status/{request_id}:
     servers:
-    - url: https://engine.prod.bria-api.com/v2
+    - url: https://engine.prod.bria-api.com/v1
+  /status/{request_id}:
     get:
       tags:
       - Endpoints
       servers:
       - url: https://engine.prod.bria-api.com/v2
       summary: Get Request Status
-      description: "Retrieves the current status of an asynchronous request.\n\n  **Behavior**\n- Under normal operation, this endpoint returns **`200 OK`**, regardless of whether the request is in progress, completed, or has failed at the job level.  \n- The `status` field in the response (`IN_PROGRESS`, `COMPLETED`, `ERROR`, `UNKNOWN`) indicates the state of the job.  \n- When the job fails (status=`ERROR`), details of the failure are provided in the `error` object, but the HTTP status remains `200`.\n- When `status=COMPLETED`, `result` includes `image_url` for images or `video_url` for videos, or structured_prompt based on the original endpoint.\n\n**Other Possible Responses**\n- **`404 NOT_FOUND`** – Returned when the specified `request_id` does not exist or has expired.  \n- **`5XX`** – Returned when the Status Service itself experiences an internal error.\n  For real-time updates, check [Bria's Status Page](https://status.bria.ai). You can also contact our [Support](mailto:support@bria.ai).\n\n- When `status=COMPLETED`, `result` may also include:\n  - `seed` – Deterministic seed used for generation (if supported by the endpoint).\n  - `prompt` – Original prompt provided by the user (if applicable).\n  - `refined_prompt` – System-enhanced version of the input prompt (if applicable).\n  - `structured_prompt` – The detailed JSON structured prompt used for V2 generation.\n"
+      description: 'Retrieves the current status of an asynchronous request.
+
+
+        **Behavior**
+
+        - Under normal operation, this endpoint returns **`200 OK`**, regardless of whether the request is in progress, completed, or has failed at the job level.
+
+        - The `status` field in the response (`IN_PROGRESS`, `COMPLETED`, `ERROR`, `UNKNOWN`) indicates the state of the job.
+
+        - When the job fails (status=`ERROR`), details of the failure are provided in the `error` object, but the HTTP status remains `200`.
+
+        - When `status=COMPLETED`, `result` includes `image_url` for images or `video_url` for videos, or structured_prompt based on the original endpoint.
+
+
+        **Other Possible Responses**
+
+        - **`404 NOT_FOUND`** – Returned when the specified `request_id` does not exist or has expired.
+
+        - **`5XX`** – Returned when the Status Service itself experiences an internal error.
+
+        For real-time updates, check Bria''s Status Page. You can also contact our Support.
+
+
+        - When `status=COMPLETED`, `result` may also include:
+
+        - `seed` – Deterministic seed used for generation (if supported by the endpoint).
+
+        - `prompt` – Original prompt provided by the user (if applicable).
+
+        - `refined_prompt` – System-enhanced version of the input prompt (if applicable).
+
+        - `structured_prompt` – The detailed JSON structured prompt used for V2 generation.'
       operationId: get_status
       parameters:
       - name: request_id
@@ -1748,8 +1842,47 @@ paths:
                       code: 503
                       message: Service Unavailable
                       details: Bria's Status Service is temporarily unavailable. Please try again later.
+    servers:
+    - url: https://engine.prod.bria-api.com/v2
 components:
   schemas:
+    SyncSuccessImageGenerate:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+            seed:
+              type: integer
+            structured_prompt:
+              type: string
+          required:
+          - image_url
+          - seed
+          - structured_prompt
+        request_id:
+          type: string
+        warning:
+          type: string
+          description: Returned only when ip_signal = true and the prompt field included IP content.
+      required:
+      - result
+      - request_id
+    AsyncInitialResponseWithWarning:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+        warning:
+          type: string
+          description: Returned only when ip_signal = true and the prompt field included IP content.
+      required:
+      - request_id
+      - status_url
     SyncSuccessStructPromptGenerate:
       type: object
       properties:
@@ -1771,6 +1904,43 @@ components:
       required:
       - result
       - request_id
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+    ErrorObject_2:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
     StatusSuccessResponse:
       type: object
       properties:
@@ -1824,66 +1994,6 @@ components:
             - UNKNOWN
         required:
         - status
-    AsyncInitialResponseWithWarning:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-        warning:
-          type: string
-          description: Returned only when ip_signal = true and the prompt field included IP content.
-      required:
-      - request_id
-      - status_url
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
-    SyncSuccessImageGenerate:
-      type: object
-      properties:
-        result:
-          type: object
-          properties:
-            image_url:
-              type: string
-            seed:
-              type: integer
-            structured_prompt:
-              type: string
-          required:
-          - image_url
-          - seed
-          - structured_prompt
-        request_id:
-          type: string
-        warning:
-          type: string
-          description: Returned only when ip_signal = true and the prompt field included IP content.
-      required:
-      - result
-      - request_id
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
 x-refined-from:
 - bria-ad-generation-openapi-original.yml
 - bria-ai-search-deperecated-openapi-original.yml

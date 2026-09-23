@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Bria Attribution Service API Reference Video Attribution API
   version: 1.1.0
-  description: "The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs. \n\nThis service supports both **Image** and **Video** assets via two integration architectures: \n\n**Attribution with No Compute Cost**, where assets are sent directly to Bria for processing.\n\n**Attribution with Full Data Privacy**, where the Attribution Model is hosted within your environment and only irreversible vectors (embeddings) are shared with Bria.\n"
+  description: The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs.
 servers:
 - url: https://engine.prod.bria-api.com
   description: Production
@@ -49,9 +49,7 @@ paths:
       tags:
       - Video Attribution
       summary: Attribution By Embedding (self-hosted)
-      description: 'Send irreversible video vectors (stills and motion) for attribution.
-
-        '
+      description: Send irreversible video vectors (stills and motion) for attribution.
       operationId: postAttributionByVideoEmbedding
       requestBody:
         required: true
@@ -89,26 +87,6 @@ paths:
                 $ref: '#/components/schemas/AsyncInitialResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
     ErrorObject:
       type: object
       properties:
@@ -123,6 +101,16 @@ components:
       - code
       - message
       - details
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
     VideoModelVersion:
       type: string
       description: 'The attribution model used. The value represents the **model name** followed by the **version** after the colon (e.g., `model_name:version`).
@@ -134,6 +122,16 @@ components:
       - video_eraser:1
       - video_mask:1
       - video_increase_res:1
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
   securitySchemes:
     BearerAuth:
       type: http

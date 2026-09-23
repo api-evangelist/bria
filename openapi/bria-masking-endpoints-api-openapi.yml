@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Video API Reference Masking Endpoints API
   version: ''
-  description: "Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.\n\nThe Video API is organized into two transport paradigms:\n\n- **REST API (Async)** — Standard HTTP request/response. You submit a job, receive a `request_id` and `status_url`, and poll the [Status Service](https://docs.bria.ai/status) until the job completes. Use this for editing, masking, and most batch-style workflows.\n- **Streaming API (WebSocket)** — Persistent bidirectional connection for low-latency, frame-by-frame processing. Use this when you need real-time output (e.g., live video feeds, interactive previews).\n\n**Asynchronous Requests and the Status Service**  \nBria API v2 REST endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.\n\nSee the full guide at [Status Service Documentation](https://docs.bria.ai/status) for complete details and usage examples.\n"
+  description: Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.
 servers:
 - url: https://engine.prod.bria-api.com/v2/video/edit
 - url: https://engine.prod.bria-api.com/v2/video/generate
@@ -302,7 +302,7 @@ paths:
 
         - Returns HTTP 202 with `request_id` and `status_url`
 
-        - Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned
+        - Check job status by polling `status_url` or by calling the Status Service with the `request_id` until a terminal status is returned
 
 
         Supported input containers:
@@ -426,6 +426,20 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
     ErrorResponse:
       type: object
       properties:
@@ -446,20 +460,6 @@ components:
       required:
       - request_id
       - status_url
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
 externalDocs:
   description: Register and get API Access
   url: https://platform.bria.ai/organization-management/api-keys

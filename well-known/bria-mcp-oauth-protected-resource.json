@@ -1,0 +1,1 @@
+{"resource":"https://mcp.prod.bria-api.com","authorization_servers":["https://mcp.prod.bria-api.com"],"bearer_methods_supported":["header"],"resource_documentation":"https://docs.bria.ai/mcp-authentication","scopes_supported":["mcp:access"]}

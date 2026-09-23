@@ -1,12 +1,17 @@
-generated: '2026-08-08'
+generated: '2026-09-19'
 method: searched
 source: live probes of every Bria host in apis.yml and every OpenAPI servers[] host
-note: >-
-  platform.bria.ai is a single-page application whose catch-all returns HTTP 200 with an
-  identical 16,978-byte HTML shell for every path, including every /.well-known/* path and a
-  deliberately nonsensical control path. Those 200s are NOT documents and are recorded here as
-  soft-404 so nothing downstream credits them. Only the two engine/mcp OAuth authorization-server
-  documents below returned real machine-readable bodies.
+note: 'platform.bria.ai is a single-page application whose catch-all returns HTTP 200 with an identical
+  16,978-byte HTML shell for every path, including every /.well-known/* path and a deliberately nonsensical
+  control path. Those 200s are NOT documents and are recorded here as soft-404 so nothing downstream credits
+  them. Only the two engine/mcp OAuth authorization-server documents below returned real machine-readable
+  bodies.
+
+
+  MCP-host OAuth discovery added 2026-09-19 (roadmap#321/#337): the harvest visits a provider''s primary
+  hosts, and RFC 9728 protected-resource metadata lives on the MCP host, so these documents existed and
+  were invisible to the scorer. Fetched live and validated on `resource`/`issuer`; one negative control
+  per host.'
 hosts:
 - host: https://engine.prod.bria-api.com
   documents:
@@ -36,15 +41,13 @@ hosts:
     content_type: application/json
     file: bria-mcp-oauth-authorization-server.json
     spec: RFC 8414
-    note: >-
-      Advertises issuer and endpoints on mcp.internal.production.bria-api.com, an internal
-      hostname that does not resolve publicly, while the served MCP endpoint is
-      mcp.prod.bria-api.com. Recorded verbatim as published.
+    note: Advertises issuer and endpoints on mcp.internal.production.bria-api.com, an internal hostname
+      that does not resolve publicly, while the served MCP endpoint is mcp.prod.bria-api.com. Recorded
+      verbatim as published.
   - path: /.well-known/oauth-protected-resource
     status: 404
-    note: >-
-      RFC 9728 protected-resource metadata is absent, so an MCP client cannot discover the
-      authorization server from the resource itself.
+    note: RFC 9728 protected-resource metadata is absent, so an MCP client cannot discover the authorization
+      server from the resource itself.
   - path: /.well-known/security.txt
     status: 404
   - path: /.well-known/openid-configuration
@@ -55,6 +58,11 @@ hosts:
     status: 404
   - path: /.well-known/agent.json
     status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: bria-mcp-oauth-protected-resource.json
+    bytes: 241
+  path_echo_control: passed
 - host: https://bria.ai
   documents:
   - path: /.well-known/security.txt
@@ -77,9 +85,8 @@ hosts:
     status: 200
     content_type: application/json
     third_party: true
-    note: >-
-      Belongs to the Redocly documentation platform (issuer https://auth.cloud.redocly.com),
-      not to Bria. Not saved and not credited to Bria.
+    note: Belongs to the Redocly documentation platform (issuer https://auth.cloud.redocly.com), not to
+      Bria. Not saved and not credited to Bria.
   - path: /.well-known/security.txt
     status: 404
   - path: /.well-known/agent-card.json
@@ -113,3 +120,12 @@ hosts:
 security_txt: null
 api_catalog: null
 agent_card: null
+x-mcp-probe:
+  probed: '2026-09-19'
+  issue: roadmap#321, roadmap#337
+  documents:
+  - host: https://mcp.prod.bria-api.com
+    path: /.well-known/oauth-protected-resource
+    file: bria-mcp-oauth-protected-resource.json
+  validated_on: resource (RFC 9728) / issuer (RFC 8414, OIDC)
+  negative_control: one per host; a 2xx JSON object at an impossible path discards the host

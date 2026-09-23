@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Video API Reference Editing Endpoints API
   version: ''
-  description: "Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.\n\nThe Video API is organized into two transport paradigms:\n\n- **REST API (Async)** — Standard HTTP request/response. You submit a job, receive a `request_id` and `status_url`, and poll the [Status Service](https://docs.bria.ai/status) until the job completes. Use this for editing, masking, and most batch-style workflows.\n- **Streaming API (WebSocket)** — Persistent bidirectional connection for low-latency, frame-by-frame processing. Use this when you need real-time output (e.g., live video feeds, interactive previews).\n\n**Asynchronous Requests and the Status Service**  \nBria API v2 REST endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request's progress until it reaches a completed state.\n\nSee the full guide at [Status Service Documentation](https://docs.bria.ai/status) for complete details and usage examples.\n"
+  description: Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.
 servers:
 - url: https://engine.prod.bria-api.com/v2/video/edit
 - url: https://engine.prod.bria-api.com/v2/video/generate
@@ -18,8 +18,7 @@ paths:
       summary: Eraser
       tags:
       - Editing Endpoints
-      description: '[**Try out this capability in Bria''s sandbox**](https://platform.bria.ai/video-editing/eraser-video)
-
+      description: '**Try out this capability in Bria''s sandbox**
 
 
         **Description**
@@ -27,13 +26,10 @@ paths:
         Initiates an asynchronous object erasure job. Removes objects defined by the mask input and reconstructs the background.
 
 
-
         **Mask Input**
 
 
-
         This endpoint requires a mask definition object. You can provide a direct `mask_url`, or use one of our masking endpoints (`mask_by_prompt`, `mask_by_key_points`) to define the mask area.
-
 
 
         Response behavior:
@@ -42,8 +38,7 @@ paths:
         - Returns HTTP 202 with `request_id` and `status_url`
 
 
-        - Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned
-
+        - Check job status by polling `status_url` or by calling the Status Service with the `request_id` until a terminal status is returned
 
 
         Constraints & Limits:
@@ -56,7 +51,6 @@ paths:
 
 
         - **Frame Rate:** Recommended 24 FPS (preserved in output).
-
 
 
         Preservation Rules:
@@ -179,8 +173,7 @@ paths:
       summary: Increase Resolution - up to 8K
       tags:
       - Editing Endpoints
-      description: '[**Try out this capability in Bria''s sandbox**](https://platform.bria.ai/video-editing/video-increase-resolution)
-
+      description: '**Try out this capability in Bria''s sandbox**
 
 
         **Description**
@@ -191,15 +184,13 @@ paths:
         **Upscales up to 8K output!**
 
 
-
         Response behavior:
 
 
         - Returns HTTP 202 with `request_id` and `status_url`
 
 
-        - Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned
-
+        - Check job status by polling `status_url` or by calling the Status Service with the `request_id` until a terminal status is returned
 
 
         Supported input containers:
@@ -208,12 +199,10 @@ paths:
         - .mp4, .mov, .webm, .avi, .gif
 
 
-
         Supported input codecs:
 
 
         - H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG
-
 
 
         Input attributes preserved in output:
@@ -234,7 +223,6 @@ paths:
         - Transparency if present and supported by the selected output preset
 
 
-
         Limits:
 
 
@@ -242,7 +230,6 @@ paths:
 
 
         - Max output resolution: 7680x4320 (8K). If the selected `desired_increase` would exceed this limit the server returns 422 Unprocessable Entity.
-
 
 
         Encoding:
@@ -355,8 +342,7 @@ paths:
       summary: Remove Background
       tags:
       - Editing Endpoints
-      description: '[**Try out this capability in Bria''s sandbox**](https://platform.bria.ai/video-editing/video-remove-background)
-
+      description: '**Try out this capability in Bria''s sandbox**
 
 
         **Description**
@@ -364,8 +350,7 @@ paths:
         Initiates an asynchronous background removal job for a video.
 
 
-        > **Need real-time / low-latency background removal?** See [Streaming Background Removal](#tag/Streaming-Endpoints) for the WebSocket-based variant.
-
+        > **Need real-time / low-latency background removal?** See Streaming Background Removal for the WebSocket-based variant.
 
 
         Response behavior:
@@ -374,8 +359,7 @@ paths:
         - Returns HTTP 202 with `request_id` and `status_url`
 
 
-        - Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status) with the `request_id` until a terminal status is returned
-
+        - Check job status by polling `status_url` or by calling the Status Service with the `request_id` until a terminal status is returned
 
 
         Supported input containers:
@@ -384,12 +368,10 @@ paths:
         - .mp4, .mov, .webm, .avi, .gif
 
 
-
         Supported input codecs:
 
 
         - H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG
-
 
 
         Input attributes preserved in output:
@@ -404,7 +386,6 @@ paths:
         - Audio if present
 
 
-
         Limits:
 
 
@@ -414,7 +395,6 @@ paths:
         - Resolutions: Input resolution up to 16000x16000 (16K). Inputs larger than this return 413 Payload Too Large. Output resolution matches the input resolution. When `auto_zoom` is enabled, the output is cropped to the foreground subject and may be smaller than the input.
 
 
-
         Background and transparency control:
 
 
@@ -422,7 +402,6 @@ paths:
 
 
         - If `background_color` is `Transparent`, the selected output preset must support alpha. Otherwise the server responds with 422 Unprocessable Entity.
-
 
 
         Output transparency support by preset:
@@ -569,8 +548,7 @@ paths:
       summary: Replace Background
       tags:
       - Editing Endpoints
-      description: '[**Try out this capability in Bria''s sandbox**](https://platform.bria.ai/video-editing/video-replace-background)
-
+      description: '**Try out this capability in Bria''s sandbox**
 
 
         **Description**
@@ -579,17 +557,13 @@ paths:
         an asynchronous job that detects the video background and composites a user-provided image or video asset behind the subject. Size and duration mismatches between the input video and the background asset are handled automatically.
 
 
-
-
         **behavior:**
 
 
         - Returns HTTP 202 with `request_id` and `status_url`
 
 
-        - Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status/endpoints/get_status) with the `request_id` until a terminal status is returned
-
-
+        - Check job status by polling `status_url` or by calling the Status Service with the `request_id` until a terminal status is returned
 
 
         **foreground input containers:**
@@ -598,14 +572,10 @@ paths:
         - .mp4, .mov, .webm, .avi, .gif
 
 
-
-
         **foreground input codecs:*
 
 
         - H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG
-
-
 
 
         **background input formats:**
@@ -615,8 +585,6 @@ paths:
 
 
         - Video: .mp4, .mov, .webm, .avi
-
-
 
 
         **attributes preserved in output:**
@@ -629,7 +597,6 @@ paths:
 
 
         - Foreground audio if present and `preserve_audio` is true. Background audio is always discarded.
-
 
 
         **Limitations**:
@@ -653,7 +620,6 @@ paths:
         - Background is scaled to cover the full frame, then center-cropped to exactly match the foreground resolution. Some background edges may be clipped.
 
 
-
         **mismatch handling (video backgrounds only)**:
 
 
@@ -661,7 +627,6 @@ paths:
 
 
         - Background video longer than foreground: play from 0s, trim at foreground end.
-
 
 
         **Output transparency**:
@@ -779,14 +744,12 @@ paths:
       summary: Green Screen
       tags:
       - Editing Endpoints
-      description: '[**Try out this capability in Bria''s sandbox**](https://platform.bria.ai/video-editing/video-green-screen)
-
+      description: '**Try out this capability in Bria''s sandbox**
 
 
         **Description**
 
         Initiates an asynchronous job that detects the video background and replaces it with a solid green (or blue) screen, producing a chroma-key-ready output for downstream compositing tools.
-
 
 
         Response behavior:
@@ -795,8 +758,7 @@ paths:
         - Returns HTTP 202 with `request_id` and `status_url`
 
 
-        - Check job status by polling `status_url` or by calling the [Status Service](https://docs.bria.ai/status/endpoints/get_status) with the `request_id` until a terminal status is returned
-
+        - Check job status by polling `status_url` or by calling the Status Service with the `request_id` until a terminal status is returned
 
 
         Supported input containers:
@@ -805,12 +767,10 @@ paths:
         - .mp4, .mov, .webm, .avi, .gif
 
 
-
         Supported input codecs:
 
 
         - H.264, H.265 (HEVC), VP9, AV1, PhotoJPEG
-
 
 
         Input attributes preserved in output:
@@ -825,7 +785,6 @@ paths:
         - Audio if present and `preserve_audio` is true
 
 
-
         Limits:
 
 
@@ -833,7 +792,6 @@ paths:
 
 
         - Resolutions: Input resolution up to 16000x16000 (16K). Inputs larger than this return 413 Payload Too Large. Output resolution matches the input resolution.
-
 
 
         Green shade selection:
@@ -846,7 +804,6 @@ paths:
 
 
         - `blue_screen` (#0000FF) - use when the subject wears green.
-
 
 
         Output transparency:
@@ -962,6 +919,20 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
     ErrorResponse:
       type: object
       properties:
@@ -982,20 +953,6 @@ components:
       required:
       - request_id
       - status_url
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
 externalDocs:
   description: Register and get API Access
   url: https://platform.bria.ai/organization-management/api-keys

@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Bria Attribution Service API Reference Image Attribution API
   version: 1.1.0
-  description: "The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs. \n\nThis service supports both **Image** and **Video** assets via two integration architectures: \n\n**Attribution with No Compute Cost**, where assets are sent directly to Bria for processing.\n\n**Attribution with Full Data Privacy**, where the Attribution Model is hosted within your environment and only irreversible vectors (embeddings) are shared with Bria.\n"
+  description: The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs.
 servers:
 - url: https://engine.prod.bria-api.com
   description: Production
@@ -54,9 +54,7 @@ paths:
       tags:
       - Image Attribution
       summary: Attribution By Embedding (irreversible vectors - self-hosted)
-      description: 'Integration for self-hosted image attribution models. See [Bria Attribution GitHub](https://github.com/Bria-AI/bria-attribution).
-
-        '
+      description: Integration for self-hosted image attribution models. See Bria Attribution GitHub.
       operationId: postAttributionByEmbedding
       requestBody:
         required: true
@@ -93,6 +91,20 @@ paths:
                 $ref: '#/components/schemas/AsyncInitialResponse'
 components:
   schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
     ErrorResponse:
       type: object
       properties:
@@ -113,20 +125,6 @@ components:
       required:
       - request_id
       - status_url
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
   securitySchemes:
     BearerAuth:
       type: http
