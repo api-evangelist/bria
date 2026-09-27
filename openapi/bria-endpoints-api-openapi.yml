@@ -1846,6 +1846,29 @@ paths:
     - url: https://engine.prod.bria-api.com/v2
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
+    AsyncInitialResponseWithWarning:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+        warning:
+          type: string
+          description: Returned only when ip_signal = true and the prompt field included IP content.
+      required:
+      - request_id
+      - status_url
     SyncSuccessImageGenerate:
       type: object
       properties:
@@ -1870,19 +1893,6 @@ components:
       required:
       - result
       - request_id
-    AsyncInitialResponseWithWarning:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-        warning:
-          type: string
-          description: Returned only when ip_signal = true and the prompt field included IP content.
-      required:
-      - request_id
-      - status_url
     SyncSuccessStructPromptGenerate:
       type: object
       properties:
@@ -1904,16 +1914,6 @@ components:
       required:
       - result
       - request_id
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
     ErrorObject:
       type: object
       properties:
@@ -1927,20 +1927,6 @@ components:
       required:
       - code
       - message
-    ErrorObject_2:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
     StatusSuccessResponse:
       type: object
       properties:
@@ -1994,6 +1980,20 @@ components:
             - UNKNOWN
         required:
         - status
+    ErrorObject_2:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
 x-refined-from:
 - bria-ad-generation-openapi-original.yml
 - bria-ai-search-deperecated-openapi-original.yml

@@ -426,20 +426,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
     ErrorResponse:
       type: object
       properties:
@@ -460,6 +446,20 @@ components:
       required:
       - request_id
       - status_url
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
 externalDocs:
   description: Register and get API Access
   url: https://platform.bria.ai/organization-management/api-keys

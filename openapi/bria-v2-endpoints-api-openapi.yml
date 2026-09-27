@@ -3621,6 +3621,81 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    SyncSuccessResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+          required:
+          - image_url
+        request_id:
+          type: string
+      required:
+      - result
+      - request_id
+    SyncSuccessWithSeedAndPrompt:
+      allOf:
+      - $ref: '#/components/schemas/SyncSuccessResponse'
+      - type: object
+        properties:
+          result:
+            allOf:
+            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+            - type: object
+              properties:
+                seed:
+                  type: integer
+                prompt:
+                  type: string
+                  description: Original prompt sent by the user.
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
+    SyncStructuredInstructionResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            seed:
+              type: integer
+            structured_instruction:
+              type: string
+          required:
+          - seed
+          - structured_instruction
+        request_id:
+          type: string
+        warning:
+          type: string
+          description: Returned only when ip_signal = true and the instruction field included IP content.
+      required:
+      - result
+      - request_id
     SyncSuccessWithSeedAndRefinedPrompt:
       allOf:
       - $ref: '#/components/schemas/SyncSuccessResponse'
@@ -3644,21 +3719,6 @@ components:
                     - The request did NOT include a `reference_image`.
 
                     '
-    SyncSuccessResponse:
-      type: object
-      properties:
-        result:
-          type: object
-          properties:
-            image_url:
-              type: string
-          required:
-          - image_url
-        request_id:
-          type: string
-      required:
-      - result
-      - request_id
     SyncSuccessWithSeed:
       allOf:
       - $ref: '#/components/schemas/SyncSuccessResponse'
@@ -3671,16 +3731,6 @@ components:
               properties:
                 seed:
                   type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
     AsyncInitialResponse:
       type: object
       properties:
@@ -3715,56 +3765,6 @@ components:
       required:
       - result
       - request_id
-    SyncSuccessWithSeedAndPrompt:
-      allOf:
-      - $ref: '#/components/schemas/SyncSuccessResponse'
-      - type: object
-        properties:
-          result:
-            allOf:
-            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
-            - type: object
-              properties:
-                seed:
-                  type: integer
-                prompt:
-                  type: string
-                  description: Original prompt sent by the user.
-    SyncStructuredInstructionResponse:
-      type: object
-      properties:
-        result:
-          type: object
-          properties:
-            seed:
-              type: integer
-            structured_instruction:
-              type: string
-          required:
-          - seed
-          - structured_instruction
-        request_id:
-          type: string
-        warning:
-          type: string
-          description: Returned only when ip_signal = true and the instruction field included IP content.
-      required:
-      - result
-      - request_id
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
 externalDocs:
   description: Register and get API Access
   url: https://platform.bria.ai/organization-management/api-keys

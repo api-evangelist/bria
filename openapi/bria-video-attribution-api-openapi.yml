@@ -87,6 +87,37 @@ paths:
                 $ref: '#/components/schemas/AsyncInitialResponse'
 components:
   schemas:
+    VideoModelVersion:
+      type: string
+      description: 'The attribution model used. The value represents the **model name** followed by the **version** after the colon (e.g., `model_name:version`).
+
+        '
+      enum:
+      - video_generation:1
+      - video_rmbg:1
+      - video_eraser:1
+      - video_mask:1
+      - video_increase_res:1
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
     ErrorObject:
       type: object
       properties:
@@ -101,37 +132,6 @@ components:
       - code
       - message
       - details
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
-    VideoModelVersion:
-      type: string
-      description: 'The attribution model used. The value represents the **model name** followed by the **version** after the colon (e.g., `model_name:version`).
-
-        '
-      enum:
-      - video_generation:1
-      - video_rmbg:1
-      - video_eraser:1
-      - video_mask:1
-      - video_increase_res:1
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
   securitySchemes:
     BearerAuth:
       type: http
