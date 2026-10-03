@@ -919,26 +919,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
     ErrorObject:
       type: object
       properties:
@@ -953,6 +933,26 @@ components:
       - code
       - message
       - details
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
 externalDocs:
   description: Register and get API Access
   url: https://platform.bria.ai/organization-management/api-keys

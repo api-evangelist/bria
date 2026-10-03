@@ -3621,36 +3621,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    SyncSuccessResponse:
-      type: object
-      properties:
-        result:
-          type: object
-          properties:
-            image_url:
-              type: string
-          required:
-          - image_url
-        request_id:
-          type: string
-      required:
-      - result
-      - request_id
-    SyncSuccessWithSeedAndPrompt:
-      allOf:
-      - $ref: '#/components/schemas/SyncSuccessResponse'
-      - type: object
-        properties:
-          result:
-            allOf:
-            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
-            - type: object
-              properties:
-                seed:
-                  type: integer
-                prompt:
-                  type: string
-                  description: Original prompt sent by the user.
     ErrorObject:
       type: object
       properties:
@@ -3665,16 +3635,16 @@ components:
       - code
       - message
       - details
-    ErrorResponse:
+    AsyncInitialResponse:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
         request_id:
           type: string
+        status_url:
+          type: string
       required:
-      - error
       - request_id
+      - status_url
     SyncStructuredInstructionResponse:
       type: object
       properties:
@@ -3693,6 +3663,33 @@ components:
         warning:
           type: string
           description: Returned only when ip_signal = true and the instruction field included IP content.
+      required:
+      - result
+      - request_id
+    SyncSuccessWithSeed:
+      allOf:
+      - $ref: '#/components/schemas/SyncSuccessResponse'
+      - type: object
+        properties:
+          result:
+            allOf:
+            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+            - type: object
+              properties:
+                seed:
+                  type: string
+    SyncSuccessResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+          required:
+          - image_url
+        request_id:
+          type: string
       required:
       - result
       - request_id
@@ -3719,28 +3716,6 @@ components:
                     - The request did NOT include a `reference_image`.
 
                     '
-    SyncSuccessWithSeed:
-      allOf:
-      - $ref: '#/components/schemas/SyncSuccessResponse'
-      - type: object
-        properties:
-          result:
-            allOf:
-            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
-            - type: object
-              properties:
-                seed:
-                  type: string
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
     SyncEditResponse:
       type: object
       properties:
@@ -3764,6 +3739,31 @@ components:
           description: Returned only when ip_signal = true and the instruction field included IP content.
       required:
       - result
+      - request_id
+    SyncSuccessWithSeedAndPrompt:
+      allOf:
+      - $ref: '#/components/schemas/SyncSuccessResponse'
+      - type: object
+        properties:
+          result:
+            allOf:
+            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+            - type: object
+              properties:
+                seed:
+                  type: integer
+                prompt:
+                  type: string
+                  description: Original prompt sent by the user.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
       - request_id
 externalDocs:
   description: Register and get API Access

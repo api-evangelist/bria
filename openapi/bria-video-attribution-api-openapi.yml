@@ -87,6 +87,30 @@ paths:
                 $ref: '#/components/schemas/AsyncInitialResponse'
 components:
   schemas:
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
     VideoModelVersion:
       type: string
       description: 'The attribution model used. The value represents the **model name** followed by the **version** after the colon (e.g., `model_name:version`).
@@ -108,30 +132,6 @@ components:
       required:
       - error
       - request_id
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
   securitySchemes:
     BearerAuth:
       type: http

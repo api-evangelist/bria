@@ -1846,16 +1846,19 @@ paths:
     - url: https://engine.prod.bria-api.com/v2
 components:
   schemas:
-    ErrorResponse:
+    ErrorObject:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
           type: string
       required:
-      - error
-      - request_id
+      - code
+      - message
     AsyncInitialResponseWithWarning:
       type: object
       properties:
@@ -1869,6 +1872,27 @@ components:
       required:
       - request_id
       - status_url
+    SyncSuccessStructPromptGenerate:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            seed:
+              type: integer
+            structured_prompt:
+              type: string
+          required:
+          - seed
+          - structured_prompt
+        request_id:
+          type: string
+        warning:
+          type: string
+          description: Returned only when ip_signal = true and the prompt field included IP content.
+      required:
+      - result
+      - request_id
     SyncSuccessImageGenerate:
       type: object
       properties:
@@ -1893,28 +1917,17 @@ components:
       required:
       - result
       - request_id
-    SyncSuccessStructPromptGenerate:
+    ErrorResponse:
       type: object
       properties:
-        result:
-          type: object
-          properties:
-            seed:
-              type: integer
-            structured_prompt:
-              type: string
-          required:
-          - seed
-          - structured_prompt
+        error:
+          $ref: '#/components/schemas/ErrorObject'
         request_id:
           type: string
-        warning:
-          type: string
-          description: Returned only when ip_signal = true and the prompt field included IP content.
       required:
-      - result
+      - error
       - request_id
-    ErrorObject:
+    ErrorObject_2:
       type: object
       properties:
         code:
@@ -1927,6 +1940,19 @@ components:
       required:
       - code
       - message
+      - details
+    StatusErrorResponse:
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - ERROR
+            - UNKNOWN
+        required:
+        - status
     StatusSuccessResponse:
       type: object
       properties:
@@ -1968,32 +1994,6 @@ components:
       - result
       - status
       - request_id
-    StatusErrorResponse:
-      allOf:
-      - $ref: '#/components/schemas/ErrorResponse'
-      - type: object
-        properties:
-          status:
-            type: string
-            enum:
-            - ERROR
-            - UNKNOWN
-        required:
-        - status
-    ErrorObject_2:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
 x-refined-from:
 - bria-ad-generation-openapi-original.yml
 - bria-ai-search-deperecated-openapi-original.yml
