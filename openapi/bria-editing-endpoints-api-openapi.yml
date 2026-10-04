@@ -919,6 +919,16 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
     ErrorObject:
       type: object
       properties:
@@ -933,16 +943,6 @@ components:
       - code
       - message
       - details
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
     ErrorResponse:
       type: object
       properties:

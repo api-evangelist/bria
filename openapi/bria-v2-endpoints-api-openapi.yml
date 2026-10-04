@@ -3621,30 +3621,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
     SyncStructuredInstructionResponse:
       type: object
       properties:
@@ -3666,18 +3642,6 @@ components:
       required:
       - result
       - request_id
-    SyncSuccessWithSeed:
-      allOf:
-      - $ref: '#/components/schemas/SyncSuccessResponse'
-      - type: object
-        properties:
-          result:
-            allOf:
-            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
-            - type: object
-              properties:
-                seed:
-                  type: string
     SyncSuccessResponse:
       type: object
       properties:
@@ -3716,6 +3680,20 @@ components:
                     - The request did NOT include a `reference_image`.
 
                     '
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
     SyncEditResponse:
       type: object
       properties:
@@ -3740,6 +3718,26 @@ components:
       required:
       - result
       - request_id
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
     SyncSuccessWithSeedAndPrompt:
       allOf:
       - $ref: '#/components/schemas/SyncSuccessResponse'
@@ -3755,16 +3753,18 @@ components:
                 prompt:
                   type: string
                   description: Original prompt sent by the user.
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
+    SyncSuccessWithSeed:
+      allOf:
+      - $ref: '#/components/schemas/SyncSuccessResponse'
+      - type: object
+        properties:
+          result:
+            allOf:
+            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+            - type: object
+              properties:
+                seed:
+                  type: string
 externalDocs:
   description: Register and get API Access
   url: https://platform.bria.ai/organization-management/api-keys

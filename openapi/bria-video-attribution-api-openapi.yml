@@ -87,20 +87,6 @@ paths:
                 $ref: '#/components/schemas/AsyncInitialResponse'
 components:
   schemas:
-    ErrorObject:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 123
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - code
-      - message
-      - details
     AsyncInitialResponse:
       type: object
       properties:
@@ -122,6 +108,20 @@ components:
       - video_eraser:1
       - video_mask:1
       - video_increase_res:1
+    ErrorObject:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 123
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - code
+      - message
+      - details
     ErrorResponse:
       type: object
       properties:
