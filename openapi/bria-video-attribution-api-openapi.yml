@@ -97,17 +97,6 @@ components:
       required:
       - request_id
       - status_url
-    VideoModelVersion:
-      type: string
-      description: 'The attribution model used. The value represents the **model name** followed by the **version** after the colon (e.g., `model_name:version`).
-
-        '
-      enum:
-      - video_generation:1
-      - video_rmbg:1
-      - video_eraser:1
-      - video_mask:1
-      - video_increase_res:1
     ErrorObject:
       type: object
       properties:
@@ -132,6 +121,17 @@ components:
       required:
       - error
       - request_id
+    VideoModelVersion:
+      type: string
+      description: 'The attribution model used. The value represents the **model name** followed by the **version** after the colon (e.g., `model_name:version`).
+
+        '
+      enum:
+      - video_generation:1
+      - video_rmbg:1
+      - video_eraser:1
+      - video_mask:1
+      - video_increase_res:1
   securitySchemes:
     BearerAuth:
       type: http
