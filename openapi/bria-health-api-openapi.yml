@@ -1,0 +1,31 @@
+openapi: 3.2.0
+info:
+  title: Fast Health API
+  version: 0.1.0
+tags:
+- name: Health
+paths:
+  /health/live:
+    get:
+      summary: Health Live Route
+      operationId: health_live_route_health_live_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Health
+  /health/ready:
+    get:
+      summary: Health Ready Route
+      operationId: health_ready_route_health_ready_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Health

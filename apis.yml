@@ -497,6 +497,26 @@ apis:
     url: https://docs.bria.ai/image-onboarding
   - type: Documentation
     url: https://docs.bria.ai/ai-search-deperecated
+- aid: bria:bria-fastapi-api
+  name: Bria Fast API
+  description: The FastAPI API from Bria — 1 operation(s) for fastapi.
+  humanURL: https://docs.bria.ai/mcp-authentication
+  baseURL: https://mcp.prod.bria-api.com/mcp
+  tags:
+  - FastAPI
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-fastapi-api-openapi.yml
+- aid: bria:bria-health-api
+  name: Bria Health API
+  description: The Health API from Bria — 2 operation(s) for health.
+  humanURL: https://docs.bria.ai/mcp-authentication
+  baseURL: https://mcp.prod.bria-api.com/mcp
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/bria-health-api-openapi.yml
 common:
 - type: RateLimits
   url: rate-limits/bria-rate-limits.yml

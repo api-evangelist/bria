@@ -26,7 +26,87 @@ paths:
         **Description**
 
 
-        Powered by the **FIBO models family**, Bria’s Image Editing by Text API equips builders with the ability to modify existing images using natural language instructions or structured JSON instructions.'
+        Powered by the **FIBO models family**, Bria’s Image Editing by Text API equips builders with the ability to modify existing images using natural language instructions or structured JSON instructions. FIBO Edit features **native masking support** for precise, localized editing. You can supply a binary mask to restrict changes to specific regions while preserving the rest of the image. The masking logic operates as a **generative replacement**; the model generates entirely new content within the masked area based on your instruction, rather than modifying the existing pixels. **Core Technology: The FIBO Architecture**
+
+
+        This endpoint utilizes the **FIBO** architecture, a unique two-step process ensuring precise and controllable edits:
+
+        1. **Translation:** A VLM Bridge (powered by **Gemini 2.5 Flash**) converts your inputs into a detailed `structured_instruction` (JSON). 2. **Generation:** The FIBO Edit model performs the final, deterministic edit on the input image, based on that JSON. **Advanced Control & Recreation**
+
+
+        * To recreate a specific result: You must provide the exact source images, the mask (if used), the `structured_instruction` returned in the original response, and the `seed` used to create it. * For advanced, programmatic control, you can pass in your own `structured_instruction` (e.g., from the `/v2/structured_instruction/generate` endpoint) to bypass the internal VLM bridge. ---
+
+
+        **Input Combination Rules**
+
+
+        The request body must include `images` and one of the following combinations:
+
+
+        * **Global Edit (natural language):** `images` + `instruction`
+
+        * **Global Edit (JSON instruction):** `images` + `structured_instruction`
+
+        * **Masked Edit (natural language):** `images` + `mask` + `instruction`
+
+        * **Masked Edit (JSON instruction):** `images` + `mask` + `structured_instruction`
+
+
+        ---
+
+        **API Access**
+
+
+        You can register and access the API Token through Bria''s platform by clicking here. ---
+
+        **Examples**
+
+
+        **Use Case 1: Lighting Change**
+
+
+        **Instruction:** *"change to golden hour"*
+
+
+        Input Image
+
+        Output Image
+
+
+        Click to view the Output Structured Instruction (JSON)
+
+
+        ```json
+
+        {
+
+        "short_description": "A vibrant yellow train with multiple carriages stretches across a vast, reflective salt flat under a golden hour sky. The train''s reflection is perfectly mirrored in the still, shallow water, creating a symmetrical and surreal scene. Fluffy white clouds are scattered across the sky, also reflected in the water, adding depth and texture to the expansive landscape. The warm, soft light of the golden hour bathes the entire scene, enhancing the colors and creating a serene and magical atmosphere.",
+
+        "objects": [
+
+        {
+
+        "description": "A long, multi-car passenger train, painted in a bright, somewhat weathered yellow. The front locomotive is robust, with visible details like railings, windows, and industrial components. The carriages behind it are also yellow, with numerous windows reflecting the sky.",
+
+        "location": "center, extending from mid-left to far right",
+
+        "relationship": "The train is the primary subject, dominating the central horizontal axis and creating a strong leading line into the distance. Its reflection is a key compositional element.",
+
+        "relative_size": "large within frame",
+
+        "shape_and_color": "Elongated, rectangular, bright yellow with some darker accents.",
+
+        "texture": "Metallic, slightly weathered, with visible rivets and panels.",
+
+        "appearance_details": "The train appears to be a diesel locomotive with several passenger cars, showing signs of use but maintaining its vibrant yellow color.",
+
+        "orientation": "Horizontal, moving from left to right into the distance."
+
+        },
+
+        {
+
+        "description": "The perfect, clear reflection of the yellow train in the still, shallow water of the salt flat.'
       operationId: edit-image
       parameters:
       - in: header
@@ -3621,30 +3701,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    SyncSuccessWithSeedAndRefinedPrompt:
-      allOf:
-      - $ref: '#/components/schemas/SyncSuccessResponse'
-      - type: object
-        properties:
-          result:
-            allOf:
-            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
-            - type: object
-              properties:
-                seed:
-                  type: integer
-                refined_prompt:
-                  type: string
-                  description: 'Refined version of the input prompt.
-
-                    **Returned only when:**
-
-                    - The request included a `prompt` parameter.
-
-                    - The request did NOT include a `reference_image`.
-
-                    '
-    SyncSuccessResponse:
+    SyncEditResponse:
       type: object
       properties:
         result:
@@ -3652,10 +3709,19 @@ components:
           properties:
             image_url:
               type: string
+            seed:
+              type: integer
+            structured_instruction:
+              type: string
           required:
           - image_url
+          - seed
+          - structured_instruction
         request_id:
           type: string
+        warning:
+          type: string
+          description: Returned only when ip_signal = true and the instruction field included IP content.
       required:
       - result
       - request_id
@@ -3683,30 +3749,29 @@ components:
       required:
       - request_id
       - status_url
-    SyncEditResponse:
-      type: object
-      properties:
-        result:
-          type: object
-          properties:
-            image_url:
-              type: string
-            seed:
-              type: integer
-            structured_instruction:
-              type: string
-          required:
-          - image_url
-          - seed
-          - structured_instruction
-        request_id:
-          type: string
-        warning:
-          type: string
-          description: Returned only when ip_signal = true and the instruction field included IP content.
-      required:
-      - result
-      - request_id
+    SyncSuccessWithSeedAndRefinedPrompt:
+      allOf:
+      - $ref: '#/components/schemas/SyncSuccessResponse'
+      - type: object
+        properties:
+          result:
+            allOf:
+            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+            - type: object
+              properties:
+                seed:
+                  type: integer
+                refined_prompt:
+                  type: string
+                  description: 'Refined version of the input prompt.
+
+                    **Returned only when:**
+
+                    - The request included a `prompt` parameter.
+
+                    - The request did NOT include a `reference_image`.
+
+                    '
     ErrorResponse:
       type: object
       properties:
@@ -3729,21 +3794,21 @@ components:
               properties:
                 seed:
                   type: string
-    SyncSuccessWithSeedAndPrompt:
-      allOf:
-      - $ref: '#/components/schemas/SyncSuccessResponse'
-      - type: object
-        properties:
-          result:
-            allOf:
-            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
-            - type: object
-              properties:
-                seed:
-                  type: integer
-                prompt:
-                  type: string
-                  description: Original prompt sent by the user.
+    SyncSuccessResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+          required:
+          - image_url
+        request_id:
+          type: string
+      required:
+      - result
+      - request_id
     SyncStructuredInstructionResponse:
       type: object
       properties:
@@ -3765,6 +3830,21 @@ components:
       required:
       - result
       - request_id
+    SyncSuccessWithSeedAndPrompt:
+      allOf:
+      - $ref: '#/components/schemas/SyncSuccessResponse'
+      - type: object
+        properties:
+          result:
+            allOf:
+            - $ref: '#/components/schemas/SyncSuccessResponse/properties/result'
+            - type: object
+              properties:
+                seed:
+                  type: integer
+                prompt:
+                  type: string
+                  description: Original prompt sent by the user.
 externalDocs:
   description: Register and get API Access
   url: https://platform.bria.ai/organization-management/api-keys

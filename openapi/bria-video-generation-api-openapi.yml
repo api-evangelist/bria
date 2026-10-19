@@ -6,7 +6,50 @@ info:
 
     that preserve and faithfully reproduce specific IP elements or guidelines, ensuring consistency
 
-    across all generated outputs.'
+    across all generated outputs. The Tailored Generation APIs allow you to manage and train tailored models that maintain the
+
+    integrity of your visual IP. You can train models through our Console or implement training
+
+    directly via API. **Fully Automated Training Mode**
+
+    Bria supports users in training high-quality finetuned models without the guesswork. Based on the selected IP type & dataset, Bria automatically selects the right training parameters. This means that the user only needs to spend time curating their dataset. **Advanced Customization and Access:** Bria offers 2 types of advanced training customization: Expert training mode and source-code & weights. - **Expert training mode** is for LoRa Finetune experts and provides the ability to finetune training parameters and upload larger training datasets. - **Source-code & Weights** is for developers seeking deeper customization and access to Bria''s source-available GenAI models via Hugging Face. All methods allow full control over fine-tuning, pipeline creation, and integration into proprietary workflows—empowering AI teams to develop and optimize their own generative AI solutions. The Tailored Generation Training API provides a set of endpoints to manage the entire lifecycle
+
+    of a tailored generation project:
+
+
+    1. **Project Management**: Create and manage projects that define IP characteristics:
+
+    - **Create and Retrieve Projects**: Use the `/projects` endpoints to create a new project or
+
+    retrieve existing projects that belong to your organization. - **Define IP Type**: Specify the IP type (e.g., multi_object_set, defined_character,
+
+    stylized_scene) and medium. - **Manage Project Details**: Use the `/projects/{id}` endpoints to update or delete
+
+    specific projects. 2. **Dataset Management**: Organize and refine datasets within your projects:
+
+    - **Create and Retrieve Datasets**: Use the `/datasets` endpoints to create new datasets or
+
+    retrieve existing ones. - **Generate a Visual Schema**
+
+    - Use `/tailored-gen/generate_visual_schema` to create a structured visual schema using 5-10 sample images. - **Refine Structured Data**
+
+    - Use `/tailored-gen/refine_structured_prompt` to iterate on your **Visual Schema** or **Image Captions** using natural language instructions. - *Example:* You can send your generated schema with the instruction "Character''s name is Lucy" to improve the training metadata programmatically. - **Upload and Manage Images**:
+
+    - **Basic upload**: Use `/datasets/{dataset_id}/images` to upload up to 200 images individually. - **Bulk upload**: Use `/datasets/{dataset_id}/images/bulk` to upload zip files with >200 high-quality images (Advanced). - **Clone Datasets**: Create variations of existing datasets using the clone functionality. 3. **Model Management**: Train and optimize tailored models based on your datasets:
+
+    - **Create and Retrieve Models**: Use the `/models` endpoints to create new models or list
+
+    existing ones. - **Choose training mode**: Select between Fully automated mode (automatic training based on Bria''s recipes) and Expert mode (for training parameter tweaking). - **Monitor and Control**: Manage the model lifecycle, including training start/stop,
+
+    status monitoring, and version control over the training parameters. 4. **Generation Capabilities**:
+
+    - **Image Generation**: Use `/image/generate/tailored` for text-to-image generation. - **Structured Prompting**: Use `/structured_prompt/generate/tailored` to create structured prompts via VLM before generation. - **Video Generation**: Use `/video/generate/tailored/image-to-video` to animate tailored images. ### **Training Process**
+
+
+    To train a tailored model:
+
+
+    1. **Create a Project**: Use the `/projects` endpoint to define your IP type and medium. 2.'
 servers:
 - url: https://engine.prod.bria-api.com/v2/
 tags:

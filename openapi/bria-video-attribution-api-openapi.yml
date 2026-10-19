@@ -2,7 +2,16 @@ openapi: 3.2.0
 info:
   title: Bria Attribution Service API Reference Video Attribution API
   version: 1.1.0
-  description: The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs.
+  description: 'The Bria **Attribution Service** enables developers to integrate Bria’s patented attribution technology, ensuring transparent compensation to content owners for their contributions to AI-generated outputs.
+
+
+    This service supports both **Image** and **Video** assets via two integration architectures:
+
+
+    **Attribution with No Compute Cost**, where assets are sent directly to Bria for processing.
+
+
+    **Attribution with Full Data Privacy**, where the Attribution Model is hosted within your environment and only irreversible vectors (embeddings) are shared with Bria.'
 servers:
 - url: https://engine.prod.bria-api.com
   description: Production
@@ -87,16 +96,6 @@ paths:
                 $ref: '#/components/schemas/AsyncInitialResponse'
 components:
   schemas:
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
     ErrorObject:
       type: object
       properties:
@@ -111,6 +110,16 @@ components:
       - code
       - message
       - details
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
     ErrorResponse:
       type: object
       properties:

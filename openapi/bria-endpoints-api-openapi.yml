@@ -726,7 +726,79 @@ paths:
         **Description**
 
 
-        Generates a new image based on your inputs.'
+        Generates a new image based on your inputs. This all-in-one endpoint first translates your input (`prompt` and/or `images`) into a structured JSON prompt using the state-of-the-art **Gemini 2.5 Flash** VLM bridge. It then *internally* uses that JSON to generate the final, deterministic image. Use this endpoint for professional workflows that demand the highest-fidelity interpretation of your creative vision. The response includes both the final `image_url` and the `structured_prompt` (JSON). For advanced, programmatic control, you can also pass in your own `structured_prompt` (e.g., from a previous response or the `/v2/structured_prompt/generate` endpoint) to bypass the internal VLM bridge. This allows for precise, auditable refinement or recreation of an image, or to generate multiple variations from the same structured prompt. ---
+
+
+        **Input Combination Rules**
+
+
+        The request body must include **one** of the following mutually exclusive combinations:
+
+
+        * `prompt` (Generates a new image from text)
+
+        * `images` (Generates a new image inspired by a reference image)
+
+        * `images` + `prompt` (Generates a new image inspired by an image and guided by text)
+
+        * `structured_prompt` (Recreates a previous image exactly, combined with a seed)
+
+        * `structured_prompt` + `prompt` (Refines a previous image using new text instructions, combined with a seed)
+
+
+        ---
+
+        **API Access**
+
+
+        You can register and access the API Token through Bria''s platform by clicking here. ---
+
+        ***Examples***
+
+
+        **Use Case 1: Using a textual prompt**
+
+
+        * **Input Prompt:** `photorealistic, high resolution rendering, balloon of lettering, "HAPPY NEW YEAR 2026", used color is Pantone Bran, Crocus, Deja vu blue, perfect composition and alignment, natural light set, white backdrop, ultra realistic, rich detail`
+
+        * **Output Image:** !Example of text-to-image output
+
+        * **Output `structured_prompt`:**
+
+        ```json
+
+
+        {
+
+        "short_description": "A photorealistic, high-resolution rendering of balloon lettering spelling out \"HAPPY NEW YEAR 2026\" against a pristine white backdrop. The balloons are meticulously crafted with a metallic, reflective surface, showcasing a vibrant color palette of Pantone Bran, Crocus, and Deja vu blue. The composition is perfectly aligned and balanced, emphasizing the celebratory message with natural, soft lighting that creates subtle, elegant reflections and shadows.",
+
+        "objects": [
+
+        {
+
+        "description": "A cluster of individual balloon letters forming the word \"HAPPY\". Each letter is inflated and has a smooth, highly reflective metallic surface, catching and distorting the ambient light. The letters are arranged horizontally, slightly overlapping to create a cohesive word.",
+
+        "location": "top-left to center",
+
+        "relationship": "Part of the main textual display, positioned above ''NEW YEAR''.",
+
+        "relative_size": "large within frame",
+
+        "shape_and_color": "Irregular letter shapes, primarily Pantone Bran (a rich, deep orange-brown) with hints of Crocus (a vibrant purple) and Deja vu blue (a muted, dusty blue) in the reflections.",
+
+        "texture": "Smooth, highly reflective metallic foil.",
+
+        "appearance_details": "Slightly rounded edges, showing subtle seams where the foil is joined. The surface exhibits a high degree of realism with minor imperfections and creases visible upon close inspection.",
+
+        "number_of_objects": 5,
+
+        "orientation": "Horizontal"
+
+        },
+
+        {
+
+        "description": "A cluster of individual balloon letters forming the phrase \"NEW YEAR\". These letters are also inflated and possess the same metallic, reflective quality as the ''HAPPY'' balloons.'
       operationId: image-generate
       parameters:
       - in: header
@@ -924,7 +996,62 @@ paths:
         **Description**
 
 
-        Generates a new image based on your inputs using the **fast and efficient Fibo Lite Pipeline**.'
+        Generates a new image based on your inputs using the **fast and efficient Fibo Lite Pipeline**. This all-in-one endpoint utilizes a two-step local-compatible process:
+
+        1. **FIBO-VLM Bridge:** Translates your input (`prompt` and/or `images`) into a structured JSON prompt using Bria''s efficient open-source VLM, optimized for rapid inference. 2. **Fibo Lite Model:** Internally uses the distilled Fibo Lite text-to-image model to generate the final visual. This model is engineered for **low latency**, ensuring faster generation times. **Fibo Lite''s Benefits**
+
+
+        This pipeline is designed for **speed and privacy**. It delivers significantly faster generation times suitable for high-throughput workflows. Additionally, by pairing the distilled Fibo Lite text-to-image model with the FIBO-VLM bridge, the entire pipeline is capable of **fully local, on-prem deployment**. To access the local deployment package, please contact us at support@bria.ai. For advanced, programmatic control, you can also pass in your own `structured_prompt` (e.g., from a previous response or the `/v2/structured_prompt/generate/lite` endpoint) to bypass the internal VLM bridge. This allows for precise, auditable refinement or recreation of an image, or to generate multiple variations from the same structured prompt. ---
+
+
+        **Input Combination Rules**
+
+
+        The request body must include **one** of the following mutually exclusive combinations:
+
+
+        * `prompt` (Generates a new image from text)
+
+        * `images` (Generates a new image inspired by a reference image)
+
+        * `images` + `prompt` (Generates a new image inspired by an image and guided by text)
+
+        * `structured_prompt` (Recreates a previous image exactly, combined with a seed)
+
+        * `structured_prompt` + `prompt` (Refines a previous image using new text instructions, combined with a seed)
+
+
+        ---
+
+        ** API Access **
+
+
+        You can register and access the API Token through Bria''s platform by clicking here. ---
+
+        ***Examples***
+
+
+        **Use Case 1: Using a textual prompt**
+
+
+        * **Input Prompt:** `photorealistic, high resolution rendering, balloon of lettering, "HAPPY NEW YEAR 2026", used color is Pantone Bran, Crocus, Deja vu blue, perfect composition and alignment, natural light set, white backdrop, ultra realistic, rich detail`
+
+        * **Output Image:** !Example of text-to-image output
+
+        * **Output `structured_prompt`:**
+
+        ```json
+
+
+        {
+
+        "short_description": "A photorealistic, high-resolution rendering of balloon lettering spelling out \"HAPPY NEW YEAR 2026\" against a pristine white background. The balloons are meticulously crafted with a metallic, reflective surface, showcasing a vibrant color palette of Pantone Bran, Crocus, and Deja vu blue. The composition is perfectly aligned and balanced, emphasizing the celebratory message with natural, soft lighting that creates subtle, elegant reflections and shadows.",
+
+        "objects": [
+
+        {
+
+        "description": "A cluster of inflated balloons forming the letters \"HAPPY NEW YEAR 2026\".'
       operationId: image-generate-lite
       parameters:
       - in: header
@@ -1846,6 +1973,30 @@ paths:
     - url: https://engine.prod.bria-api.com/v2
 components:
   schemas:
+    SyncSuccessImageGenerate:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            image_url:
+              type: string
+            seed:
+              type: integer
+            structured_prompt:
+              type: string
+          required:
+          - image_url
+          - seed
+          - structured_prompt
+        request_id:
+          type: string
+        warning:
+          type: string
+          description: Returned only when ip_signal = true and the prompt field included IP content.
+      required:
+      - result
+      - request_id
     ErrorObject:
       type: object
       properties:
@@ -1859,6 +2010,16 @@ components:
       required:
       - code
       - message
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorObject'
+        request_id:
+          type: string
+      required:
+      - error
+      - request_id
     SyncSuccessStructPromptGenerate:
       type: object
       properties:
@@ -1893,40 +2054,6 @@ components:
       required:
       - request_id
       - status_url
-    SyncSuccessImageGenerate:
-      type: object
-      properties:
-        result:
-          type: object
-          properties:
-            image_url:
-              type: string
-            seed:
-              type: integer
-            structured_prompt:
-              type: string
-          required:
-          - image_url
-          - seed
-          - structured_prompt
-        request_id:
-          type: string
-        warning:
-          type: string
-          description: Returned only when ip_signal = true and the prompt field included IP content.
-      required:
-      - result
-      - request_id
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorObject'
-        request_id:
-          type: string
-      required:
-      - error
-      - request_id
     ErrorObject_2:
       type: object
       properties:
@@ -1941,6 +2068,18 @@ components:
       - code
       - message
       - details
+    StatusErrorResponse:
+      allOf:
+      - $ref: '#/components/schemas/ErrorResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - ERROR
+            - UNKNOWN
+        required:
+        - status
     StatusSuccessResponse:
       type: object
       properties:
@@ -1982,18 +2121,6 @@ components:
       - result
       - status
       - request_id
-    StatusErrorResponse:
-      allOf:
-      - $ref: '#/components/schemas/ErrorResponse'
-      - type: object
-        properties:
-          status:
-            type: string
-            enum:
-            - ERROR
-            - UNKNOWN
-        required:
-        - status
 x-refined-from:
 - bria-ad-generation-openapi-original.yml
 - bria-ai-search-deperecated-openapi-original.yml

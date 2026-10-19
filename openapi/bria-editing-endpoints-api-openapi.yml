@@ -2,7 +2,23 @@ openapi: 3.2.0
 info:
   title: Video API Reference Editing Endpoints API
   version: ''
-  description: Bria's Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.
+  description: 'Bria''s Video APIs empower builders with powerful tools for programmatically transforming video content while maintaining original quality.
+
+
+    The Video API is organized into two transport paradigms:
+
+
+    - **REST API (Async)** — Standard HTTP request/response. You submit a job, receive a `request_id` and `status_url`, and poll the Status Service until the job completes. Use this for editing, masking, and most batch-style workflows.
+
+    - **Streaming API (WebSocket)** — Persistent bidirectional connection for low-latency, frame-by-frame processing. Use this when you need real-time output (e.g., live video feeds, interactive previews).
+
+
+    **Asynchronous Requests and the Status Service**
+
+    Bria API v2 REST endpoints process requests asynchronously by default. When you make an asynchronous request, the API immediately returns a `request_id` and a `status_url` instead of the final result. Use the Status Service to track the request''s progress until it reaches a completed state.
+
+
+    See the full guide at Status Service Documentation for complete details and usage examples.'
 servers:
 - url: https://engine.prod.bria-api.com/v2/video/edit
 - url: https://engine.prod.bria-api.com/v2/video/generate
@@ -919,16 +935,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    AsyncInitialResponse:
-      type: object
-      properties:
-        request_id:
-          type: string
-        status_url:
-          type: string
-      required:
-      - request_id
-      - status_url
     ErrorObject:
       type: object
       properties:
@@ -943,6 +949,16 @@ components:
       - code
       - message
       - details
+    AsyncInitialResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        status_url:
+          type: string
+      required:
+      - request_id
+      - status_url
     ErrorResponse:
       type: object
       properties:

@@ -7,6 +7,7 @@
     "_original/bria-image-editing-openapi-original.yml",
     "_original/bria-image-generation-openapi-original.yml",
     "_original/bria-image-onboarding-openapi-original.yml",
+    "_original/bria-openapi.json",
     "_original/bria-product-shot-editing-openapi-original.yml",
     "_original/bria-status-openapi-original.yml",
     "_original/bria-tailored-generation-openapi-original.yml",
@@ -17,6 +18,8 @@
     "bria-image-attribution-api-openapi.yml",
     "bria-video-attribution-api-openapi.yml",
     "bria-v2-endpoints-api-openapi.yml",
+    "bria-fastapi-api-openapi.yml",
+    "bria-health-api-openapi.yml",
     "bria-automotive-endpoints-api-openapi.yml",
     "bria-product-endpoints-api-openapi.yml",
     "bria-dataset-api-openapi.yml",
@@ -41,7 +44,7 @@
     "bria-video-editing-openapi-original.yml: info.version missing"
   ],
   "notes": [
-    "sourced from openapi/_original/ (10 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sourced from openapi/_original/ (11 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "bria-ad-generation-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "bria-ad-generation-openapi-original.yml: declared missing tag: Endpoints",
     "bria-ai-search-deperecated-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
@@ -53,6 +56,12 @@
     "bria-image-generation-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "bria-image-onboarding-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "bria-image-onboarding-openapi-original.yml: declared missing tag: Endpoints",
+    "bria-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "bria-openapi.json: tagged paths GET /health/live -> Health",
+    "bria-openapi.json: tagged paths GET /health/ready -> Health",
+    "bria-openapi.json: tagged paths GET / -> FastAPI",
+    "bria-openapi.json: declared missing tag: FastAPI",
+    "bria-openapi.json: declared missing tag: Health",
     "bria-product-shot-editing-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "bria-product-shot-editing-openapi-original.yml: declared missing tag: Automotive Endpoints",
     "bria-product-shot-editing-openapi-original.yml: declared missing tag: Product Endpoints",
@@ -60,7 +69,7 @@
     "bria-tailored-generation-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "bria-video-editing-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "tag 'Endpoints' spans 5 source specs (bria-ad-generation-openapi-original.yml, bria-ai-search-deperecated-openapi-original.yml, bria-image-generation-openapi-original.yml, bria-image-onboarding-openapi-original.yml, bria-status-openapi-original.yml): per-path servers applied",
-    "apis.yml register: already-registered"
+    "apis.yml register: written (+2 apis, 16 total)"
   ],
   "skipped": [
     "bria-automotive-endpoints-api-openapi.yml: previously refined output, superseded by openapi/_original/",
