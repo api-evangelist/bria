@@ -1,5 +1,11 @@
-generated: '2026-10-13'
+generated: '2026-10-20'
 method: searched
+source:
+- shopify/integrations/shopify-integration-edges.yml
+- https://zapier.com/apps/bria/integrations
+- https://n8n.io/integrations/bria/
+- https://composio.dev/toolkits/bria
+- https://monid.ai/tools/bria
 checked:
 - https://api.nuget.org/v3
 - https://aws.amazon.com/marketplace/
@@ -11,6 +17,11 @@ checked:
 - https://repo1.maven.org/maven2
 - https://rubygems.org/api/v1
 - shopify/integrations/shopify-integration-edges.yml
+- https://composio.dev/toolkits/bria
+- https://monid.ai/tools/bria
+- https://n8n.io/integrations/bria/
+- https://zapier.com/apps/bria/integrations
+summary: null
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -137,5 +148,4 @@ edges:
     detected: '2026-10-18'
   detected_by: sweep-official-sdks.py
   first_seen: '2026-10-18'
-source:
-- shopify/integrations/shopify-integration-edges.yml
+templates: []
