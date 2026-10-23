@@ -27,18 +27,6 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
-- slug: bria-shopify-own
-  label: Shopify (own)
-  partner: shopify
-  partner_name: Shopify (own)
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://apps.shopify.com/bria
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: bria-npm-registry
   label: npm registry
   partner: npm
@@ -168,5 +156,30 @@
     signal_note: 'participation only (python): an organization account on PyPI, not a package count'
     detected_by: sweep-ide-extension-marketplaces.py
     detected: '2026-10-20'
+  status: not-a-workflow
+  arazzo: null
+- slug: bria-shopify-own
+  label: Shopify (own)
+  partner: shopify
+  partner_name: Shopify (own)
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://apps.shopify.com/bria
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: bria-adobe-photoshop-own
+  label: Adobe Photoshop (own)
+  partner: adobe-photoshop
+  partner_name: Adobe Photoshop (own)
+  category: Adobe Exchange Creative Cloud listing (Photoshop)
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://exchange.adobe.com/apps/cc/92224702/bria-ai-plugin-for-photoshop
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null

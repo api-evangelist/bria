@@ -29,6 +29,7 @@ checked:
 - https://www.skills.sh/sitemap.xml
 - https://pypi.org/org/{org}/
 - https://pypi.org/pypi/{package}/json
+- adobe-photoshop/integrations/adobe-photoshop-integration-edges.yml
 summary: null
 marketplace_apps: []
 edges:
@@ -78,24 +79,6 @@ edges:
   seller_name: BRIA AI
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
-- partner_name: Shopify (own)
-  partner: shopify
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://apps.shopify.com/bria
-  mirror_of: shopify/integrations/shopify-integration-edges.yml
-  apps:
-  - AI Background Remove&Generate
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  publisher_verified:
-  - Built for Shopify
 - partner_name: npm registry
   partner: npm
   partner_match: register
@@ -246,4 +229,39 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-ide-extension-marketplaces.py
   first_seen: '2026-10-20'
+- partner_name: Shopify (own)
+  partner: shopify
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://apps.shopify.com/bria
+  mirror_of: shopify/integrations/shopify-integration-edges.yml
+  apps:
+  - AI Background Remove&Generate
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  publisher_verified:
+  - Built for Shopify
+- partner_name: Adobe Photoshop (own)
+  partner: adobe-photoshop
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://exchange.adobe.com/apps/cc/92224702/bria-ai-plugin-for-photoshop
+  mirror_of: adobe-photoshop/integrations/adobe-photoshop-integration-edges.yml
+  apps:
+  - Bria AI plugin for Photoshop
+  listing_count: 1
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Adobe Exchange Creative Cloud listing (Photoshop)
 templates: []
